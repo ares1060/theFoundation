@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="{@pp:abs_root}{@pp:tpl_folder}/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="{@pp:abs_root}{@pp:tpl_root_folder}/css/foundation.css" />
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Judson:r|PT+Sans:r,b,i,bi|Open+Sans:300">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid+Sans|Vollkorn|Lato|Droid+Serif">
+	{@pp:extra_css} 
+	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_folder}/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_folder}/js/jquery-ui.1.8.9.min.js"></script>
+	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_folder}/js/jquery.tagsinput.min.js"></script>
+	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_folder}/js/jquery.address-1.4.min.js"></script>
+	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_folder}/js/nicEdit.js"></script>
+	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_root_folder}/js/foundation-1.1.js"></script>
+	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_root_folder}/js/uiwidget.js"></script>
+	{@pp:extra_js}
+	<script type="text/javascript">
+	<!--
+		tf.init({
+			to_root: '{@pp:abs_root}',
+			tpl_root: '{@pp:abs_root}{@pp:tpl_folder}',
+			template: 'adminTemplate',
+			login_url: '{@pp:abs_root}_admincenter/login/'
+		});
+	//-->
+	</script>
+	<title>{@pp:title}</title>
+</head>
+<body>
+	<div id="topbar">
+		<div id="logo"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/logo_wide_double.png" /></div>
+			<div id="admin_loading_div"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/loading.gif" /> Lade Daten...</div>
+		<div id="topbar_right">
+			<!-- <img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/status/{@pp:user_group}.png" class="icon"/>&nbsp;&nbsp; -->
+			<a href="{@pp:abs_root}_admincenter/tf/profile/" id="topbar-user">{@pp:user_nick}</a> 
+			<a href="{@pp:abs_root}_admincenter/logout/" id="logout-icon"> &nbsp;</a>
+		</div>
+	</div>
+	<div id="menu">
+		<ul>
+			<li class="seperator">&nbsp;</li>
+			<li class="menu_block {@pp:menu_overview}">
+				<div class="right"><div class="img">&nbsp;</div></div>
+					<a href="{@pp:abs_root}_admincenter/tf/overview/">
+					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/menu/overview_big1.png" class="menu_icon" />
+					<span class="menu_title">&Uuml;bersicht</span>
+				</a>
+			</li>
+			<li class="seperator">&nbsp;</li>
+			<li class="menu_block {@pp:menu_profile}">
+				<div class="right"><div class="img">&nbsp;</div></div>
+					<a href="{@pp:abs_root}_admincenter/tf/profile/">
+					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/menu/profile_big.png" class="menu_icon" />
+					<span class="menu_title">Mein Profil</span>
+				</a>
+			</li>
+			<!-- <li class="seperator">&nbsp;</li>
+			<li class="title">Services</li> -->
+			<pp:dynamic name="menu_big_services">
+				<li class="seperator">&nbsp;</li>
+				<li class="menu_block {@pp:selected}">
+					<div class="right"><div class="img">&nbsp;</div></div>
+					<a href="{@pp:abs_root}_admincenter/tf/{@pp:name}/">
+						<img src="{@pp:abs_root}{@pp:tpl_folder}/img/menu/{@pp:image}" class="menu_icon" />
+						<span class="menu_title">{@pp:display}</span>
+					</a>
+				</li>
+			</pp:dynamic>
+			<!-- <li class="seperator">&nbsp;</li>
+			<li class="title" style="height: 0px;">&nbsp;</li> -->
+			<li class="seperator">&nbsp;</li>
+			<li class="menu_block {@pp:menu_about}">
+				<div class="right"><div class="img">&nbsp;</div></div>
+					<a href="{@pp:abs_root}_admincenter/tf/about/">
+					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/menu/about_big.png" class="menu_icon" />
+					<span class="menu_title">About</span>
+				</a>
+			</li>
+			<li class="seperator">&nbsp;</li>
+		</ul>
+	</div>
+	<div id="main">
+		<div id="inner_content">
+				{@pp:content}
+			</div>
+	</div>
+</div>
+</body>
+</html>

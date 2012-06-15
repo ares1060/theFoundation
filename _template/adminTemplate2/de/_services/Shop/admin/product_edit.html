@@ -1,0 +1,236 @@
+<!-- <h1>Produkt bearbeiten</h1>
+<div class="h_sep" id="admin_top_hr" style="margin: 5px 0px 10px 0px;">
+	<span class="left">&nbsp;</span>
+	<span class="right">&nbsp;</span>
+	<span class="center">&nbsp;</span>
+</div> -->
+<div id="shop_product_edit">
+	<form method="post" action="" id="shop_product_edit_form" class="tf_form">
+		<input type="hidden" name="pr_link" id="pr_link" value="" />
+		<div id="shop_product_edit_right">
+			<div class="box">
+				<span style="float: right; margin: 5px;">#{@pp:id}</span>
+				<h3><a href="javascript:void(0);" onclick="$('#box_content_main').slideToggle();">Produkt bearbeiten</a></h3>
+				<div class="content" id="box_content_main">
+					<div class="h_sep_down" id="admin_top_hr" style="margin: 5px -7px 10px -7px;">
+						<span class="left">&nbsp;</span>
+						<span class="right">&nbsp;</span>
+						<span class="center">&nbsp;</span>
+					</div>
+					<div class="product_edit_img"">
+						<img src="{@pp:abs_root}_core/getImage.php?path={@pp:img_path}&height=80&width=80" id="product_edit_main_image"/>
+					</div>
+					<p>
+						<label for="pr_status" class="tf_label small">Status:</label>
+						{@pp:status}
+					</p>
+					
+					<div class="clearer">&nbsp;</div>
+					<div class="h_sep" id="admin_top_hr" style="margin: 5px -7px 5px -7px;">
+						<span class="left">&nbsp;</span>
+						<span class="right">&nbsp;</span>
+						<span class="center">&nbsp;</span>
+					</div>
+					<p style="margin-bottom: 0px; width: auto;">
+						<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/Shop/status/status_{@pp:status_id}.png"  style="margin:5px;" id="status_img"/>
+						<button class="button small" type="button" style="float: right;" onclick="unsetAdressPath(new Array('action', 'id')); return false;"><span>Abbrechen</span></button>
+						<button class="button small" type="button"   onclick="alert(nicEditors.findEditor('pr_desc').getContent()); return false;"><span>Test</span></button>
+						<button class="button small default" type="submit" style="float: right; margin-right: 5px;" ><span>Speichern</span></button>
+					</p>
+				</div>
+			</div>
+			<div class="box">
+				<div class="action">
+					<div id="image_loading_div"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/loading.gif"/></div>
+					<a href="javascript:void(0);" onclick="loadProductImagesUpload();" id="gallery_images_upload_link">Upload</a>
+					<a href="javascript:void(0);" onclick="loadProductImages();"id="gallery_images_images_link" style="display: none;"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/addon/action_delete2.png" /></a>
+				</div>
+				
+				<h3><a href="javascript:void(0);" onclick="$('#box_content_images').slideToggle();" id="product_image_title">Bilder</a></h3>
+				<div class="content" id="box_content_images">
+					<div class="h_sep_down" id="admin_top_hr" style="margin: 5px -7px 5px -7px;">
+						<span class="left">&nbsp;</span>
+						<span class="right">&nbsp;</span>
+						<span class="center">&nbsp;</span>
+					</div>
+					<div id="images_div"></div>
+					<div id="images_upload"></div>
+				</div>
+			</div>
+			<div class="box">
+				<div class="action"><a href="javascript:void(0);" onclick="tfaddress.editPath({unset:['action', 'id'], set:{'chapter':'cat'}});">bearbeiten</a></div>
+				<h3><a href="javascript:void(0);" onclick="$('#box_content_cat').slideToggle();">Kategorie</a> <span class="small" id="categories_saved_text">&nbsp;</span></h3>
+				<div class="content" id="box_content_cat">
+					<div class="h_sep_down" id="admin_top_hr" style="margin: 5px -7px 10px -7px;">
+						<span class="left">&nbsp;</span>
+						<span class="right">&nbsp;</span>
+						<span class="center">&nbsp;</span>
+					</div>
+					{@pp:category_div}
+				</div>
+			</div>
+			<div class="box">
+				<h3><a href="javascript:void(0);" onclick="$('#box_content_tags').slideToggle();">Tags</a> <span class="small" id="tags_saved_text">&nbsp;</span></h3>
+				<div class="content" id="box_content_tags">
+					<div class="h_sep_down" id="admin_top_hr" style="margin: 5px -7px 10px -7px;">
+						<span class="left">&nbsp;</span>
+						<span class="right">&nbsp;</span>
+						<span class="center">&nbsp;</span>
+					</div>
+					{@pp:tags_div}
+				</div>
+			</div>
+		</div>
+		<div id="shop_product_edit_left">
+			<div id="shop_product_edit_main">
+				<input type="hidden" name="pr_id" value="{@pp:id}" />
+				<p style="padding-right: 18px;">
+					<!-- <label for="pr_name" class="tf_label">Name:</label> -->
+					<input type="text" class="tf_input full" id="pr_name" name="pr_name" value="{@pp:name}" />
+				</p>
+				<div>
+					{@pp:desc_textarea}
+				</div>
+				<p>
+					<!-- <label for="pr_desc" class="tf_label">Beschreibung:</label> -->
+					<!--  <textarea rows="4" class="tf_input full" name="pr_desc1" id="pr_desc1">{@pp:desc}</textarea>-->
+				</p>
+			</div>
+			<div class="h_sep_down" id="admin_top_hr" style="margin: 5px -7px 10px -7px;">
+				<span class="left">&nbsp;</span>
+				<span class="right">&nbsp;</span>
+				<span class="center">&nbsp;</span>
+			</div>
+			<p>
+				<label for="pr_price" class="tf_label">Preis:</label>
+				<input type="text" class="tf_input small number" id="pr_price" name="pr_price" value="{@pp:price}" /> &euro;
+			</p>
+			<p>
+				<label for="pr_stock_nr" class="tf_label">Bestellnummer:</label>
+				<input type="text" class="tf_input small number" id="pr_stock_nr" name="pr_stock_nr" value="{@pp:stock_nr}" />
+			</p>
+			<p>
+				<label for="pr_weight" class="tf_label">Gewicht:</label>
+				<input type="text" class="tf_input small number" id="pr_weight" name="pr_weight" value="{@pp:weight}" /> g
+			</p>
+			<p>
+				<label for="pr_stock" class="tf_label">Verf&uuml;gbarkeit:</label>
+				<input type="text" class="tf_input small number" id="pr_stock" name="pr_stock" value="{@pp:stock}" /> St&uuml;ck &nbsp;&nbsp;&nbsp;<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/Shop/status/stock_{@pp:stock_img}.png" class="icon" id="stock_img"/>
+			</p>
+			<p>
+				<label for="pr_dimensions_width" class="tf_label">Abmessungen:</label>
+				<input type="text" class="tf_input fifty number" id="pr_dimensions_width" name="pr_dimensions_width" value="{@pp:width}" />mm /
+				<input type="text" class="tf_input fifty number" id="pr_dimensions_height" name="pr_dimensions_height" value="{@pp:height}" />mm /
+				<input type="text" class="tf_input fifty number" id="pr_dimensions_depth" name="pr_dimensions_depth" value="{@pp:depth}" />mm &nbsp;&nbsp;&nbsp;(Breite / H&ouml;he / Tiefe) 
+			</p>
+			<!--  TODO: Tax id -->
+			<!-- <p>
+				<label for="pr_isDownload" class="tf_label">digitales Produkt:</label>
+				<input type="checkbox" id="pr_isDownload" name="pr_isDownload" {@pp:isDownloadable_checkbox} style="margin-top: 7px !important;"/> 
+			</p>
+			<div class="tf_box" id="pr_isDownloadDiv">
+				TODO downloadable Products
+			</div> -->
+			<br />
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+	<!--
+		var pi_page, pi_page_old;
+	
+		$('#shop_product_edit').ready(function() {
+			$('#shop_product_edit_form').attr('action', '#!/chapter/products/page/'+active_page+'/action/edit/id/'+active_id);
+			$('#pr_link').attr('value', '#!/chapter/products/page/'+active_page+'/action/edit/id/'+active_id);
+			//updateDownloadProducts();
+			pi_page = pi_page_old = undefined;
+			loadProductImages();
+		});
+
+		//$('#pr_isDownload').change(updateDownloadProducts);
+		$('#pr_stock').change(function () {
+			if($(this).val() == 0) {
+				$('#stock_img').attr('src', '{@pp:abs_root}{@pp:tpl_folder}/img/services/Shop/status/stock_empty.png');
+			} else if($(this).val() < {@pp:stock_threshold}) {
+				$('#stock_img').attr('src', '{@pp:abs_root}{@pp:tpl_folder}/img/services/Shop/status/stock_normal.png');
+			} else {
+				$('#stock_img').attr('src', '{@pp:abs_root}{@pp:tpl_folder}/img/services/Shop/status/stock_high.png');
+			}
+		});
+		$('#pr_status').change(function () {
+			$('#status_img').attr('src', '{@pp:abs_root}{@pp:tpl_folder}/img/services/Shop/status/status_'+$(this).val()+'.png');
+		});
+	
+		function updateDownloadProducts() {
+			if($('#pr_isDownload').is(':checked')) {
+				$('#pr_isDownloadDiv').show();
+			} else $('#pr_isDownloadDiv').hide();
+		}
+
+
+		/** image loading **/
+		function showImageLoadingDiv() { $('#image_loading_div').show(); }
+		function hideImageLoadingDiv() { $('#image_loading_div').hide(); }
+
+		function loadGallery(page) {
+			pi_page = page;
+			loadProductImages();
+		}
+
+		function reloadProductImages() {
+			pi_page_old = undefined;
+			loadProductImages();
+		}
+		
+		function loadProductImages() {
+			if(pi_page != pi_page_old || pi_page_old == undefined) {
+				if(pi_page == undefined) pi_page = 1;
+				showImageLoadingDiv();
+				tf.getService({
+						service: 'Shop',
+						method: 'admin', 
+						args: {
+							action: 'loadProductImages',
+							id:'{@pp:id}',
+							page: pi_page,
+							reloadFunction: 'reloadProductImages',
+							useFunction: 'setProductImage'
+						},
+						handle: function (msg) {
+					 		$('#images_upload').hide();
+							$('#images_div').html(msg).show();
+							$('#gallery_images_images_link').hide();
+							$('#gallery_images_upload_link').show();
+							$('#product_image_title').html('Bilder');
+							hideImageLoadingDiv();
+						}
+				});
+				pi_page_old = pi_page;
+			}	
+		}
+
+		function loadProductImagesUpload() {
+			showImageLoadingDiv();
+			getService('Shop', 'admin', 'args[action]=loadProductImagesUpload&args[id]={@pp:id}&args[link]=#!/chapter/products/action/edit/id/'+active_id+'/', 
+					function (msg) {
+				 		$('#images_div').hide();
+						$('#images_upload').html(msg).show();
+						$('#gallery_images_images_link').show();
+						$('#gallery_images_upload_link').hide();
+						$('#product_image_title').html('Bilderupload');
+						hideImageLoadingDiv();
+						pi_page_old = undefined;
+					});
+		}
+
+		function setProductImage(id){
+			showImageLoadingDiv();
+			getService('Shop', 'admin', 'args[action]=setProductImage&args[id]={@pp:id}&args[image]='+id, 
+					function (msg) {
+						if(msg != false) $('#product_edit_main_image').attr('src', '{@pp:abs_root}_core/getImage.php?path='+msg+'&height=80&width=80');
+						hideImageLoadingDiv();
+						pi_page_old = undefined;
+					});
+		}
+	//-->
+</script>

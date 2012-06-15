@@ -20,7 +20,7 @@
 	// has to be logged in
     if(isset($_SESSION['User'])){
     	
-   		$sp->ref('Template')->setTemplate('adminTemplate');
+   		$sp->ref('Template')->setTemplate('adminTemplate2');
     	echo $sp->ref('Admincenter')->tplAdmin();
     	
     } else header('Location: '.$GLOBALS['abs_root'].'_admincenter/login/');

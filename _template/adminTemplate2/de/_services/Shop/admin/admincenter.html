@@ -1,0 +1,178 @@
+<style type="text/css" media="screen">
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/services/shop_admin.css);
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/services/pagina.css);
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/services/category_admin.css);
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/services/category.css);
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/uiwidget.css);
+</style>
+<div id="admin_menu_main">
+	<div id="admin_menu_main_nav">
+		<ul id="right_action">
+			<!-- <li><a href="javascript:void(0);" class="menu_link" id="blog_admin_action_settings"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/settings.png" /><br />Einstellungen</a></li> -->
+			<li id="chapter_cats"><a href="javascript:void(0);" onclick="tfaddress.editPath({unset:['action', 'id'], set:{'chapter':'cat'}});" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/Shop/cat.png" /><br />Kategorien</a></li>
+			<li id="chapter_other"><a href="javascript:void(0);" onclick="tfaddress.editPath({unset:['action', 'id'], set:{'chapter':'other'}});" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/Shop/other1.png" /><br />Sonstiges</a></li>
+			<li class="seperator">&nbsp;</li>
+			<li id="chapter_settings"><a href="javascript:void(0);" onclick="tfaddress.editPath({unset:['action', 'id'], set:{'chapter':'settings'}});" class="menu_link" id="blog_admin_action_settings"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/shop/gear_in.png" /><br />Einstellungen</a></li>
+		</ul>
+		<ul id="chapters">
+			<!-- 
+			<li id="chapter_filings"><a href="javascript:void(0);" onclick="unsetAdressPath(new Array('action', 'id')); setAdressPathKey('chapter', 'filings');" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/filings.png" /><br />Anmeldungen</a></li>
+			<li class="seperator">&nbsp;</li>
+			<li id="chapter_forms"><a href="javascript:void(0);" onclick="unsetAdressPath(new Array('action', 'id')); setAdressPathKey('chapter', 'forms');" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/forms1.png" /><br />Formulare</a></li>
+			<li id="chapter_group"><a href="javascript:void(0);" onclick="unsetAdressPath(new Array('action', 'id')); setAdressPathKey('chapter', 'group');" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/formgroup.png" /><br />Datengruppen</a></li>
+			 -->
+			 <!-- <li id="chapter_data"><a href="javascript:void(0);" onclick="unsetAdressPath(new Array('action', 'id')); setAdressPathKey('chapter', 'data');" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/formdata.png" /><br />Formulardaten</a></li> -->
+			<li id="chapter_orders"><a href="javascript:void(0);" onclick="tfaddress.editPath({unset:['action', 'id'], set:{'chapter':'orders'}});" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/Shop/orders.png" /><br />Bestellungen</a></li>
+			<li class="seperator">&nbsp;</li>
+			<li id="chapter_products"><a href="javascript:void(0);" onclick="tfaddress.editPath({unset:['action', 'id'], set:{'chapter':'products'}});" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/Shop/products.png" /><br />Produkte</a></li>
+		</ul>
+	</div>
+</div>
+<!-- <div class="h_sep" id="admin_top_hr" style="margin: 0px -10px 10px -15px;">
+	<span class="left">&nbsp;</span>
+	<span class="right">&nbsp;</span>
+	<span class="center">&nbsp;</span>
+</div> -->
+<div class="messages" id="tf_msg" style="margin-bottom: 5px;">{pp:Messages(action:viewType, type:error/info/debug)}</div>
+<div id="shop_content" class="actual_content"></div>
+<script type="text/javascript">
+	<!--
+		var active_page = 1;
+		var active_chapter = '';
+		var active_action = '';
+		var active_id = -1;
+
+		/* --- deep link --- */
+		$.address.change(function(event) { updateDeeplink(); });  
+		//$.address.init(function(event) {  updateDeepLink(); });
+
+		function updateDeeplink() {
+			params = tfaddress.getPathNames();
+			
+			if(params['chapter'] == undefined) { $.address.path('/chapter/orders/page/1/'); params = tfaddress.getPathNames();}
+			if(params['page'] == undefined) { setAdressPathKey('page', 1); params = tfaddress.getPathNames(); }
+
+			active_page = params['page'];
+			active_chapter = params['chapter'];
+			active_action= params['action'];
+			active_id = params['id'];
+
+			$('#admin_menu_main_nav > ul > li').removeClass('selected');
+			
+			if(active_chapter == 'orders') {
+
+				loadOrders();  
+				
+			} else if(active_chapter == 'products') { 
+
+				if(active_action == 'new') loadNewProduct();
+				else if(active_action == 'edit' && active_id != undefined) loadEditProduct();
+				else loadProducts();  
+				
+			} else if(active_chapter == 'cat') { 
+				
+				loadCats();  
+				
+			} else if(active_chapter == 'other') { 
+				
+				loadOther();  
+				
+			} else if(active_chapter == 'settings') {
+
+				loadSettings();
+				
+			}
+		}
+		/* ---------------  orders --------------*/
+		function loadOrders() {
+			$('#chapter_orders').addClass('selected');
+			$('#shop_content').html('orders');
+		}
+		/* ---------------  products --------------*/
+		function loadProducts() {
+			$('#chapter_products').addClass('selected');
+			tf.showAdminLoading();
+			tf.getService({
+				service: 'Shop',
+				method: 'admin', 
+				args: {
+					chapter:'products_overview',
+					page:active_page
+				},
+				handle: function (msg) {
+					$('#shop_content').html(msg);
+					tf.hideAdminLoading();
+				}
+			});
+		}
+		function loadNewProduct(){
+			$('#chapter_products').addClass('selected');
+			tf.showAdminLoading();
+			tf.getService({
+				service: 'Shop', 
+				method: 'admin', 
+				args: {
+					chapter:'products_new'
+				},
+				handle: function (msg) {
+					$('#shop_content').html(msg);
+					tf.hideAdminLoading();
+				}
+			});
+		}
+		function loadEditProduct(){
+			$('#chapter_products').addClass('selected');
+			tf.showAdminLoading();
+			tf.getService({
+				service: 'Shop', 
+				method: 'admin', 
+				args: {	
+					chapter:'products_edit',
+					id:active_id
+				}, 
+				handle: function (msg) {
+					$('#shop_content').html(msg);
+					tf.hideAdminLoading();
+				}
+			});
+		}
+		/* ---------------  cats --------------*/
+		function loadCats() {
+			$('#chapter_cats').addClass('selected');
+			tf.showAdminLoading();
+			tf.getService({
+				service: 'Shop', 
+				method: 'admin', 
+				args: {
+					chapter:'category'
+				}, 
+				handle: function (msg) {
+						$('#shop_content').html(msg);
+						tf.hideAdminLoading();
+					}
+			});
+		}
+		/* ---------------  other --------------*/
+		function loadOther() {
+			$('#chapter_other').addClass('selected');
+			$('#shop_content').html('other');
+		}
+		/* ---------------  settings --------------*/
+		function loadSettings() {
+			$('#chapter_settings').addClass('selected');
+			tf.showAdminLoading();
+			tf.getService({
+				service: 'Shop', 
+				method: 'admin', 
+				args: { 
+					chapter:'settings'
+				}, 
+				handle: function (msg) {
+						tf.hideAdminLoading();
+						$('#shop_content').html(msg);
+					}
+			});
+		}
+
+	//-->
+</script>
