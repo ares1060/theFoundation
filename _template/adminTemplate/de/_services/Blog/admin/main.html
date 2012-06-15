@@ -1,0 +1,72 @@
+{pp:UIWidgets(widget:Hidden, value:neverMind)}
+<div class="messages" id="blog_messages">{pp:Messages(action:viewType, type:error/info)}</div>
+<div id="admin_menu_main">
+	<div id="admin_menu_main_nav">
+		<ul id="right_action">
+			<li><a href="javascript:void(0);" class="menu_link" id="blog_admin_action_trash"><span><img src="{@pp:abs_root}{@pp:tpl_folder}/img/blog/trash.png" /><br />Papierkorb</a></span></li>
+			<li><a href="javascript:void(0);" class="menu_link" id="blog_admin_action_settings"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/blog/settings.png" /><br />Einstellungen</a></li>
+			<!-- <li><a href="javascript:void(0);" class="menu_link"><span><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/config.png" /><br />Einstellungen</a></span></a> -->
+		</ul>
+		<ul>
+			<li><span class="spacer">&nbsp;</span>
+			<li><a href="javascript:void(0);" class="menu_link" id="blog_admin_action_all" onclick="$.address.path('/chapter/list/')"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/blog/list.png" /><br />Alle Artikel</a></li>
+			<li><a href="javascript:void(0);" class="menu_link" id="blog_admin_action_new" onclick="$.address.path('/chapter/new/')"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/blog/new_entry.png" /><br />Neuer Eintrag</a></li>
+			<li><a href="javascript:void(0);" onclick="unsetAdressPath(new Array('action', 'id')); setAdressPathKey('chapter', 'cat');" class="menu_link" id="blog_admin_action_cats"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/blog/categorie.png" /><br />Kategorien</a></li>
+			<!--<li><a href="javascript:void(0);" class="menu_link" id="blog_admin_action_new" onclick="$.address.path('/new/')"><span><img src="{@pp:abs_root}{@pp:tpl_folder}/img/blog/new_entry.png" /><br />Neuer Eintrag</a></span></li>
+			<li><span class="v_line">&nbsp;</span></li>//-->
+		</ul>
+	</div>
+	<div class="h_sep" id="admin_top_hr" style="margin: -5px -10px 0px -15px;">
+		<span class="left">&nbsp;</span>
+		<span class="right">&nbsp;</span>
+		<span class="center">&nbsp;</span>
+	</div>
+	<div class="messages" id="tf_msg">{pp:Messages(action:viewType, type:error/info/debug)}</div>
+	<div id="admin_blog_main_content">
+		&nbsp;
+	</div>
+</div>
+<script type="text/javascript">
+<!--
+	var active_page = 1;
+	var active_post = -1;
+	var active_chapter = '{@pp:active_action}';
+	var active_type = 'simple';
+
+	/* --- deep link --- */
+	$.address.change(function(event) {  updateDeepLink(); });  
+	$.address.init(function(event) {  updateDeepLink(); });  
+
+    function updateDeepLink() {
+        params = getAdressPathNames();
+
+        if(params['chapter'] == undefined) { $.address.path('/chapter/list/page/1/'); params = getAdressPathNames(); }
+		if(params['page'] == undefined) { params['page'] = 1; }
+		if(params['chapter'] == 'post' && params['post'] == undefined) { params['chapter'] = 'list'; }
+			
+        active_post = -1;
+        active_chapter = params['chapter'];
+        active_page = params['page'];
+
+        loadPage();
+    }
+
+    function loadPage() {	
+        $('#admin_blog_main_nav  .selected').removeClass('selected'); 
+		if(active_chapter == 'list') { $('#blog_admin_action_all').addClass('selected'); loadList(); }
+		if(active_chapter == 'new') { $('#blog_admin_action_new').addClass('selected');  loadNew(); }
+		if(active_chapter == 'cat') { $('#blog_admin_action_cats').addClass('selected');  loadCategory(); }
+		if(active_chapter == 'post') { loadView(active_post); }
+    }
+
+    function loadCategory() {
+    	$('#blog_admin_action_cats').parent().addClass('selected');
+		showAdminLoadingDiv();
+		getService('Blog', 'admin', 'args[chapter]=category', 
+				function (msg) {
+					$('#admin_blog_main_content').html(msg);
+					hideAdminLoadingDiv();
+				});
+    }
+//-->
+</script>

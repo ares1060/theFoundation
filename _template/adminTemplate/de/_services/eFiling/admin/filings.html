@@ -1,0 +1,59 @@
+<div id="filings_select">
+	<select id="filings_form_select">
+		<option value="-1">Alle Formulare</option>
+		<pp:dynamic name="forms"><option value="{@pp:id}" {@pp:selected}>{@pp:name}</option></pp:dynamic>
+	</select>
+</div>
+{pp:Pagina("count":"{@pp:pagina_count}", "active":"{@pp:pagina_active}", "url":"JavaScript:setAdressPathKey('page', '{page}');", "template":"pagina_modern")}<br />
+<div id="filings">
+	<div class="tf_table">
+		<table>
+			<thead>
+				<tr>
+					<th style="width: 10px">&nbsp;</th>
+					<th style="width: 20px;">ID</th>
+					<th style="width: 30px;"></th>
+					<th style="width: 200px;">Formular</th>
+					<th>Vorschau</th>
+					<th style="width: 100px;">Datum</th>
+					<th style="width: 50px;">&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+				<pp:dynamic name="filing">
+					<tr>
+						<td class="center"><input type="checkbox" id="filing[{@pp:id}]" value=""/></td>
+						<td class="number">{@pp:id}</td>
+						<td><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/status/filing_{@pp:status}.png" /></td>
+						<td>{@pp:form_name}</td>
+						<td>{@pp:preview}</td>
+						<td>{@pp:date}</td>
+						<td class="center border-left special">&nbsp;
+							<a href="javascript:void(0);" onclick="setAdressPathKeys(new Array('action', 'id'), new Array('edit', '{@pp:id}'));" alt="Bearbeiten" title="Bearbeiten"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/action/edit.png"/></a>&nbsp;
+							<a href="javascript:void(0);" onclick="deleteForm({@pp:id});" alt="L&ouml;schen" title="L&ouml;schen"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/action/delete.gif"/></a>
+						</td>
+					</tr>
+				</pp:dynamic>
+			</tbody>
+		</table>
+	</div>
+</div>
+<br /><br />
+<script type="text/javascript">
+	<!--
+	$('#filings_form_select').change(function() {
+		var id = ($(this).val());
+
+		if(id == -1) unsetAdressPath(new Array('form'));
+		else setAdressPathKeysJSON({'form':id});
+	});
+	
+	function deleteForm(id){
+		showAdminLoadingDiv();
+		getService('eFiling', 'admin', 'args[action]=deleteForm&&args[id]='+id+'&args[noMsg]=true', 
+				function (msg) {
+					window.setTimeout('location.reload()', 0);
+				});
+	}
+	//-->
+</script>

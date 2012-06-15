@@ -1,0 +1,94 @@
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#new_category_form').attr('action', '#!/chapter/cat/');
+	});
+
+	function handleCatDrop(event, ui) {
+		var parent = $(this).data('id');
+		var after = $(this).data('id_after');
+		var before = $(this).data('id_before');
+		var change = ui.draggable.data('id');
+
+		if(parent == undefined && before == undefined) {
+			showAdminLoadingDiv();
+			getService('{@pp:service}', 'admin', 'args[action]=changeCategoryOrder&args[after]='+after+'&args[id]='+change, 
+					function (msg) {
+						hideAdminLoadingDiv();
+					});
+		} else if(parent == undefined && after == undefined) {
+			getService('{@pp:service}', 'admin', 'args[action]=changeCategoryOrder&args[before]='+before+'&args[id]='+change, 
+					function (msg) {
+						hideAdminLoadingDiv();
+					});
+		} else {
+			getService('{@pp:service}', 'admin', 'args[action]=changeCategoryOrder&args[parent]='+parent+'&args[id]='+change, 
+					function (msg) {
+						hideAdminLoadingDiv();
+					});
+		}
+		
+		reloadPage();
+	}
+
+	function reloadPage() {
+		setAdressPathKeysJSON({'reload':1});
+		unsetAdressPath(new Array('reload'));
+	}
+
+	function deleteCat(id){
+		showAdminLoadingDiv();
+		getService('{@pp:service}', 'admin', 'args[action]=deleteCategory&args[id]='+id, 
+				function (msg) {
+					hideAdminLoadingDiv();
+					reloadPage();
+				});
+	}
+	var activeCatEdit;
+	
+	function showCategoryEdit(id) {
+		if(activeCatEdit != id) {
+			showAdminLoadingDiv();
+			getService('{@pp:service}', 'admin', 'args[action]=showCategoryEdit&args[id]='+id, 
+					function (msg) {
+						if(activeCatEdit != undefined) $('#category_node_'+activeCatEdit+'_edit').slideUp();
+				
+						$('#category_node_edit').html(msg);
+						if(activeCatEdit == undefined) $('#category_node_edit').slideDown();
+						activeCatEdit = id;
+						hideAdminLoadingDiv();
+					});
+		} else {
+			$('#category_node_edit').slideUp();
+			activeCatEdit = undefined;
+		}
+	}
+</script>
+<div class="categories_admincenter">
+	<h1>Kategorien</h1>
+	<div class="h_sep" style="margin: 10px 0px 0px 0px;">
+		<span class="left">&nbsp;</span>
+		<span class="right">&nbsp;</span>
+		<span class="center">&nbsp;</span>
+	</div><br />
+	<div class="categories_admincenter_left">
+		<pp:dynamic name="children">{@pp:content}</pp:dynamic>
+	</div>
+</div>
+<div id="category_right">
+	<h2>Neue Kategorie</h2>
+	<div class="h_sep" style="margin: 10px 0px 0px 0px;">
+		<span class="left">&nbsp;</span>
+		<span class="right">&nbsp;</span>
+		<span class="center">&nbsp;</span>
+	</div><br />
+	<form class="tf_form" method="post" id="new_category_form">
+		<input type="hidden" name="cat_service" value="{@pp:service}" />
+		<input type="hidden" name="cat_action" value="new" />
+		<input type="text" name="cat_name" class="input"/>&nbsp;<button class="button small"><span>Speichern</span></button>
+	</form>
+	<div id="category_node_edit"></div>
+</div>
+
+<style type="text/css">
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/services/category_admin.css);
+</style>

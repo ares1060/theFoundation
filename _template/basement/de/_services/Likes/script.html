@@ -1,0 +1,46 @@
+<style type="text/css" media="screen">
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/services/likes.css);
+</style>
+<script type="text/javascript">
+	<!--
+	function rateUp(id, group) {
+		getService('Likes', 'data', 'args[id]='+id+'&args[action]=vote_positive&args[group]=comment&args[l_template]=comment&args[template]=ares', 
+			function (msg) {
+				if(msg != 'no') {
+					$('#'+group+'_'+id+'_rating').replaceWith(msg);
+					/*if($('#comment_'+id+'_rating').length > 0 ) {
+						oldvalue = parseInt($('#comment_'+id+'_rating').html());
+						if(oldvalue >= 0) $('#comment_'+id+'_rating').html(oldvalue+1);
+						else {
+							$('#comment_'+id+'_rating').html(oldvalue+1);
+							$('#comment_'+id+'_rating').removeClass('negative_rating');
+							$('#comment_'+id+'_rating').addClass('positive_rating');
+						}
+					} else {
+						$('#comment_'+id+' > .footer').append('<span class="bottom_item positive_rating" id="comment_'+id+'_rating">1</span>');
+					}*/
+				}
+			});
+	}
+
+	function rateDown(id, group) {
+		getService('Likes', 'data', 'args[id]='+id+'&args[action]=vote_negative&args[group]=comment&args[l_template]=comment&args[template]=ares', 
+			function (msg) {
+				if(msg != 'no') {
+					$('#'+group+'_'+id+'_rating').replaceWith(msg);
+					/*if($('#comment_'+id+'_rating').length > 0 ) {
+						oldvalue = parseInt($('#comment_'+id+'_rating').html());
+						if(oldvalue <= 0) $('#comment_'+id+'_rating').html(oldvalue-1);
+						else {
+							$('#comment_'+id+'_rating').html(oldvalue-1);
+							$('#comment_'+id+'_rating').addClass('negative_rating');
+							$('#comment_'+id+'_rating').removeClass('positive_rating');
+						}
+					} else {
+						$('#comment_'+id+' > .footer').append('<span class="bottom_item negative_rating" id="comment_'+id+'_rating">-1</span>');
+					}*/
+				}
+			});
+	}
+	//-->
+</script>

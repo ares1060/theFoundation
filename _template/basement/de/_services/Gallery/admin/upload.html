@@ -1,0 +1,37 @@
+<h1>Upload Pictures</h1><br />
+<form enctype="multipart/form-data" action="{@pp:link}" method="post" name="Bilderupload" class="ui_form" id="gallery_upload_form">
+	{pp:UIWidgets(widget:Hidden, name:action, value:upload)}
+	<p>
+		{@pp:albums_select}
+		<span id="new_album_name">{pp:UIWidgets(widget:InputField, name:new_album, id:new_album_name, class:small)}</span>
+	</p>
+	<span class="uiwidget_label" style="margin-bottom: -20px; display: inline-block; margin-top: 17px;">Upload:</span>
+	{pp:UIWidgets(widget:Fileupload, name:files[], id:upload, max_file_size:{@pp:max_file_size}, max_uploads:{@pp:max_uploads}, type:{@pp:types})}
+	<br />
+	<p>
+		{pp:UIWidgets(widget:Button, type:submit, label:&nbsp;, value:&nbsp;&nbsp;&nbsp;Submit&nbsp;&nbsp;&nbsp;)}
+		{pp:UIWidgets(widget:Button, type:reset, value:&nbsp;&nbsp;&nbsp;Reset&nbsp;&nbsp;&nbsp;)}
+		<pp:dynamic name="ajax_button">
+			<span style="float: right; display: block;">{pp:UIWidgets(widget:Button, value:&nbsp;&nbsp;&nbsp;Cancel&nbsp;&nbsp;&nbsp;, id:ajax_cancel_button, type:button)}</span>
+			<script type="text/javascript">
+				$(document).ready(function () {
+					$('#ajax_cancel_button').click(close_upload_form);
+				});
+			</script>
+		</pp:dynamic>
+	</p>
+</form>
+<script type="text/javascript">
+	<!--
+		$('#albums').change(function () {
+			if($(this).val() == -1) {$('#new_album_name').show();}
+			else $('#new_album_name').hide();
+		});
+		$(document).ready(function () {
+			if($('#albums').val() == -1) {$('#new_album_name').show();}
+			else $('#new_album_name').hide();
+			$('#gallery_upload_form').get(0).setAttribute('action', '{@pp:link}#'+$.address.path());
+			
+		});
+	//-->
+</script>

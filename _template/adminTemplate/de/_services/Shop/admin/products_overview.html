@@ -1,0 +1,59 @@
+<div id="products_actions">
+	<button class="button small" onclick="setAdressPathKey('action', 'new'); return false;"><span><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/Shop/actions/add.png" class="icon"/> Neues Produkt</span></button>
+</div>
+{pp:Pagina("count":"{@pp:pagina_count}", "active":"{@pp:pagina_active}", "url":"JavaScript:setAdressPathKey('page', '{page}');", "template":"pagina_modern")}<br />
+<div class="tf_table">
+	<table>
+		<thead>
+			<tr>
+				<th style="width: 10px;">ID</th>
+				<th style="width: 30px;">&nbsp;</th>
+				<th style="width: 10px;">&nbsp;</th>
+				<th style="width: 50px;">Bestellnummer</th>
+				<th>Kategorie</th>
+				<th>Name</th>
+				<th>Beschreibung</th>
+				<th style="width: 10px;"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/Shop/actions/download.png" /></th>
+				<th>Preis</th>
+				<th>Verf&uuml;gbar</th>
+				<th style="width: 50px;">&nbsp;</th>
+			</tr>
+		</thead>
+		<tbody>
+			<pp:dynamic name="product">
+			<tr>
+				<td class="number">{@pp:id}</td>
+				<td class="center" >
+					<pp:dynamic name="thumb">
+						<div class="thumb_img" style="background: url({@pp:abs_root}_core/getImage.php?path={@pp:path}&height=80&width=80) center center no-repeat;">&nbsp;</div>
+					</pp:dynamic>
+				</td>
+				<td><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/Shop/status/status_{@pp:status}.png"  class="icon"/></td>
+				<td class="number">{@pp:stock_nr}</td>
+				<td>{@pp:category_name}</td>
+				<td>{@pp:name}</td>
+				<td>{@pp:desc}</td>
+				<td><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/Shop/status/{@pp:isDownloadable}.png" class="icon"/></td>
+				<td class="number">{@pp:price} &euro;</td>
+				<td class="number"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/Shop/status/stock_{@pp:stock_img}.png" class="icon"/> {@pp:stock} St&uuml;ck</td>
+				<td class="center border-left special">
+					<pp:dynamic name="edit">
+						<a href="javascript:void(0);" onclick="setAdressPathKeysJSON({'action':'edit', 'id':'{@pp:id}'});" alt="Bearbeiten" title="Bearbeiten"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/action/edit.png"/></a>&nbsp;
+						<a href="javascript:void(0);" onclick="deleteProduct({@pp:id});" alt="L&ouml;schen" title="L&ouml;schen"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/action/delete.gif"/></a>
+					</pp:dynamic>
+				</td>
+			</tr>
+			</pp:dynamic>
+		</tbody>
+	</table>
+</div>
+<br /><br />
+<script type="text/javascript">
+	function deleteProduct(id) {
+		showAdminLoadingDiv();
+		getService('Shop', 'admin', 'args[action]=deleteProduct&args[id]='+id+'&noMsg=true', 
+				function (msg) {
+					updateDeeplink();
+				});
+	}
+</script>

@@ -1,0 +1,120 @@
+@CHARSET "UTF-8";
+.comment_form {
+	position: relative;
+	overflow: hidden;
+	margin: 20px 0px 5px 10px;
+}
+.comment_form span.title {
+	font-size: 14px;
+	margin-bottom: 15px;
+	color: #444444;
+	display: block;	
+	text-shadow: 0 1px 1px rgba(255, 255, 255, 1);
+}
+.comment_form #comment_errors{
+	display: none;	
+	border-radius: 3px;
+	overflow: hidden;	
+	margin-bottom: 20px;
+	/*box-shadow: 0px 1px 1px #fff;*/
+	border: 1px solid #ddd;
+}
+.comment_form #comment_errors .form_error:last-child {
+	border-bottom: 0px !important;	
+}
+.comment_form #comment_errors .form_error{
+	padding: 5px 10px;
+	display: block;
+	background: rgba(255, 150, 150, .5);
+	color: #A04040;
+	text-shadow: 0px 1px #fdd;
+}
+.comment_form .error_required {
+	border: 1px solid #D08080;	
+}
+.comment_form .comment {
+	width: 380px;
+}
+.comment_form .comment .input {
+	display: block;
+	width: 350px;
+	margin-bottom: 15px;	
+}
+.comment_form .comment textarea.input {
+	height: 102px;	
+}
+.comment_form .comment_meta {
+	width: 327px;
+	float: right;
+}
+.comment_form .comment_meta .input {
+	display: block;
+	width: 180px;
+	margin-bottom: 15px;	
+}
+
+span.no_comments {
+	display: block;
+	border-radius: 3px;
+	margin: 20px 0;
+	padding: 40px 20px;
+	text-align: center;
+	aborder: 1px solid #ddd;	
+	color: #444444;
+	text-shadow: 0 1px 1px rgba(255, 255, 255, 1);
+	font-size: 14px;
+}
+
+/* -- comment list --- */
+.comment_entry:first-child{
+	margin-top: 0px;
+}
+
+.comment_entry {
+	display: block;
+	/*border: 1px solid #dddddd;
+	box-shadow: 0 1px 1px #fff;
+	border-radius: 3px;
+	background: rgba(0,0,0,.02);*/
+	margin: 20px 0px 20px 10px;
+	overflow: hidden;
+	width: 565px;
+}
+.comment_entry .actions {
+	float: right;
+	margin-top: 0px;
+	display: none;
+}
+.comment_entry .header {
+	margin: 0px;
+	padding: 5px 10px;
+	height: auto;
+	font-weight: normal;
+	font-family: 'PT Sans';	
+}
+.comment_entry .content {
+	padding: 0 10px;
+	width: 460px;
+}
+.comment_entry .comment_footer {
+	font-size: 10px;
+	height: 20px;
+	margin: 0px;
+	padding: 5px 10px;	
+}
+.comment_entry .comment_footer .bottom_item {
+	margin-right: 5px;	
+}
+.comment_entry .comment_footer .positive_rating {
+	background: url(../../img/icons/thumbsUp_small.png) top left no-repeat;
+	background-position: 0px 1px;
+	padding-left: 10px;
+	color: #008800;	
+}
+.comment_entry .comment_footer .negative_rating {
+	background: url(../../img/icons/thumbsDown_small.png) top left no-repeat;
+	padding-left: 10px;	color: #880000;	
+}
+.comment_entry .comment_vote {
+	height: 30px;	
+}

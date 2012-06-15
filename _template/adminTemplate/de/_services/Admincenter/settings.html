@@ -1,0 +1,73 @@
+<script type="text/javascript">
+	$('#settings_{@pp:service}_main').ready(function() {
+		showTab('settings_{@pp:first_id}');
+	});
+
+	function showTab(id){
+		$('#settings_{@pp:service}_main > .content > .box > .tab_content').hide();
+		$('#settings_{@pp:service}_main > .submenu_right > ul > li').removeClass('active');
+		$('#'+id).show();
+		$('#'+id+'_link').addClass('active');
+	}
+
+	tfSettingsForm = function(service) {
+		this.service = service;
+		this.values = [];
+		this.addValue = function(group, name, id) {
+			this.values[id] = {group:group, name:name, id:id};
+		};
+		this.sendForm = function() {	
+			var data = [];
+			data['groups'] = [];
+			for(var value in this.values) {
+				if(data['groups'][this.values[value].group] == undefined) data['groups'][this.values[value].group] = [];
+				value_ = $('#'+this.values[value].id).val();
+				if( $('#'+this.values[value].id).hasClass('uiwidget_checkbox')) {
+					value_ = $('#'+this.values[value].id).is(':checked') ? 'true' : 'false';
+				}
+				data['groups'][this.values[value].group][this.values[value].name] = value_;
+			}
+			data['service'] = this.service;
+			data['action'] = 'edit';
+			data['no_msg'] = true;
+			tf.getService({
+				service: 'Settings',
+				method: 'data', 
+				args: data, 
+				handle: function(msg) {
+					reloadSettings();
+				}
+			});
+		};
+
+	}
+	function reloadSettings() {
+		tf.showAdminLoading();
+		tf.getService({
+			service: '{@pp:service}', 
+			method: 'admin', 
+			args: { 
+				chapter:'settings'
+			}, 
+			handle: function (msg) {
+					tf.hideAdminLoading();
+					$('#settings_{@pp:service}_main').parent().html(msg);
+				}
+		});
+	}
+</script>
+<div id="settings_{@pp:service}_main" class="admincenter_settings">
+	<div class="submenu_right">
+		<ul>
+			<pp:dynamic name="menu"><li id="settings_{@pp:id}_link"><a href="javascript:void(0);" onclick="showTab('settings_{@pp:id}');">{@pp:name}</a></li></pp:dynamic> 
+		</ul>
+	</div>
+	<div class="content">
+		<div class="box">
+			{@pp:settings}
+			<div id="settings_{@pp:service}_rights" class="tab_content">
+				Rechte
+			</div>
+		</div>
+	</div>
+</div>

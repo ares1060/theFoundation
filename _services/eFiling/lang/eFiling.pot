@@ -1,0 +1,134 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: OfficeGate Language Pack\n"
+"POT-Creation-Date: 2012-03-09 17:45+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ..\n"
+
+#: eFiling.php:415
+msgid "_wrong val (int)"
+msgstr ""
+
+#: eFiling.php:424
+msgid "_wrong val (email)"
+msgstr ""
+
+#: eFiling.php:431
+msgid "_wrong val (soznr)"
+msgstr ""
+
+#: eFiling.php:438
+#: eFiling.php:445
+msgid "_wrong val (string)"
+msgstr ""
+
+#: eFiling.php:461
+msgid "_Filing error"
+msgstr ""
+
+#: eFiling.php:465
+msgid "_Filing successfull"
+msgstr ""
+
+#: eFiling.php:501
+msgid "_Form update success"
+msgstr ""
+
+#: eFiling.php:505
+msgid "_Form update error"
+msgstr ""
+
+#: eFiling.php:521
+msgid "_Group update success"
+msgstr ""
+
+#: eFiling.php:525
+msgid "_Group update error"
+msgstr ""
+
+#: eFiling.php:543
+msgid "_Form insert success"
+msgstr ""
+
+#: eFiling.php:547
+msgid "_Form insert error"
+msgstr ""
+
+#: eFiling.php:561
+msgid "_Group insert success"
+msgstr ""
+
+#: eFiling.php:565
+msgid "_Group insert error"
+msgstr ""
+
+#: eFiling.php:585
+msgid "_Data insert success"
+msgstr ""
+
+#: eFiling.php:589
+msgid "_Data insert error"
+msgstr ""
+
+#: eFiling.php:612
+msgid "_Data edit success"
+msgstr ""
+
+#: eFiling.php:616
+msgid "_Data edit error"
+msgstr ""
+
+#: eFiling.php:988
+#: eFiling.php:1057
+msgid "_Moving Sucess"
+msgstr ""
+
+#: eFiling.php:991
+#: eFiling.php:995
+#: eFiling.php:999
+#: eFiling.php:1060
+#: eFiling.php:1064
+#: eFiling.php:1068
+msgid "_Error Moving"
+msgstr ""
+
+#: eFiling.php:1241
+msgid "_Group already used"
+msgstr ""
+
+#: eFiling.php:1257
+#: eFiling.php:1275
+#: eFiling.php:1302
+#: eFiling.php:1330
+msgid "_delete success"
+msgstr ""
+
+#: eFiling.php:1260
+#: eFiling.php:1278
+#: eFiling.php:1305
+#: eFiling.php:1309
+#: eFiling.php:1313
+#: eFiling.php:1333
+#: eFiling.php:1337
+msgid "_delete error"
+msgstr ""
+
+#: eFiling.php:1593
+#: eFiling.php:1693
+#: eFiling.php:1840
+#: eFiling.php:1844
+msgid "_Id not found"
+msgstr ""
+
+#: eFiling.php:1872
+msgid "_form not active"
+msgstr ""
+
+#: eFiling.php:1893
+msgid "_wrong filing id"
+msgstr ""

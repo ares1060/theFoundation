@@ -1,0 +1,228 @@
+<style type="text/css" media="screen">
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/services/eFiling.css);
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/services/pagina.css);
+</style>
+<div id="admin_menu_main">
+	<div id="admin_menu_main_nav">
+		<ul id="right_action">
+			<li><a href="javascript:void(0);" class="menu_link" id="blog_admin_action_settings"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/blog/settings.png" /><br />Einstellungen</a></li>
+		</ul>
+		<ul id="chapters">
+			<li id="chapter_filings"><a href="javascript:void(0);" onclick="unsetAdressPath(new Array('action', 'id')); setAdressPathKey('chapter', 'filings');" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/filings.png" /><br />Anmeldungen</a></li>
+			<li class="seperator">&nbsp;</li>
+			<li id="chapter_forms"><a href="javascript:void(0);" onclick="unsetAdressPath(new Array('action', 'id')); setAdressPathKey('chapter', 'forms');" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/forms1.png" /><br />Formulare</a></li>
+			<li id="chapter_group"><a href="javascript:void(0);" onclick="unsetAdressPath(new Array('action', 'id')); setAdressPathKey('chapter', 'group');" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/formgroup.png" /><br />Datengruppen</a></li>
+			<!-- <li id="chapter_data"><a href="javascript:void(0);" onclick="unsetAdressPath(new Array('action', 'id')); setAdressPathKey('chapter', 'data');" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/formdata.png" /><br />Formulardaten</a></li> -->
+			<li class="seperator" id="seperator">&nbsp;</li>
+			<li id="edit_action"><a href="javascript:void(0);" onclick="setAdressPathKey('action', 'new');" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/add.png" /><br /><span id="add_text">Neues Formular</span></a></li>
+		</ul>
+	</div>
+</div>
+<div class="h_sep" id="admin_top_hr" style="margin: 0px -10px 10px -15px;">
+	<span class="left">&nbsp;</span>
+	<span class="right">&nbsp;</span>
+	<span class="center">&nbsp;</span>
+</div>
+<div class="messages" id="tf_msg">{pp:Messages(action:viewType, type:error/info/debug)}</div>
+<div id="efiling_content"></div>
+<script type="text/javascript">
+	<!--
+		var active_page = 1;
+		var active_chapter = '';
+		var active_action = '';
+		var active_id = -1;
+		var active_did = -1;
+		var active_form = '';
+	
+		/* --- deep link --- */
+		$.address.change(function(event) { updateDeeplink(); });  
+		//$.address.init(function(event) {  updateDeepLink(); });
+
+		function updateDeeplink() {
+			params = getAdressPathNames();
+			
+			if(params['chapter'] == undefined) { $.address.path('/chapter/filings/page/1/'); params = getAdressPathNames();}
+			if(params['page'] == undefined) { setAdressPathKey('page', 1); params = getAdressPathNames(); }
+
+			active_page = params['page'];
+			active_chapter = params['chapter'];
+			active_action= params['action'];
+			active_id = params['id'];
+			active_did = params['did'];
+			active_form = params['form'];
+
+			$('#chapters > li').removeClass('selected');
+			$('#edit_action').hide();
+			$('#seperator').hide();
+			
+			if(active_chapter == 'filings') {
+
+				if(active_action == 'edit' && active_id != undefined) loadEditFiling(active_id);
+				else loadFilings();  
+				
+			} else if(active_chapter == 'forms') { 
+
+				if(active_action == 'new') loadNewForm();
+				else if(active_action == 'edit' && active_id != undefined) loadEditForm();
+				else loadForms();  
+				
+			} else if(active_chapter == 'data') { 
+				
+				if(active_action == 'new') loadNewData();
+				else if(active_action == 'edit' && active_id != undefined) loadEditData();
+				else loadData();  
+				
+			} else if(active_chapter == 'group') { 
+				
+				if(active_action == 'new') loadNewGroup();
+				else if(active_action == 'edit' && active_id != undefined) loadEditGroup();
+				else loadGroup();  
+				
+			}
+		}
+
+		/* ---------------  filings --------------*/
+		function loadFilings(){
+			$('#chapter_filings').addClass('selected');
+			showAdminLoadingDiv();
+
+			if(active_form != undefined) form = '&args[form]='+active_form;
+			else form='';
+			
+			getService('eFiling', 'admin', 'args[chapter]=filings&args[page]='+active_page+form, 
+					function (msg) {
+						$('#efiling_content').html(msg);
+						hideAdminLoadingDiv();
+					});
+		}
+		function loadEditFiling(){
+			$('#chapter_filings').addClass('selected');
+			showAdminLoadingDiv();
+			getService('eFiling', 'admin', 'args[chapter]=edit_filing&args[id]='+active_id, 
+					function (msg) {
+						$('#efiling_content').html(msg);
+						
+						hideAdminLoadingDiv();
+					});
+		}
+		/* ---------------  forms --------------*/
+		function loadForms(){
+			$('#chapter_forms').addClass('selected');
+			showAdminLoadingDiv();
+			getService('eFiling', 'admin', 'args[chapter]=forms&args[page]='+active_page, 
+					function (msg) {
+						$('#efiling_content').html(msg);
+						
+						$('#edit_action').show();
+						$('#seperator').show();
+						$('#add_text').html('Neues Formular');
+						hideAdminLoadingDiv();
+					});
+		}
+
+		function loadNewForm(){
+			$('#edit_action').addClass('selected');
+			showAdminLoadingDiv();
+			getService('eFiling', 'admin', 'args[chapter]=new_form&args[page]='+active_page, 
+					function (msg) {
+						$('#efiling_content').html(msg);
+						$('#edit_action').show();
+						$('#seperator').show();
+						$('#add_text').html('Neues Formular');
+						hideAdminLoadingDiv();
+					});
+		}
+		function loadEditForm(){
+			$('#chapter_forms').addClass('selected');
+			showAdminLoadingDiv();
+			getService('eFiling', 'admin', 'args[chapter]=edit_form&args[id]='+active_id+'&args[page]='+active_page, 
+					function (msg) {
+						$('#efiling_content').html(msg);
+						
+						$('#edit_action').show();
+						$('#seperator').show();
+						$('#add_text').html('Neues Formular');
+						hideAdminLoadingDiv();
+					});
+		}
+
+		/* ---------------  groups --------------*/
+		function loadGroup(){
+			$('#chapter_group').addClass('selected');
+			showAdminLoadingDiv();
+			getService('eFiling', 'admin', 'args[chapter]=group&args[page]='+active_page, 
+					function (msg) {
+						$('#efiling_content').html(msg);
+						$('#edit_action').show();
+						$('#seperator').show();
+						$('#add_text').html('Neue Gruppe');
+						hideAdminLoadingDiv();
+					});
+		}
+		function loadNewGroup(){
+			$('#edit_action').addClass('selected');
+			showAdminLoadingDiv();
+			getService('eFiling', 'admin', 'args[chapter]=new_group&args[page]='+active_page, 
+					function (msg) {
+						$('#efiling_content').html(msg);
+						$('#edit_action').show();
+						$('#seperator').show();
+						$('#add_text').html('Neue Gruppe');
+						hideAdminLoadingDiv();
+					});
+		}
+		function loadEditGroup(){
+			$('#chapter_group').addClass('selected');
+			showAdminLoadingDiv();
+			getService('eFiling', 'admin', 'args[chapter]=edit_group&args[id]='+active_id+'&args[page]='+active_page, 
+					function (msg) {
+						$('#efiling_content').html(msg);
+						
+						$('#edit_action').show();
+						$('#seperator').show();
+						$('#add_text').html('Neues Gruppe');
+						hideAdminLoadingDiv();
+					});
+		}
+		/* ---------------  data --------------*/
+		function loadData(){
+			$('#chapter_data').addClass('selected');
+			showAdminLoadingDiv();
+			getService('eFiling', 'admin', 'args[chapter]=data&args[page]='+active_page, 
+					function (msg) {
+						$('#efiling_content').html(msg);
+						$('#edit_action').show();
+						$('#seperator').show();
+						$('#add_text').html('Neue Daten');
+						hideAdminLoadingDiv();
+					});
+		}
+
+		function loadNewData(){
+			$('#edit_action').addClass('selected');
+			showAdminLoadingDiv();
+			getService('eFiling', 'admin', 'args[chapter]=new_data&args[page]='+active_page, 
+					function (msg) {
+						$('#efiling_content').html(msg);
+						$('#edit_action').show();
+						$('#seperator').show();
+						$('#add_text').html('Neue Daten');
+						hideAdminLoadingDiv();
+					});
+		}
+
+		function loadEditData(){
+			showAdminLoadingDiv();
+			getService('eFiling', 'admin', 'args[chapter]=edit_data&args[id]='+active_did+'&args[group]='+active_id, 
+					function (msg) {
+						$('#efiling_content').html(msg);
+						
+						$('#edit_action').show();
+						$('#seperator').show();
+						$('#add_text').html('Neue Daten');
+						hideAdminLoadingDiv();
+					});
+		}
+		
+	//-->
+</script>

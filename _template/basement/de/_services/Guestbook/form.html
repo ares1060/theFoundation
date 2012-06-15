@@ -1,0 +1,29 @@
+<div id="guestbook_form">
+    <div class="big">Neuen Eintrag hinzuf&uuml;gen:</div>
+    <form action="{@pp:target}" method="post">
+        <p>
+            <label for="gb_author">Author:</label> 
+            <input type="text" name="gb_author" id="gb_author" class="input"/>
+        </p>
+        <p>
+            <label for="gb_email">EMail:</label>
+            <input type="text" name="gb_email" id="gb_email"  class="input"/>
+        </p>
+        <p>
+            <label for="gb_homepage">Homepage: </label>
+        <input type="text" name="gb_homepage" id="gb_homepage"  class="input"/>
+        </p>
+        <p>
+            <label for="gb_titel">Titel: </label>
+        <input type="text" name="gb_titel" id="gb_titel"  class="input"/>
+        </p>
+        <p>
+            <label for="gb_inhalt">Inhalt:</label>
+            <textarea rows="3" name="gb_inhalt" id="gb_inhalt"  class="input"></textarea>
+        </p>
+        <p>
+            <div class="label">&nbsp;</div>
+            <input type="submit" /> <input type="reset" />
+        </p>
+    </form>
+</div>

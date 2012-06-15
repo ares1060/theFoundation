@@ -1,0 +1,189 @@
+<div id="admin_menu_main">
+	<div id="admin_menu_main_nav">
+		<ul id="right_action">
+			<li><a href="javascript:void(0);" class="menu_link" id="user_add"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/blog/settings.png" /><br />Einstellungen</a></li>
+		</ul>
+		<ul id="chapters">
+			<li id="group_chapter"><a href="javascript:void(0);" onclick="unsetAdressPath(new Array('action', 'id'));setAdressPathKey('chapter', 'group');" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/group.png" /><br />Usergruppen</a></li>
+			<li id="user_chapter"><a href="javascript:void(0);" onclick="unsetAdressPath(new Array('action', 'id'));setAdressPathKey('chapter', 'user');" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/user.png" /><br />User</a></li>
+			<li id="data_chapter"><a href="javascript:void(0);" onclick="unsetAdressPath(new Array('action', 'id'));setAdressPathKey('chapter', 'data');" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/data.png" /><br />Userdaten</a></li>
+			<li class="seperator" id="seperator">&nbsp;</li>
+			<li id="create_link"><a href="javascript:void(0);" onclick="unsetAdressPath(new Array('id')); setAdressPathKey('action', 'new');" class="menu_link" id="blog_admin_action_settings"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/add.png" /><br /><span id="add_text">&nbsp;</span></a></li>
+		</ul>
+	</div>
+	<div class="h_sep" id="admin_top_hr" style="margin: -5px -10px 0px -15px;">
+		<span class="left">&nbsp;</span>
+		<span class="right">&nbsp;</span>
+		<span class="center">&nbsp;</span>
+	</div>
+</div>
+<div class="messages" id="tf_msg">{pp:Messages(action:viewType, type:error/info)}</div>
+<br /><div id="user_content">
+
+</div>
+<script type="text/javascript">
+	<!--
+		var active_chapter;
+		var active_page;
+		var active_action;
+		var active_id;
+
+		/* --- deep link --- */
+		$.address.change(function(event) { updateDeepLink(); });  
+	//	$.address.init(function(event) { updateDeepLink(); });  
+
+		function updateDeepLink() {
+
+			params = getAdressPathNames();
+
+			if(params['chapter'] == undefined) { $.address.path('/chapter/user/page/1/'); params = getAdressPathNames(); }
+			if(params['page'] == undefined) { setAdressPathKey('page', 1); params = getAdressPathNames(); }
+
+			active_chapter = params['chapter'];
+			active_page = params['page'];
+			active_action = params['action'];
+			active_id= params['id'];
+
+			loadPage();
+		}
+
+		function loadPage() {
+			params = getAdressPathNames();
+
+			$('#chapters > li').removeClass('selected');
+			$('#seperator').show();
+			$('#create_link').show();
+			if(params['chapter'] == 'user') {
+				if(params['action'] == undefined) loadUser();
+				else {
+					if(params['action'] == 'new') loadNewUser();
+					else if(params['action'] == 'edit' && params['id'] != undefined) loadEditUser(params['id']);
+					else if(params['action'] == 'delete' && params['id'] != undefined) loadDeleteUser(params['id']);
+					else loadUser();
+				}
+			} else if(params['chapter'] == 'group') {
+				if(params['action'] == undefined) loadUsergroup();
+				else {
+					if(params['action'] == 'new') loadNewUsergroup();
+					else if(params['action'] == 'edit' && params['id'] != undefined) loadEditUsergroup(params['id']);
+					else loadUsergroup();
+				}
+			} else if(params['chapter'] == 'data') {
+				if(params['action'] == undefined) loadUserdata();
+				else {
+					if(params['action'] == 'new') loadNewUserdata();
+					else if(params['action'] == 'edit' && params['id'] != undefined) loadEditUserdata(params['id']);
+					else loadUserdata();
+				}
+			}
+					 
+		}
+
+		/* ---- Loading functions ---- */
+		function loadUser(){
+			$('#user_chapter').addClass('selected');
+			showAdminLoadingDiv();
+			getService('User', 'admin', 'args[chapter]=user&args[page]='+active_page, 
+					function (msg) {
+						$('#user_content').html(msg);
+						$('#add_text').html('Neuer User');
+						hideAdminLoadingDiv();
+					});
+		}
+		function loadEditUser(id){
+			$('#user_chapter').addClass('selected');
+			showAdminLoadingDiv();
+			getService('User', 'admin', 'args[chapter]=edit_user&args[page]='+active_page+'&args[id]='+id, 
+					function (msg) {
+						$('#user_content').html(msg);
+						$('#add_text').html('Neuer User');
+						hideAdminLoadingDiv();
+					});
+		}
+		function loadNewUser() {
+			$('#create_link').addClass('selected');
+			showAdminLoadingDiv();
+			getService('User', 'admin', 'args[chapter]=new_user', 
+					function (msg) {
+						$('#user_content').html(msg);
+						$('#add_text').html('Neuer User');
+						hideAdminLoadingDiv();
+					});
+		}
+		function loadDeleteUser(id) {
+			getService('User', 'admin', 'args[action]=deleteUser&args[id]='+id+'&args[noMsg]=true', 
+					function (msg) {
+						unsetAdressPath(new Array('id', 'action'));
+					});
+		}
+
+		
+		function loadUsergroup() {
+			$('#group_chapter').addClass('selected');
+			showAdminLoadingDiv();
+			getService('User', 'admin', 'args[chapter]=usergroup&args[page]='+active_page, 
+					function (msg) {
+						$('#user_content').html(msg);
+						$('#add_text').html('Neue Gruppe');
+						hideAdminLoadingDiv();
+					});
+		}
+		function loadEditUsergroup(id) {
+			$('#group_chapter').addClass('selected');
+			showAdminLoadingDiv();
+			getService('User', 'admin', 'args[chapter]=edit_usergroup&args[page]='+active_page+'&args[id]='+id, 
+					function (msg) {
+						$('#user_content').html(msg);
+						$('#add_text').html('Neue Gruppe');
+						hideAdminLoadingDiv();
+					});
+		}
+		function loadNewUsergroup() {
+			$('#create_link').addClass('selected');
+			showAdminLoadingDiv();
+			getService('User', 'admin', 'args[chapter]=new_usergroup', 
+					function (msg) {
+						$('#user_content').html(msg);
+						$('#add_text').html('Neue Gruppe');
+						hideAdminLoadingDiv();
+					});
+		}
+
+		
+		function loadUserdata() {
+			$('#data_chapter').addClass('selected');
+			showAdminLoadingDiv();
+			getService('User', 'admin', 'args[chapter]=userdata&args[page]='+active_page, 
+					function (msg) {
+						$('#user_content').html(msg);
+						$('#add_text').html('Neue Userdaten');
+						hideAdminLoadingDiv();
+					});
+		}
+		function loadEditUserdata(id) {
+			$('#data_chapter').addClass('selected');
+			showAdminLoadingDiv();
+			getService('User', 'admin', 'args[chapter]=edit_userdata&args[page]='+active_page+'&args[id]='+id, 
+					function (msg) {
+						$('#user_content').html(msg);
+						$('#add_text').html('Neue Userdaten');
+						hideAdminLoadingDiv();
+					});
+		}
+		function loadNewUserdata() {
+			$('#create_link').addClass('selected');
+			showAdminLoadingDiv();
+			getService('User', 'admin', 'args[chapter]=new_userdata', 
+					function (msg) {
+						$('#user_content').html(msg);
+						$('#add_text').html('Neue Userdaten');
+						hideAdminLoadingDiv();
+					});
+		}
+		
+	//-->
+</script>
+<style type="text/css" media="screen">
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/services/user.css);
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/uiwidget.css);
+</style>

@@ -1,0 +1,34 @@
+<pp:dynamic name="form">
+	<h1>{@pp:name}</h1>
+	<p>{@pp:desc}
+	</p><br /><br />
+	<form action="eFiling.php?chapter=form&amp;form={@pp:id}" method="post" class="tf_form">
+		<input type="hidden" name="ef_form_id" value="{@pp:id}" />
+		<input type="hidden" name="ef_confirm" value="no" />
+		{@pp:content}
+		<div class="tf_form_block">
+			<p>
+				<span class="tf_label">&nbsp;</span>
+				<input type="submit" class="button"/> <input type="reset" />
+			</p>
+		</div>
+	</form>
+</pp:dynamic>
+<pp:dynamic name="confirmation">
+	<h1>{@pp:name}</h1>
+	<p>{@pp:desc}
+	</p><br /><br />
+	<form action="eFiling.php?chapter=form&amp;form={@pp:id}" method="post" class="tf_form">
+		<input type="hidden" name="ef_form_id" value="{@pp:id}" />
+		<input type="hidden" name="ef_confirm" value="yes" />
+		<input type="hidden" name="link" value="{@pp:abs_root}/foundationTest/eFiling.php?chapter=thanks&amp;hash={hash}" />
+		{@pp:content}
+		<div class="tf_form_block">
+			<p>
+				<span class="tf_label">&nbsp;</span>
+				<button class="button" type="submit"><span>Ja die Daten stimmen</span></button> 
+				<button class="button"><span>Nein Daten noch &auml;ndern</span></button>
+			</p>
+		</div>
+	</form>
+</pp:dynamic>

@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="content-language" content="de">
+	<title>The Foundation | Admin Center</title>
+	<link rel="stylesheet" type="text/css" href="{@pp:abs_root}{@pp:tpl_folder}/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="{@pp:abs_root}{@pp:tpl_root_folder}/css/foundation.css" />
+	<link rel="stylesheet" type="text/css" href="{@pp:abs_root}{@pp:tpl_folder}/css/colors/dark_blue.css" />
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Judson:r|PT+Sans:r,b,i,bi|Open+Sans:300">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid+Sans|Vollkorn|Lato|Droid+Serif">
+	{@pp:extra_css} 
+	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_folder}/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_folder}/js/jquery-ui.1.8.9.min.js"></script>
+	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_folder}/js/jquery.tagsinput.min.js"></script>
+	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_folder}/js/jquery.address-1.4.min.js"></script>
+	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_folder}/js/nicEdit.js"></script>
+	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_root_folder}/js/foundation-1.1.js"></script>
+	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_root_folder}/js/foundation.js"></script><!-- deprecated | remove as sool as possible -->
+	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_root_folder}/js/uiwidget.js"></script>
+	{@pp:extra_js}
+	<script type="text/javascript">
+	<!--
+		var to_root = '{@pp:abs_root}';
+		var tpl_root = to_root+'{@pp:tpl_folder}';
+		var template = 'adminTemplate';
+		var login_url = to_root+'_admincenter/login/';
+
+		/*tf.init({
+			to_root: '{@pp:abs_root}',
+			tpl_root: '{@pp:abs_root}{@pp:tpl_folder}',
+			template: 'adminTemplate',
+			login_url: '{@pp:abs_root}_admincenter/login/'
+		});*/
+	//-->
+	</script>
+	</head>
+<body>
+	<pp:dynamic name="defaultPassword">
+	<div id="defaultPassword">
+		<div class="arrow-left" style="top: 45px; left: -10px;">&nbsp;</div>
+		<h2>Passwort &auml;ndern</h2><br />
+		Sie verwenden immer noch das Standardpasswort.
+		<br />
+		Bitte &auml;ndern sie es in ihrem <a href="../profile/">Profil</a>.
+	</div>
+	</pp:dynamic>
+	<div id="menu_left" style="/*rgin-left: -400;*/">
+		<div class="change_menu"><a href="javascript:void(0);" onclick="showSmallMenu();/*setAdressPathKey('sidebar', 'small');*/"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/interface/small_menu.png"/></a></div>
+		<ul>
+			<li class="title" style="margin-top: -1px; padding-top: 20px; ">TheFoundation<br />Admincenter</li>
+			<li class="menu_block {@pp:menu_overview}">
+				<div class="right"><div class="img">&nbsp;</div></div>
+					<a href="{@pp:abs_root}_admincenter/tf/overview/">
+					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/menu/overview_big1.png" class="menu_icon" />
+					<span class="menu_title">&Uuml;bersicht</span>
+				</a>
+			</li>
+			<li class="menu_block {@pp:menu_profile}">
+				<div class="right"><div class="img">&nbsp;</div></div>
+					<a href="{@pp:abs_root}_admincenter/tf/profile/">
+					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/menu/profile_big.png" class="menu_icon" />
+					<span class="menu_title">Profil</span>
+				</a>
+			</li>
+			<li class="title">Services</li>
+			<pp:dynamic name="menu_big_services">
+				<li class="menu_block {@pp:selected}">
+					<div class="right"><div class="img">&nbsp;</div></div>
+					<a href="{@pp:abs_root}_admincenter/tf/{@pp:name}/">
+						<img src="{@pp:abs_root}{@pp:tpl_folder}/img/menu/{@pp:image}" class="menu_icon" />
+						<span class="menu_title">{@pp:display}</span>
+					</a>
+				</li>
+			</pp:dynamic>
+			<li class="title" style="height: 0px;">&nbsp;</li>
+			<li class="menu_block {@pp:menu_about}">
+				<div class="right"><div class="img">&nbsp;</div></div>
+					<a href="{@pp:abs_root}_admincenter/tf/about/">
+					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/menu/about_big.png" class="menu_icon" />
+					<span class="menu_title">About</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div id="menu_left_small">
+		<div class="change_menu"><a href="javascript:void(0);" onclick="showBigMenu();/*setAdressPathKey('sidebar', 'big');*/"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/interface/big_menu.png"/></a></div>
+		<ul>
+			<li class="title" style="margin-top: -2px; height: 23px;">&nbsp;</li>
+			<li class="menu_block {@pp:menu_overview}">
+				<div class="right"><div class="img">&nbsp;</div></div>
+					<a href="{@pp:abs_root}_admincenter/tf/overview/">
+					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/menu/overview_big1.png" class="menu_icon" />
+				</a>
+			</li>
+			<li class="menu_block {@pp:menu_profile}">
+				<div class="right"><div class="img">&nbsp;</div></div>
+					<a href="{@pp:abs_root}_admincenter/tf/profile/">
+					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/menu/profile_big.png" class="menu_icon" />
+				</a>
+			</li>
+			<li class="title">&nbsp;</li>
+			<pp:dynamic name="menu_small_services">
+				<li class="menu_block {@pp:selected}">
+					<div class="right"><div class="img">&nbsp;</div></div>
+					<a href="{@pp:abs_root}_admincenter/tf/{@pp:name}/">
+						<img src="{@pp:abs_root}{@pp:tpl_folder}/img/menu/{@pp:image}" class="menu_icon" />
+					</a>
+				</li>
+			</pp:dynamic>
+			<li class="title"  style="height: 0px;">&nbsp;</li>
+			<li class="menu_block {@pp:menu_about}">
+				<div class="right"><div class="img">&nbsp;</div></div>
+					<a href="{@pp:abs_root}_admincenter/tf/about/">
+					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/menu/about_big.png" class="menu_icon" />
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div id="container">
+		<div id="content">
+			<div id="header">
+				<div id="header_left">
+					<span class="link_to_page"><a href="{@pp:abs_root}{@pp:working_dir}">{@pp:site_title}</a></span>
+				</div>
+				<div id="header_right">
+					<div id="admin_loading_div">Lade Daten... <img src="{@pp:abs_root}{@pp:tpl_folder}/img/loading.gif" /></div>
+					<!--  
+					<button class="button small" onclick="$('#settings_actions').toggle();"><span><img src="{@pp:abs_root}{@pp:tpl_folder}/img/icons/settings.png"/></span></button>
+					<div id="settings_actions">
+						<div id="settings_actions_img">&nbsp;</div>
+						<div id="short_profile">
+							{@pp:user_nick}
+						</div>
+						<ul>
+							<li class="seperator">&nbsp;</li>
+							<li><a href="{@pp:abs_root}{@pp:working_dir}/admin/profile/"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/icons/profile.png" class="context_menu_icon"/> Mein Profil</a></li>
+							<li class="seperator">&nbsp;</li>
+							<li><a href="{@pp:abs_root}{@pp:working_dir}/logout/"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/icons/logout.png" class="context_menu_icon"/> Abmelden</a></li>
+						</ul>
+					</div>-->
+					<div id="user_actions">
+						<img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/status/{@pp:user_group}.png" class="icon"/>&nbsp;&nbsp; <a href="{@pp:abs_root}_admincenter/tf/profile/">{@pp:user_nick}</a> | 
+						<a href="{@pp:abs_root}_admincenter/logout/"> Abmelden</a>
+					</div>
+				</div>
+				<div id="header_center">
+					&nbsp;
+				</div>
+			</div>
+			<div class="h_sep_down" id="admin_top_hr">
+				<span class="left">&nbsp;</span>
+				<span class="right">&nbsp;</span>
+				<span class="center">&nbsp;</span>
+			</div>
+			<div id="inner_content">
+				{@pp:content}
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		<!--
+			function showSmallMenu() {
+				$('#menu_left').animate({left: -400}, 1000);
+				$('#menu_left_small').animate({left: 0}, 1000);
+				//$('#container').animate({paddingLeft: 50}, 1000);
+				$('#container').addClass('container_big');
+			}
+
+			function showBigMenu() {
+				//$('#container').animate({paddingLeft: 120}, 1000);
+				$('#container').removeClass('container_big');
+				$('#menu_left_small').animate({left: -100}, 1000);
+				$('#menu_left').animate({left: 0}, 1000);
+			}
+		//-->
+	</script>
+</body>
+</html>

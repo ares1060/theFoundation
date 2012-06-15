@@ -1,0 +1,23 @@
+<span class="uiwidget_inputwrap uiwidget_inputwrap_switch">
+	<pp:dynamic name="label">
+		<span class="uiwidget_label uiwidget_label_switch">{@pp:label}:</span>
+	</pp:dynamic>
+	<span class="uiwidget_switch">
+		<span class="uiwidget_switch_button" id="toggle_switch_{@pp:id}"></span>
+		<span class="uiwidget_switch_label">
+			<span class="on">{@pp:name_0}</span>
+			<span class="off">{@pp:name_1}</span>
+		</span>
+	</span>
+</span>					
+<script type="text/javascript">
+	<!--
+		$(document).ready(function () {
+			$('#toggle_switch_{@pp:id}').toggle(function(){
+				$(this).animate({"marginLeft" : "75px"}, 30);
+			}, function(){
+				$(this).animate({"marginLeft" : "-1px"}, 30);
+			}); 
+		});
+	//-->
+</script>

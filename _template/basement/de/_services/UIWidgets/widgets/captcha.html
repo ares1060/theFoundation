@@ -1,0 +1,9 @@
+<span class="uiwidget_inputwrap uiwidget_inputwrap_{@pp:type}">
+	<pp:dynamic name="label">
+		<span class="uiwidget_label">{@pp:label}</span>
+	</pp:dynamic>
+	<img src="{@pp:root}_core/getImage.php?service=Captcha" />
+	<a href="javascript:void(0)" onclick="reloadCaptcha()">reload</a>
+</span>
+<br />
+{pp:UIWidgets(widget:InputField, id:UIWCaptcha, name:UIWCaptcha, label:)}

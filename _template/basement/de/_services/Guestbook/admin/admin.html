@@ -1,0 +1,41 @@
+<table class="big">
+    <tr><th>&nbsp;</th><th>ID</th><th>Titel</th><th>Inhalt</th><th>Author</th><th>Datum</th><th>Status</th></tr>
+    <pp:dynamic name="entry">
+        <tr>
+            <td><img src="{@pp:root}{@pp:tpl_root_folder}/img/status/{@pp:status}.png" id="{@pp:id}_pic"/></td>
+            <td>{@pp:id}</td>
+            <td>{@pp:titel}</td>
+            <td>{@pp:inhalt}</td>
+            <td>{@pp:author}</td>
+            <td>{@pp:datum}</td>
+            <td>
+                <img src="{@pp:root}{@pp:tpl_root_folder}/img/status/0.png"/><input type="radio" id="{@pp:id}_active" name="{@pp:id}_active" onChange="update({@pp:id}, 0);" {@pp:status_0}/>&nbsp;
+                <img src="{@pp:root}{@pp:tpl_root_folder}/img/status/1.png" /><input type="radio" id="{@pp:id}_gesperrt" name="{@pp:id}_active" onChange="update({@pp:id}, 1);" {@pp:status_1}/>&nbsp;
+                <img src="{@pp:root}{@pp:tpl_root_folder}/img/status/2.png" /><input type="radio" id="{@pp:id}_review" name="{@pp:id}_active" onChange="update({@pp:id}, 2);"  {@pp:status_2}/>&nbsp;
+                <img src="{@pp:root}{@pp:tpl_root_folder}/img/status/3.png" /><input type="radio" id="{@pp:id}_gemeldet" name="{@pp:id}_active" onChange="update({@pp:id}, 3);"  {@pp:status_3}/>&nbsp;
+            </td>
+        </tr>
+    </pp:dynamic>
+</table>
+<script language="javascript" type="text/javascript">
+    function update(id, type){
+        var target = "{@pp:root}connector.php";
+        var path = "{@pp:root}{@pp:tpl_root_folder}/img/status/";
+        var message_success = '{@pp:message_succ}';
+        var message_error = '{@pp:message_error}';
+        
+        var result = getAjax(target, {'service_name':'Guestbook',
+                            'service_method':'data',
+                            'args':{'action':'admin_edit',
+                                    'id':id,
+                                    'type': type
+                                   }
+                            });
+        if(result!='Error') {
+            $('#pp_messages').html($('#pp_messages').html()+message_success);
+            $('#'+id+'_pic').attr('src', path+type+'.png');
+        } else {
+            $('#pp_messages').html($('#pp_messages').html()+message_error);
+        }
+    }
+</script>

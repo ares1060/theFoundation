@@ -1,0 +1,53 @@
+<div id="loading_div">Loading... <img src="{@pp:root}{@pp:tpl_root_folder}/img/loading.gif" /></div>
+{pp:UIWidgets(widget:Hidden, value:neverMind)}
+<div class="messages" id="blog_messages">{pp:Messages(action:viewType, type:error/info)}</div>
+<div id="admin_blog_main">
+	<div id="admin_blog_main_nav">
+		<ul id="right_action">
+			<li><a href="javascript:void(0);" class="menu_link"><span><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/trash.png" /><br />Papierkorb</a></span></li>
+			<!-- <li><a href="javascript:void(0);" class="menu_link"><span><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/config.png" /><br />Einstellungen</a></span></a> -->
+		</ul>
+		<ul>
+			<li class="spacer">&nbsp;</li>
+			<li><a href="javascript:void(0);" class="menu_link" id="blog_admin_action_new" onclick="$.address.path('/new/')"><span><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/new_entry.png" /><br />Neuer Eintrag</a></span></li>
+		</ul>
+	</div>
+	<div id="admin_blog_main_content">
+		
+	</div>
+</div>
+<script type="text/javascript">
+<!--
+	var active_page = 1;
+	var active_post = -1;
+	var active_action = '{@pp:active_action}';
+	var active_type = 'simple';
+
+	/* --- deep link --- */
+	$.address.change(function(event) {  updateDeepLink(); });  
+	$.address.init(function(event) {  updateDeepLink(); });  
+
+    function updateDeepLink() {
+        params = $.address.pathNames();  
+        if(params.length == 0) {
+	        $.address.path('/list/page/1/');
+	        params = $.address.pathNames();  
+        }
+        active_post = -1;
+		if(params.length > 0 && params[0] == 'new') active_action = 'new';
+        if(params.length > 2 && params[0] == 'list' && params[1] == 'page') {active_page = params[2]; active_action = 'list';}
+        if(params.length > 0 && params[0] == 'post') {
+        	active_post = params[1];
+        	active_action = 'post';
+        }
+       
+        loadPage();
+    }
+
+    function loadPage() {		    
+		if(active_action == 'list') loadList();
+		if(active_action == 'new') loadNew();
+		if(active_action == 'post') loadView(active_post);
+    }
+//-->
+</script>

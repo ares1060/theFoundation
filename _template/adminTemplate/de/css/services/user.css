@@ -1,0 +1,47 @@
+@CHARSET "UTF-8";
+/* --- password --- */
+#password_new {
+	display: none;
+	width: 380px;
+}
+#password_new .tf_input {
+	width: 250px;	
+}
+/* --- user image --- */
+#user_image {
+	position: absolute;
+	left: 570px;
+	width: 400px;
+	height: 500px;
+	margin-top: 7px;
+}
+#user_image .box {
+	background: rgba(0,0,0,.06);
+	border-radius: 3px;
+	overflow: hidden;
+	box-shadow: 0px 0px 2px rgba(0,0,0,.2);	
+	border: 1px solid;
+	border-color: #B0B0B0 #C9C9C9 #C9C9C9;	
+	border-radius: 3px;
+	box-shadow: 0 1px 1px rgba(255,255,255,1);
+	padding: 5px;
+	display: none;
+}
+#user_new_image_action .tab {
+	border: 0px !important;
+	border-radius: 0px !Important;	
+}
+#user_new_image_action .uiwidget_file {
+	width: 500px !Important;	
+}
+#user_new_image_action #upload_form_dyn {margin-top: 0px;}
+#upload_form_dyn {
+	padding-left: 0px !Important;	
+}
+#user_new_image_action #admin_top_hr {
+	margin-top: 0px !important;	
+}
+/* --- user data --- */
+#user_data {
+	width: 530px;
+}

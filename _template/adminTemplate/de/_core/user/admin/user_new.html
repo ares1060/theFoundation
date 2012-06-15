@@ -1,0 +1,90 @@
+<div id="user_data">
+	<form action="" method="post" class="tf_form" id="new_user_form">
+		<h1>User erstellen</h1>
+		<div class="h_sep" id="admin_top_hr" style="margin: 5px 0px 5px 0px;">
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+		<input type="hidden" name="action" value="newUser" />
+		<div class="tf_form_block">
+			<p>
+				<label for="eu_nick" class="tf_label">Id:</label>
+				<div style="padding-top: 8px;">wird generiert</div>
+			</p>
+			<p>
+				<label for="eu_nick" class="tf_label">Nickname*:</label>
+				<input type="text" id="eu_nick" name="eu_nick" value="" class="tf_input very_small" /> 
+				<button class="button small" onClick="checkNick(); return false;"><span>Verf&uuml;gbarkeit pr&uuml;fen</span></button><br />
+				<span class="tf_label">&nbsp;</span>
+				<span>&nbsp;</span>
+				<span id="nickname_available" style="color: green;">Nick ist verf&uuml;gbar</span>
+				<span id="nickname_nAvailable" style="color: red;">Nick ist leider nicht mehr verf&uuml;gbar</span>
+				<span id="nickname_n" style="color: red;">Bitte einen Nicknamen eingeben</span>
+			</p>
+			<p>
+				<label for="eu_group" class="tf_label">Benutzergruppe*:</label>
+				{@pp:group}
+			</p>
+			<p>
+				<label for="eu_mail" class="tf_label">E-Mail:</label>
+				<input type="text" id="eu_mail" name="eu_mail" value="" class="tf_input middle"/>
+			</p>
+			<p>
+				<label for="eu_status" class="tf_label">Status*:</label>
+				{@pp:status}
+			</p><br /><br />
+			<p>
+				<label for="eu_pwd_new" class="tf_label">Passwort*:</label>
+				<input type="text" id="eu_pwd_new" name="eu_pwd_new" value="" class="tf_input middle" />
+			</p>
+			<p>
+				<label for="eu_pwd_new2" class="tf_label">Passwort nochmal*:</label>
+				<input type="text" id="eu_pwd_new2" name="eu_pwd_new2" value="" class="tf_input middle"/>
+			</p>
+			<p>
+				<span class="tf_label">&nbsp;</span>
+				<span class="tf_password_strength_background tf_input middle">
+					<span class="tf_password_strength" id="nu_password_strength"><img src="{@pp:abs_root}{@pp:tpl_root_folder}/img/passwordStrength4.png"/></span>
+				</span>
+				<span class="tf_password_strength_text" id="nu_password_strength_text">&nbsp;</span>
+			</p>
+		</div><br />
+		<p>
+			<span class="tf_label">&nbsp;</span>
+			<button class="button small" type="submit" onclick="checkForm(); return false;"><span>Erstellen</span></button>
+			<button class="button small" type="reset" onclick="$('#password').toggle();$('#password_new').toggle();return false;"><span>Abbrechen</span></button>
+		</p>
+	</form>
+</div>
+<script type="text/javascript">
+	$('#edit_user_form').ready(function() {
+		$('#new_user_form').attr('action', '../user/#!/chapter/user/page/'+active_page+'/');
+		$('#nickname_available').hide();
+		$('#nickname_nAvailable').hide();
+		$('#nickname_n').hide();
+		$('#eu_pwd_new').keydown(function () { showPasswordStrength($('#eu_pwd_new').val(),'nu_password_strength'); });
+	});
+
+
+	function checkForm() {
+		getService('User', 'admin', 'args[action]=checkForm&args[form][nick]='+$('#eu_nick').val()+'&args[form][email]='+$('#eu_mail').val()+'&args[form][pwd]='+$('#eu_pwd_new').val()+'&args[form][pwd2]='+$('#eu_pwd_new2').val()+'', 
+				function (msg) {
+					if(msg == true) $('#new_user_form').submit();
+		});
+	}
+
+	function checkNick () {
+		$('#nickname_available').hide();
+		$('#nickname_nAvailable').hide();
+		$('#nickname_n').hide();
+		if($('#eu_nick').val() == '') $('#nickname_n').show();
+		else {
+			getService('User', 'admin', 'args[action]=checkNickAvailibility&args[nick]='+$('#eu_nick').val(), 
+				function (msg) {
+					if(msg == true) $('#nickname_available').show();
+					else $('#nickname_nAvailable').show();
+			});
+		}
+	}
+</script>

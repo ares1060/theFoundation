@@ -1,0 +1,43 @@
+<div id="admin_tags">
+	<input type="text" id="tags_{@pp:service}" value="<pp:dynamic name="tag">{@pp:name},</pp:dynamic>" />
+</div>
+<style type="text/css">
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/services/tags.css);
+</style>
+<script type="text/javascript">
+	$('#tags_{@pp:service}').ready(function() {
+		$('#tags_{@pp:service}').tagsInput({
+			'defaultText':'Tag hinzuf&uuml;gen.',
+			'height':'100px',
+			'width':'auto',
+			'onAddTag': addTag_{@pp:service},
+			'onRemoveTag': removeTag_{@pp:service}
+		});
+	});
+
+	function saveTags_{@pp:service}(){
+		showAdminLoadingDiv();
+		getService('{@pp:service}', 'admin', 'args[action]=saveTags&args[service]={@pp:service}&args[id]={@pp:param}&args[tags]='+$('#tags_'+service).val(), 
+				function (msg) {
+					hideAdminLoadingDiv();
+				});
+	}
+
+	function addTag_{@pp:service}(tag) {
+		$('#tags_saved_text').show().html('<img src="{@pp:abs_root}{@pp:tpl_folder}/img/loading.gif"  style="margin: -2px;" />');
+		getService('{@pp:service}', 'admin', 'args[action]=saveTag&args[service]={@pp:service}&args[id]={@pp:param}&args[tag]='+tag, 
+				function (msg) {
+					$('#tags_saved_text').html('gespeichert');
+					$('#tags_saved_text').delay(1000).fadeOut(200);
+				});
+	}
+
+	function removeTag_{@pp:service}(tag) {
+		$('#tags_saved_text').show().html('<img src="{@pp:abs_root}{@pp:tpl_folder}/img/loading.gif"  style="margin: -2px;"/>');
+		getService('{@pp:service}', 'admin', 'args[action]=deleteTag&args[service]={@pp:service}&args[id]={@pp:param}&args[tag]='+tag, 
+				function (msg) {
+					$('#tags_saved_text').html('gespeichert');
+					$('#tags_saved_text').delay(1000).fadeOut(200);
+				});
+	}
+</script>

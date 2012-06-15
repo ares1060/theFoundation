@@ -1,0 +1,41 @@
+<style type="text/css" media="screen">
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/shop.css);
+</style>
+<script type="text/javascript">
+	Shadowbox.init();
+</script>
+<a href="javascript:history.back();">Zur&uuml;ck</a>
+<div id="shop_product">
+	<div id="product_buy">
+		<a href="javascript:void(0);" onclick="addToCart({@pp:id}, 1);" class="box">
+			<span class="product_add">In den Warenkorb</span>
+			<span class="seperator">&nbsp;</span>
+			<span class="product_price">{@pp:price}&euro;</span>
+		</a>
+		inkl. MwSt. zzgl. <a href="#">Versandkosten</a>
+	</div>
+	
+	<div id="product_image_block">
+		<div id="product_image"><a href="{@pp:abs_root}_core/getImage.php?path={@pp:img_path}&height=600&width=800" rel="shadowbox[product];player=img"><img src="{@pp:abs_root}_core/getImage.php?path={@pp:img_path}&height=400&width=260"/></a></div>
+		<div id="product_image_gallery">
+			{pp:Gallery("action":"tplSmallFolder", "album":"{@pp:shop_album}", "folder":"product_{@pp:id}", "perPage":"3", "justOnePage":"true")}
+		</div>
+	</div>
+	<div id="product_content">
+		<h1>{@pp:name}</h1>
+		{@pp:desc}
+		
+		<div id="product_tags">
+			{@pp:tags}
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	function addToCart(id, count) {
+		getService('Shop', 'view', 'args[action]=cart_add&args[id]='+id+'&args[count]='+count, 
+				function (msg) {
+					updateCart();
+				});
+	}
+</script>
+<br /><br /><br /><br />

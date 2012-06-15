@@ -1,0 +1,41 @@
+<script type="text/javascript">
+	var ob_{@pp:service} = new tfSettingsForm('{@pp:service}');
+</script>
+<div id="settings_{@pp:service}" class="tab_content">
+	<form id="settings_{@pp:service}_form" method="post" action="#" onsubmit="ob_{@pp:service}.sendForm(); return false;">
+		<pp:dynamic name="groups">
+			<div class="group_main">
+				<div class="group_header">
+					<h3>{@pp:name}</h3>
+					{@pp:desc}
+					<div class="h_sep_down" style="margin: 5px -7px 10px -7px;">
+						<span class="left">&nbsp;</span>
+						<span class="right">&nbsp;</span>
+						<span class="center">&nbsp;</span>
+					</div>
+				</div>
+				<div class="group_content tf_form">
+					<pp:dynamic name="values">
+					<div class="value_main">
+						<span class="value_value">
+							{@pp:input}
+						</span>
+						<span class="value_info">{@pp:info}</span>
+					</div>
+					<script type="text/javascript">
+						ob_{@pp:service}.addValue('{@pp:group}', '{@pp:name}', '{@pp:id}');
+					</script>
+					</pp:dynamic>
+					
+				</div>
+			</div>
+		</pp:dynamic>
+		<div class="h_sep_down" id="admin_top_hr" style="margin: 10px -7px 10px -7px;">
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+		<button type="submit" class="button small" style="margin-bottom: 5px;"><span>Speichern</span></button>
+		<button type="reset" class="button small"><span>Zur&uuml;cksetzten</span></button>
+	</form>
+</div>

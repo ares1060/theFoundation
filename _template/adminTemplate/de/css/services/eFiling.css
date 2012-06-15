@@ -1,0 +1,179 @@
+@CHARSET "UTF-8";
+span.ef_input {
+	display: inline-block;
+	padding-top: 5px;	
+}
+#edit_form_datagroups, #edit_datagroup_data {
+	background: rgba(0,0,0,.06);
+	border-radius: 3px;
+	overflow: hidden;
+	box-shadow: 0px 0px 2px rgba(0,0,0,.2);	
+	border: 1px solid;
+	border-color: #B0B0B0 #C9C9C9 #C9C9C9;	
+	border-radius: 3px;
+	box-shadow: 0 1px 1px rgba(255,255,255,1);
+	padding: 5px;
+	margin-top: 5px;
+}
+#edit_form_datagroups .data_group_blocker, #edit_datagroup_data .data_group_blocker{
+	background: rgba(255, 255, 255, .0);
+	position: absolute;
+	height: 105%;
+	width: 105%;
+	top: 0px;
+	left: 0px;	
+	z-index: 100;
+	margin: -5px;
+}
+#edit_form_datagroups .addDataGroup, #edit_datagroup_data .addDataGroup{
+	text-align: center;	
+}
+.addDataGroup_content{
+	dispalay: none;
+	height: 150px;
+	border-bottom: 1px solid #cacaca; 
+	border-top: 1px solid #cacaca;
+	margin: -6px -5px -6px -5px;
+	box-shadow: 0px 1px 0px 0px rgba(255,255,255,.7), 0px -1px 0px 0px rgba(255,255,255,.7);
+	overflow: auto;
+	display: none;
+}
+#edit_form_datagroups .datagroup_action {
+	position: absolute;
+	right: 50px;
+	top: 35px;
+	width: 150px;
+	z-index: 110;
+}
+#edit_datagroup_data .data_action {
+	position: absolute;
+	right: 50px;
+	top: 0px;
+	z-index: 110;	
+	padding-top: 5px;
+}
+#edit_datagroup_data .data_action .move  {
+	display: inline-block;
+	width: 50px;
+	margin-right: 20px;
+}
+#edit_form_datagroups .datagroup_action .move{padding-top: 7px;}
+#edit_form_datagroups .datagroup_action .actions{
+	float: right;
+	background: rgba(0,0,0,.8);
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0px 0px 20px rgba(0,0,0,.1);
+	padding: 5px 0;
+}
+#edit_form_datagroups .datagroup_action ul {
+	list-style: none;
+}
+#edit_form_datagroups .datagroup_action .actions ul li.seperator {
+	border-bottom: 1px solid #444;
+	border-top: 1px solid #000;
+	height: 0px;
+	margin: 1px 0px 1px 0px;
+}
+#edit_form_datagroups .datagroup_action  ul li a{
+	padding: 5px 10px;
+	color: #ddd;
+	display: block;	
+}
+#edit_form_datagroups .eFiling_text {
+	margin-top: -20px; 
+	padding-left: 150px; 
+	width: 350px; 
+	overflow: hidden;
+	height: auto; 
+	line-height: 20px;
+}
+img.icon {
+	margin-bottom: -3px;
+	margin-right: 5px;	
+}
+#edit_form_datagroups .datagroup_action .actions ul li a:hover {
+	background: #eee;
+	color: #222;
+	text-decoration: none;	
+}
+#edit_form_datagroups .ef_datagroup, #edit_datagroup_data .ef_data{
+	position: relative;
+	overflow: hidden;
+}
+#edit_form_datagroups .ef_datagroup{
+	min-height: 120px;
+	overflow: visible;
+}	
+#edit_datagroup_data .ef_data:hover {
+ 	background: rgba(0,0,0,.06);
+}
+/* --- available groups -- */
+.available_groups {
+	position: relative;
+}
+.available_groups .noAvGroups {
+	text-align: center;
+	font-family: "Open Sans";
+	font-size: 20px;
+	color: #888;
+	padding-top: 60px;
+	text-shadow: 0px 1px rgba(255, 255, 255, 1);
+}
+.available_groups .av_group {
+	float: left;
+	height: 110px;
+	width: 220px;
+	margin: 10px;
+	border-radius: 5px;
+	background: url(../../img/bg_light.png) top left;	
+	box-shadow: 0px 0px 10px 10px rgba(0,0,0,.05);	
+	padding: 5px;
+	position: relative;
+	border: 1px solid #bbb;
+	z-index: 100;
+}
+.available_groups .av_group.no-style {
+	border: 0px;
+	box-shadow: none;	
+	background: none;
+	color: #888;
+}
+.available_groups .av_group .addButton {
+	position: absolute;
+	right: 10px;
+	top: 10px;	
+}
+.available_groups .closeButton {
+	position: absolute;
+	right: 5px;
+	top: 5px;
+}
+.available_groups .av_group h3{ padding: 5px; }
+.available_groups .av_group .av_link {
+	z-index: 110;
+	position: absolute;
+	height: 100%;
+	width: 100%;	
+	left:0px;
+	top: 0px;
+}
+.available_groups .av_group .av_link:hover { text-decoration: none;}
+
+/* filings */
+#filings_select {
+	float: left;
+	padding-top: 7px;
+}
+#filing_text {
+	background: rgba(0,0,0,.06);
+	border-radius: 3px;
+	overflow: hidden;
+	box-shadow: 0px 0px 2px rgba(0,0,0,.2);	
+	border: 1px solid;
+	border-color: #B0B0B0 #C9C9C9 #C9C9C9;	
+	border-radius: 3px;
+	box-shadow: 0 1px 1px rgba(255,255,255,1);
+	padding: 5px;
+	margin-top: 5px;
+}

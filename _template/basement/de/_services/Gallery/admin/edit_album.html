@@ -1,0 +1,30 @@
+<h1>Edit Album</h1>
+<div id="edit_album">
+	<form action="{@pp:link}" method="post">
+		<br />
+		{pp:UIWidgets(widget:Hidden, name:id, value:{@pp:id})}
+		{pp:UIWidgets(widget:Hidden, name:action, value:edit_album)}
+		<p>
+			{pp:UIWidgets(widget:InputField, name:name, value:{@pp:name}, label:Title)}
+		</p>
+		<p>
+			{pp:UIWidgets(widget:TextArea, name:desc, value:{@pp:desc}, label:Description, height:5)}
+		</p>
+		<p>
+			{@pp:status}
+		</p>
+		<br />
+		<p>
+			{pp:UIWidgets(widget:Button, type:submit, label:&nbsp;, value:&nbsp;&nbsp;&nbsp;Submit&nbsp;&nbsp;&nbsp;)}
+			{pp:UIWidgets(widget:Button, type:reset, value:&nbsp;&nbsp;&nbsp;Reset&nbsp;&nbsp;&nbsp;)}
+			<pp:dynamic name="ajax_button">
+				<span style="float: right; display: block;">{pp:UIWidgets(widget:Button, value:&nbsp;&nbsp;&nbsp;Cancel&nbsp;&nbsp;&nbsp;, id:ajax_cancel_button, type:button)}</span>
+				<script type="text/javascript">
+					$(document).ready(function () {
+						$('#ajax_cancel_button').click(close_edit_album_form);
+					});
+				</script>
+			</pp:dynamic>
+		</p>
+	</form>
+</div>

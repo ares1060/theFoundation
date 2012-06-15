@@ -1,0 +1,39 @@
+{pp:Pagina("count":"{@pp:pagina_count}", "active":"{@pp:pagina_active}", "url":"JavaScript:setAdressPathKey('page', '{page}');", "template":"pagina_modern")}<br />
+<div id="groups">
+	<div class="tf_table">
+		<table>
+			<thead>
+				<tr>
+					<th style="width: 20px;">ID</th>
+					<th>Name</th>
+					<th>Beschreibung</th>
+					<th style="width: 50px;">&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+				<pp:dynamic name="form">
+					<tr>
+						<td class="number">{@pp:id}</td>
+						<td>{@pp:name}</td>
+						<td>{@pp:desc}</td>
+						<td class="center border-left special">&nbsp;
+							<a href="javascript:void(0);" onclick="setAdressPathKeys(new Array('action', 'id'), new Array('edit', '{@pp:id}'));" alt="Bearbeiten" title="Bearbeiten"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/action/edit.png"/></a>&nbsp;
+							<a href="javascript:void(0);" onclick="deleteGroup({@pp:id});" alt="L&ouml;schen" title="L&ouml;schen"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/action/delete.gif"/></a>
+						</td>
+					</tr>
+				</pp:dynamic>
+			</tbody>
+		</table>
+	</div>
+</div>
+<script type="text/javascript">
+	<!--
+	function deleteGroup(id){
+		showAdminLoadingDiv();
+		getService('eFiling', 'admin', 'args[action]=deleteGroup&args[id]='+id+'&args[noMsg]=true', 
+				function (msg) {
+					window.setTimeout('location.reload()', 0);
+				});
+	}
+	//-->
+</script>

@@ -1,0 +1,63 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: OfficeGate Language Pack\n"
+"POT-Creation-Date: 2012-03-09 18:34+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ..\n"
+
+#: TextFunctions.php:240
+msgid "DATE"
+msgstr ""
+
+#: TextFunctions.php:243
+msgid "DATE_SECOND"
+msgstr ""
+
+#: TextFunctions.php:243
+msgid "DATE_SECONDS"
+msgstr ""
+
+#: TextFunctions.php:246
+msgid "DATE_MIN"
+msgstr ""
+
+#: TextFunctions.php:246
+msgid "DATE_MINS"
+msgstr ""
+
+#: TextFunctions.php:249
+msgid "DATE_HOUR"
+msgstr ""
+
+#: TextFunctions.php:249
+msgid "DATE_HOURS"
+msgstr ""
+
+#: TextFunctions.php:252
+msgid "DATE_DAY"
+msgstr ""
+
+#: TextFunctions.php:252
+msgid "DATE_DAYS"
+msgstr ""
+
+#: TextFunctions.php:255
+msgid "DATE_MONTH"
+msgstr ""
+
+#: TextFunctions.php:255
+msgid "DATE_MONTHS"
+msgstr ""
+
+#: TextFunctions.php:258
+msgid "DATE_YEAR"
+msgstr ""
+
+#: TextFunctions.php:258
+msgid "DATE_YEARS"
+msgstr ""

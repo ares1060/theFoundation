@@ -1,0 +1,19 @@
+RewriteEngine on
+#RewriteBase _admincenter/
+
+# ==========  ADMINISTRATION
+RewriteRule ^setup\/$ setup_.php [NC]
+RewriteRule ^setup$ setup_.php [NC]
+
+RewriteRule ^login\/$ login_.php [NC]
+RewriteRule ^login$ login_.php [NC]
+
+RewriteRule ^logout\/$ logout_.php?action=logout [NC]
+RewriteRule ^logout$ logout_.php?action=logout [NC]
+
+RewriteRule ^tf\/$ center.php [NC]
+RewriteRule ^tf$ center.php [NC]
+RewriteRule ^tf\/(.+)\/$ center.php?service=$1 [NC]
+RewriteRule ^tf\/(.+)$ center.php?service=$1 [NC]
+
+

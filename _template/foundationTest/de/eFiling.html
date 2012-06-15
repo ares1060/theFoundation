@@ -1,0 +1,15 @@
+<div class="messages" id="tf_msg">{pp:Messages(action:viewType, type:error/info/debug)}</div>
+<pp:dynamic name="home">
+	<a href="?chapter=form&amp;form=1">Sola 2012 Anmeldung</a>
+	<br /><br />
+	<a href="?chapter=deregister">Abmeldung</a>
+</pp:dynamic>
+<pp:dynamic name="form">
+	{pp:eFiling("chapter":"view_form", "id":"{@pp:id}")}
+</pp:dynamic>
+<pp:dynamic name="thanks">
+	{pp:eFiling("chapter":"view_thanks", "hash":"{@pp:hash}")}
+</pp:dynamic>
+<pp:dynamic name="abmeldung">
+	{pp:eFiling("chapter":"view_deregister")}
+</pp:dynamic>

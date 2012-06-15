@@ -1,0 +1,77 @@
+<div id="admin_blog_main_breadcrumb">
+	<ul class="menu-right">
+		<li><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/comments-small.png" style="margin-bottom: -1px;"/> 5 Kommentare</li>
+		<li><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/views-small.png" style="margin-bottom: -1px;"/> 10 Views</li>
+	</ul>
+	<ul class="menu-left">
+		<li><a href="javascript:void(0);" onclick="$.address.path('/list/page/'+active_page+'/');">Back</a></li>
+	</ul>	
+	
+</div>
+<form action="blog.php?type=blog&amp;action=new" method="post" class="ui_form light">
+	<div id="blog_admin_new_sidebar">
+		<div class="header"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/information.png" class="intext_image"/> Infos</div>
+		<div class="content">
+			<p class="sidebar">
+				<img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/status/4.png" class="intext_image info_img"/> Status: {@pp:status}
+			</p>
+			<p class="sidebar">
+				<img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/author.png" class="intext_image  info_img"/> {pp:UIWidgets(widget:Text, label:Author, value:{@pp:user_nick})}
+			</p>
+			<p class="sidebar">
+				<img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/time.png" class="intext_image  info_img"/> Datum: {@pp:date}
+			</p>
+			<p class="sidebar">
+				<img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/comments.png" class="intext_image  info_img"/> Kommentare: {pp:UIWidgets(widget:CheckBox)}
+			</p>
+			<p class="actions">
+				<span style="float: right">
+					<a href="javascript:void(0);" class="tf_button small light">Speichern</a>
+				</span>
+				<span id="saved_span">Gespeichert</span>
+			</p>
+			<p class="sep">&nbsp;</p>
+		</div>
+		<div class="header"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/tags.png" class="intext_image"/> Tags</div>
+		<div class="content">
+			<p class="sidebar">
+				{pp:UIWidgets(widget:InputField, label:Neue Tags, name:tags)}<img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/actions/add.png"  class="intext_image"/>
+			</p>
+			<p class="tags">
+				<span class="tag">Erster Tag <a href="javascript:void(0);"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/actions/delete-small.png" /></a></span>
+				<span class="tag">asdfads <a href="javascript:void(0);"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/actions/delete-small.png" /></a></span>
+				<span class="tag">oiouzz <a href="javascript:void(0);"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/actions/delete-small.png" /></a></span>
+				<span class="tag">kjasdfla sdfkasjdf asdf <a href="javascript:void(0);"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/actions/delete-small.png" /></a></span>
+				<span class="tag">aa  <a href="javascript:void(0);"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/actions/delete-small.png" /></a></span>
+			</p>
+			<p class="sep">&nbsp;</p>
+		</div>
+		<div class="header"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/cat.png" class="intext_image"/> Kategorien</div>
+		<div class="content">
+			<p class="sidebar">
+				{pp:UIWidgets(widget:InputField, label:Neue Kategorie, name:tags)}<img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/actions/add.png" class="intext_image"/>
+			</p>
+			<p class="categories">
+				<span class="cat">Technik <a href="javascript:void(0);"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/actions/delete-small.png" /></a></span>
+				<span class="cat">Privat <a href="javascript:void(0);"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/actions/delete-small.png" /></a></span>
+			</p>
+		</div>
+	</div>
+	<div id="blog_admin_new">
+		<div>
+			<p class="wide">
+				{pp:UIWidgets(widget:InputField, id:title, name:title, label:Title)}
+			</p>
+			<p class="wide">
+				{pp:UIWidgets(widget:Wysiwyg, id:content, name:title, label:Excerpt, rows:10)}
+			</p>
+			<p class="wide">
+				{pp:UIWidgets(widget:Wysiwyg, id:content, name:title, label:Content, rows:20)}
+			</p>
+			<!-- <p>
+				{pp:UIWidgets(widget:Button, type:submit, label:&nbsp;, value:&nbsp;&nbsp;&nbsp;Submit&nbsp;&nbsp;&nbsp;)}
+				{pp:UIWidgets(widget:Button, type:reset, value:&nbsp;&nbsp;&nbsp;Reset&nbsp;&nbsp;&nbsp;)}
+			</p> -->
+		</div>
+	</div>
+</form>

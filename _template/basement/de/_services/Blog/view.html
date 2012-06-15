@@ -1,0 +1,34 @@
+<div class="blog_entry">
+    <div class="header"> 
+        <div class="datum">
+            <span class="month">{@pp:date_month_name}</span>
+            <span class="day">{@pp:date_day}</span>
+        </div>
+        <span class="title"><a href="{@pp:base}blog.php?mode=view&amp;id={@pp:id}">{@pp:titel}</a></span>
+        <div class="bottom">
+            <span class="author bottom_elem">{@pp:author}</span>
+            <span class="category bottom_elem">
+                <ul>
+                <pp:dynamic name="category">
+                    <li><a href="{@pp:base}blog.php?mode=cat&amp;cat={@pp:cat_webname}">{@pp:cat_name}</a></li>
+                </pp:dynamic>
+                </ul>
+            </span>
+        </div>
+    </div>
+    <div class="description">
+        {@pp:description}
+    </div>
+    <div class="footer">
+        <div class="tags">
+            <ul>
+            <pp:dynamic name="tags">
+                <li><a href="{@pp:base}blog.php?mode=tag&amp;tag={@pp:tag_webname}">{@pp:tag_name}</a></li>
+            </pp:dynamic>
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="comments">
+	{pp:Comment(id:{@pp:id}, group:blog)}
+</div>

@@ -1,0 +1,32 @@
+<h1>New Album</h1><br />
+<form action="{@pp:link}" method="post" name="Bilderupload" class="ui_form" id="gallery_new_album_form">
+	{pp:UIWidgets(widget:hidden, name:action, value:new_album)}
+	<p>
+		{pp:UIWidgets(widget:InputField, name:name, id:album_name, label:Name)}
+	</p>
+	<p>
+		{pp:UIWidgets(widget:TextArea, name:desc, id:album_desc, label:Description, height:10)}
+	</p>
+	<p>
+		{@pp:status}
+	</p>
+	<p>
+		{pp:UIWidgets(widget:Button, type:submit, label:&nbsp;, value:&nbsp;&nbsp;&nbsp;Submit&nbsp;&nbsp;&nbsp;)}
+		{pp:UIWidgets(widget:Button, type:reset, value:&nbsp;&nbsp;&nbsp;Reset&nbsp;&nbsp;&nbsp;)}
+		<pp:dynamic name="ajax_button">
+			<span style="float: right; display: block;">{pp:UIWidgets(widget:Button, value:&nbsp;&nbsp;&nbsp;Cancel&nbsp;&nbsp;&nbsp;, id:ajax_cancel_button_new_album, type:button)}</span>
+			<script type="text/javascript">
+				$(document).ready(function () {
+					$('#ajax_cancel_button_new_album').click(close_new_album_form);
+				});
+			</script>
+		</pp:dynamic>
+	</p>
+</form>
+<script type="text/javascript">
+	<!--
+		$(document).ready( function () {
+			$('#gallery_new_album_form').get(0).setAttribute('action', '{@pp:link}#'+$.address.path());
+		});
+	//-->
+</script>

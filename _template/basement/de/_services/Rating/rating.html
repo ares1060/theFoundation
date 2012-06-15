@@ -1,0 +1,44 @@
+<ul onMouseOut="resetRating{@pp:id}()">
+    <pp:dynamic name="rating">
+        <li id="{@pp:group}_{@pp:id}_{@pp:dynid}"><img src="{@pp:tpl_root_folder}{@pp:img}" /></li>
+        <script language="javascript" type="text/Javascript">
+            $('#{@pp:group}_{@pp:id}_{@pp:dynid}').mouseover(function() {updateRating{@pp:id}({@pp:dynid})});
+            $('#{@pp:group}_{@pp:id}_{@pp:dynid}').click(function() {sendRating{@pp:id}({@pp:dynid})});
+        </script>
+    </pp:dynamic>
+        <li class="status" id="status_{@pp:group}_{@pp:id}"><span>&nbsp;</span></li>
+    <div class="clearer">&nbsp;</div>
+</ul>  
+<script language="javascript" type="text/Javascript">
+    function updateRating{@pp:id}(dynid){
+        for(var i=0;i<={@pp:rating_count};i++){
+            if(i<=dynid) $('#{@pp:group}_{@pp:id}_'+i).children('img').attr('src', '{@pp:tpl_root_folder}/img/Rating/rated_star.png');
+            else $('#{@pp:group}_{@pp:id}_'+i).children('img').attr('src', '{@pp:tpl_root_folder}/img/Rating/unrated_star.png');
+        }
+    }
+    function resetRating{@pp:id}(id){
+        for(var i=0;i<={@pp:rating_count};i++){
+            if(i<{@pp:rating}) $('#{@pp:group}_{@pp:id}_'+i).children('img').attr('src', '{@pp:tpl_root_folder}/img/Rating/rated_star.png');
+            else $('#{@pp:group}_{@pp:id}_'+i).children('img').attr('src', '{@pp:tpl_root_folder}/img/Rating/unrated_star.png');
+        }
+    }
+    function sendRating{@pp:id}(dynid){
+        $('#status_{@pp:group}_{@pp:id}').css('display', 'inline');
+        $('#pp_messages').html($('#pp_messages').html()+
+                    getAjax('{@pp:root}connector.php', {
+                        'service_name':'Rating',
+                        'service_method':'data',
+                        'args':{
+                            'id': '{@pp:id}',
+                            'group': '{@pp:group}',
+                            'rating': dynid+1 }
+                        }));
+        $('#status_{@pp:group}_{@pp:id}').parent().parent().html(getAjax('{@pp:root}connector.php', {
+                        'service_name':'Rating',
+                        'service_method':'view',
+                        'args':{
+                            'id': '{@pp:id}',
+                            'group': '{@pp:group}' }
+                        }));
+    }
+</script>

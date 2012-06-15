@@ -1,0 +1,217 @@
+<script type="text/javascript">
+	$('#edit_user_form').ready(function() {
+		$('#edit_user_form').attr('action', '../user/#!/chapter/user/page/'+active_page+'/action/edit/id/'+active_id);
+		$('#user_picture_upload').attr('action', '../user/#!/chapter/user/page/'+active_page+'/action/edit/id/'+active_id);
+	});
+
+	function toggle(id) {
+		if($('#'+id).is(':visible')) {
+			$('#user_image .box').hide();
+		} else {
+			$('#user_image .box').hide();
+			$('#'+id).show();
+		}
+	}
+
+	function setImage(id, path) {
+		$('#gallery_loading').show();
+		getService('User', 'admin', 'args[action]=setProfilePicture&args[iId]='+id+'&args[id]={@pp:id}', 
+				function (msg) {
+					$('#profile_image').attr('src', '{@pp:abs_root}_core/getImage.php?path='+path+'&height=500&width=200');
+					$('#gallery_loading').hide();
+		});
+	}
+
+	var gallery_page;
+	
+	function loadGallery(page) {
+		if(page == -1 && gallery_page == undefined) page = 1;
+
+		gallery_page = page;
+
+		$('#gallery_loading').show();
+		getService('Gallery', 'view', 'args[action]=smallFolder&args[album]=u_{@pp:id}&args[folder]=Userimage&args[page]='+page+'&args[clickAction]=javascript:setImage({id}, \'{path}\');', 
+				function (msg) {
+					$('#gallery_content').html(msg);
+					$('#gallery_loading').hide();
+				});
+	}
+</script>
+<div id="user_image">
+	<h2>Profilbild</h2>
+	<div class="h_sep" id="admin_top_hr" style="margin: 5px 0px 5px 0px;">
+		<span class="left">&nbsp;</span>
+		<span class="right">&nbsp;</span>
+		<span class="center">&nbsp;</span>
+	</div>
+	<div style="float: right;">
+		<button class="button small" style="width: 150px;"><span><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/action/delete.gif" class="icon""/>&nbsp;L&ouml;schen</span></button><br /><br />
+		<button class="button small" type="button" onclick="toggle('user_new_image_action'); return false;" id="show_user_image_button" style="width: 150px;"><span><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/action/add.png" class="icon" />&nbsp;Neues Bild</span></button><br /><br />
+		<button class="button small" type="button" onclick="toggle('user_edit_image_action'); loadGallery(-1);  return false;" id="show_user_image_button" style="width: 150px;"><span><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/action/edit.png" class="icon" />&nbsp;Bild &auml;ndern</span></button>
+	</div>
+	<div style="min-height: 110px;">
+	<img src="{@pp:abs_root}_core/getImage.php?path={@pp:ui_path}&height=500&width=200" style="margin-bottom: 4px;" id="profile_image"/>
+	</div>
+	<div id="user_new_image_action" style="margin-top: 5px;" class="box">
+		<form action="" enctype="multipart/form-data" method="post" id="user_picture_upload">
+			<h2>Neues Bild</h2>
+			<div class="h_sep_down" id="admin_top_hr" style="margin: 10px -5px 10px -5px;">
+				<span class="left">&nbsp;</span>
+				<span class="right">&nbsp;</span>
+				<span class="center">&nbsp;</span>
+			</div>
+			<input type="hidden" name="action" value="upload" />
+			<input type="hidden" name="eu_id" value="{@pp:id}" />
+			<input type="hidden" name="MAX_FILE_SIZE" value="{@pp:max_file_size}" />
+			<input type="hidden" name="selected_type" value="html" />
+			<input type="file" name="files[]" /><br /><br />
+			<button class="button small" type="submit" id="send_user_image_button"><span>Speichern</span></button>
+			<button class="button small" onclick="$('#user_new_image_action').toggle(); return false;" type="button"><span>Abbrechen</span></button>
+		</form>
+	</div>
+	<div id="user_edit_image_action" style="margin-top: 5px;" class="box">
+		<div id="gallery_loading" style="float: right; margin: 5px;"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/loading.gif" /></div>
+		<h2>Bild ausw&auml;hlen</h2>
+		<div class="h_sep_down" id="admin_top_hr" style="margin: 5px -5px 10px -5px;">
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+		<div id="gallery_content">
+		
+		</div>
+	</div>
+	<br /><br />
+</div>
+<div id="user_data">
+	<form action="" method="post" class="tf_form" id="edit_user_form">
+		<h1>User bearbeiten</h1>
+		<div class="h_sep" id="admin_top_hr" style="margin: 5px 0px 5px 0px;">
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+		<input type="hidden" name="action" value="editUser" />
+		<input type="hidden" name="eu_id" value="{@pp:id}" />
+		<div class="tf_form_block">
+			<p>
+				<label for="eu_nick" class="tf_label">Id:</label>
+				<span style="padding-top: 5px; display: inline-block;">{@pp:id}</span>
+			</p>
+			<p>
+				<label for="eu_nick" class="tf_label">Nickname:</label>
+				<span style="padding-top: 5px; display: inline-block;">{@pp:nick}</span>
+			</p>
+			<p>
+				<label for="eu_group" class="tf_label">Benutzergruppe:</label>
+				{@pp:group}
+			</p>
+			<p>
+				<label for="eu_mail" class="tf_label">E-Mail:</label>
+				<input type="text" id="eu_mail" name="eu_mail" value="{@pp:email}" class="tf_input middle"/>
+			</p>
+			<pp:dynamic name="status">
+			<p>
+				<label for="eu_status" class="tf_label">Status:</label>
+				{@pp:status}
+			</p>
+			</pp:dynamic>
+			<p>
+					<label for="eu_pwd" class="tf_label">Passwort:</label>
+			</p>
+			<div id="password" style="margin-left: 150px; margin-top: -25px;">
+					<input type="password" id="eu_pwd" name="eu_pwd" value="{@pp:pwd}" class="tf_input small"/>
+					<button class="button small" type="button" onclick="$('#password').toggle();$('#password_new').toggle();return false;"><span>Passwort &auml;ndern</span></button>
+			</div>
+			<div id="password_new" class="inform_box" style=" margin-top: -25px;">
+				<button class="button small" style="float: right;" onclick="generatePassword();return false;"><span>Passwort generieren</span></button>
+				<h2>Neues Passwort</h2>
+				<div class="h_sep_down" id="admin_top_hr" style="margin: 5px -10px 5px -10px;">
+					<span class="left">&nbsp;</span>
+					<span class="right">&nbsp;</span>
+					<span class="center">&nbsp;</span>
+				</div>
+				<p>
+					<label for="eu_pwd_new" class="tf_label">Passwort:</label>
+					<input type="text" id="eu_pwd_new" name="eu_pwd_new" value="" class="tf_input" style="width: 200px;"/>
+				</p>
+				<p>
+					<label for="eu_pwd_new2" class="tf_label">Passwort nochmal:</label>
+					<input type="text" id="eu_pwd_new2" name="eu_pwd_new2" value="" class="tf_input" style="width: 200px;"/>
+				</p>
+				<p>
+				<span class="tf_label" id="nu_password_strength_text" style="color: #888; margin-top: -5px;">&nbsp;</span>
+				<span class="tf_password_strength_background tf_input middle">
+					<span class="tf_password_strength" id="nu_password_strength"><img src="{@pp:abs_root}{@pp:tpl_root_folder}/img/passwordStrength4.png"/></span>
+				</span>
+			</p>
+				<p>
+					<span class="tf_label">&nbsp;</span>
+					<button class="button small" ><span>Speichern</span></button>
+					<button class="button small" onclick="$('#password').toggle();$('#password_new').toggle();return false;"><span>Abbrechen</span></button>
+				</p>
+			</div>
+		</div>
+		<pp:dynamic name="datagroup">
+		<br /><br />
+		<h2>{@pp:name}</h2>
+		<div class="h_sep" id="admin_top_hr" style="margin: 5px 0px 5px 0px;">
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+		<div class="tf_form_block">
+			<pp:dynamic name="data">
+				<pp:dynamic name="text">
+				<p>
+					<label for="eu_{@pp:id}" class="tf_label">{@pp:name}:</label>
+					<input type="text" id="eu_{@pp:id}" name="eu[{@pp:id}]" value="{@pp:value}" class="tf_input middle"/>
+				</p>
+				</pp:dynamic>
+				<pp:dynamic name="int">
+				<p>
+					<label for="eu_{@pp:id}" class="tf_label">{@pp:name}:</label>
+					<input type="text" id="eu_{@pp:id}" name="eu[{@pp:id}]" value="{@pp:value}" class="tf_input small"/>
+				</p>
+				</pp:dynamic>
+				<pp:dynamic name="checkbox">
+				<p>
+					<label for="eu_{@pp:id}" class="tf_label">{@pp:name}:</label>
+					<input type="checbox" id="eu_{@pp:id}" name="eu[{@pp:id}]" {@pp:checked}/>
+				</p>
+				</pp:dynamic>
+				<pp:dynamic name="image">
+				<p>
+					<label for="eu_{@pp:id}" class="tf_label">{@pp:name}:</label>
+				</p>
+				<div id="div_eu_{@pp:id}" class="inform_box">
+					<img src="{@pp:abs_root}_core/getImage.php?path={@pp:path}&height=500&width=200" style="margin-bottom: 4px;" id="profile_image"/>
+				</div>
+				</pp:dynamic>
+			</pp:dynamic>
+		</div>
+		</pp:dynamic>
+		<br /><br />
+		<p>
+			<span class="tf_label">&nbsp;</span>
+			<button class="button small" type="submit"><span>Speichern</span></button>
+			<button class="button small" type="reset" onclick="$('#password').toggle();$('#password_new').toggle();return false;"><span>Abbrechen</span></button>
+		</p>
+	</form>
+</div>
+<script type="text/javascript">
+	$('#edit_user_form').ready(function() {
+		$('#eu_pwd_new').keydown(function () { showPasswordStrength($('#eu_pwd_new').val(),'nu_password_strength'); });
+	});
+
+	function generatePassword() {
+		showAdminLoadingDiv();
+		getService('TextFunctions', 'data', 'args[action]=generatePassword', 
+				function (msg) {
+					$('#eu_pwd_new').val(msg);
+					$('#eu_pwd_new2').val(msg);
+					showPasswordStrength($('#eu_pwd_new').val(),'nu_password_strength');
+					hideAdminLoadingDiv();
+			});
+	}
+</script>

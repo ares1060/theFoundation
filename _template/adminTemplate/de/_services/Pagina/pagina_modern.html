@@ -1,0 +1,23 @@
+<div class="pagina">
+	<div class="pagina_main">
+		<div class="h_sep_down" id="admin_top_hr" style="margin: 0px 0px 0px 0px;">
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+	    <ul>
+	        <pp:dynamic name="items">
+	            <li {@pp:active}><a href="{@pp:link}">{@pp:page_nr}</a></li>
+	        </pp:dynamic>
+	        <li class="active"><span class="text">Seite:&nbsp;&nbsp;</span></li>
+	    </ul>
+	    <div class="h_sep" id="admin_top_hr" style="margin: -1px 0px 0px 0px;">
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+    </div>
+</div>
+<style type="text/css" media="screen">
+	@import url({@pp:root}{@pp:css_url});
+</style>

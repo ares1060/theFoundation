@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+.categories {
+	border: 1px solid black;	
+}
+.category_node {
+	padding-left: 30px;	
+}
+
+.category_node.first {
+	padding-left: 0px;	
+}

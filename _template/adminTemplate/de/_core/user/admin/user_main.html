@@ -1,0 +1,28 @@
+{pp:Pagina("count":"{@pp:pagina_count}", "active":"{@pp:pagina_active}", "url":"JavaScript:setAdressPathKey('page', '{page}');", "template":"pagina_modern")}<br />
+<div class="tf_table">
+	<table>
+		<tr>
+			<th style="width: 30px;">ID</th>
+			<th style="width: 100px;">Status</th>
+			<th>Nick</th>
+			<th>Gruppe</th>
+			<th>E-Mail</th>
+			<th style="width: 50px;">&nbsp;</th>
+		</tr>
+		<pp:dynamic name="user">
+			<tr>
+				<td class="number">{@pp:id}</td>
+				<td class="center"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/status/{@pp:status}.png" /></td>
+				<td>{@pp:nick}</td>
+				<td><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/status/{@pp:group}.png" /> {@pp:group}</td>
+				<td><a href="mailto:{@pp:email}">{@pp:email}</a></td>
+				<td class="center border-left special">&nbsp;
+					<pp:dynamic name="edit">
+						<a href="javascript:void(0);" onclick="setAdressPathKey('action', 'edit'); setAdressPathKey('id', '{@pp:id}');" alt="Bearbeiten" title="Bearbeiten"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/action/edit.png"/></a>&nbsp;
+						<a href="javascript:void(0);" onclick="setAdressPathKey('action', 'delete'); setAdressPathKey('id', '{@pp:id}');" alt="L&ouml;schen" title="L&ouml;schen"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/action/delete.gif"/></a>
+					</pp:dynamic>
+				</td>
+			</tr>
+		</pp:dynamic>
+	</table>
+</div>

@@ -1,0 +1,16 @@
+<style type="text/css" media="screen">
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/shop.css);
+</style>
+<div id="shop_tag">
+	<h1>Tag: {@pp:name}</h1>
+	<div class="shop_categories_content">
+	<pp:dynamic name="products">
+		<div class="shop_product">
+			<a href="../../{@pp:id}_{@pp:webname}/">
+				<img src="{@pp:abs_root}_core/getImage.php?path={@pp:img_path}&height=300&width=200"/>
+				<span class="shop_name">{@pp:name}</span>
+			</a>
+		</div>
+	</pp:dynamic>
+	</div>
+</div>

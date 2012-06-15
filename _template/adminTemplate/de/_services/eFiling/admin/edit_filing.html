@@ -1,0 +1,52 @@
+<div id="edit_form">
+	<form action="" method="post" class="tf_form" id="edit_form_form">
+		<input type="hidden" name="id" value="{@pp:id}" />
+		<input type="hidden" name="action" value="edit_filing" />
+		<h1>Anmeldung bearbeiten</h1>
+		<div class="h_sep" id="admin_top_hr" style="margin: 5px 0px 10px 0px;">
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+		<div class="tf_form_block" style="position: absolute; left: 550px;">
+			<p>
+				<label for="ef_from" class="tf_label">&Uuml;bersicht:</label>
+				<span class="ef_input">{@pp:preview}</span>
+			</p>			
+		</div>
+		<div class="tf_form_block">
+			<p>
+				<span class="tf_label">Id:</span>
+				<span style="padding-top: 5px; display: inline-block;">{@pp:id}</span>
+			</p>
+			<p>
+				<label for="ef_name" class="tf_label">Status:</label>
+				{@pp:status} <img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/status/filing_{@pp:status_id}.png" style="margin-bottom: -3px; margin-left: 10px;" id="status_img"/>
+			</p>
+			<!--<p>
+				<span class="tf_label">&nbsp;</span>
+				<button class="button small" type=""><span>Speichern</span></button>
+				<button class="button small" onclick="unsetAdressPath(new Array('action', 'id'));return false;"><span>Abbrechen</span></button>
+			</p>
+		</div>-->
+	</form>
+	<br />
+	<h1>Anmeldungstext</h1>
+	<div id="filing_text">
+		<p>
+			{@pp:filing_text}
+		</p>
+	</div>
+</div>
+<br /><br />
+<script type="text/javascript">
+	$('#ef_select').change(function() {
+		showAdminLoadingDiv();
+		var status = $(this).val();
+		getService('eFiling', 'admin', 'args[action]=set_filing_status&args[id]='+active_id+'&args[status]='+status, 
+				function (msg) {
+					$('#status_img').attr('src', '{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/status/filing_'+status+'.png');
+					hideAdminLoadingDiv();
+				});
+	});
+</script>

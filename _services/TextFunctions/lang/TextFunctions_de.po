@@ -1,0 +1,64 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TextFunctions\n"
+"POT-Creation-Date: 2012-03-09 18:34+0100\n"
+"PO-Revision-Date: 2012-03-09 18:36+0100\n"
+"Last-Translator: - <->\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ..\n"
+
+#: TextFunctions.php:240
+msgid "DATE"
+msgstr "am {day}.{month}.{year}"
+
+#: TextFunctions.php:243
+msgid "DATE_SECOND"
+msgstr "vor {date} sek"
+
+#: TextFunctions.php:243
+msgid "DATE_SECONDS"
+msgstr "vor {date} sek"
+
+#: TextFunctions.php:246
+msgid "DATE_MIN"
+msgstr "vor {date} min"
+
+#: TextFunctions.php:246
+msgid "DATE_MINS"
+msgstr "vor {date} min"
+
+#: TextFunctions.php:249
+msgid "DATE_HOUR"
+msgstr "vor {date} Stunde"
+
+#: TextFunctions.php:249
+msgid "DATE_HOURS"
+msgstr "vor {date} Stunden"
+
+#: TextFunctions.php:252
+msgid "DATE_DAY"
+msgstr "vor {date} Tag"
+
+#: TextFunctions.php:252
+msgid "DATE_DAYS"
+msgstr "vor {date} Tagen"
+
+#: TextFunctions.php:255
+msgid "DATE_MONTH"
+msgstr "vor {date} Monat"
+
+#: TextFunctions.php:255
+msgid "DATE_MONTHS"
+msgstr "vor {date} Monaten"
+
+#: TextFunctions.php:258
+msgid "DATE_YEAR"
+msgstr "vor {date} Jahr"
+
+#: TextFunctions.php:258
+msgid "DATE_YEARS"
+msgstr "vor {date} Jahren"
+

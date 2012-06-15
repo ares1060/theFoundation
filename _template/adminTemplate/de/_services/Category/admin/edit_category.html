@@ -1,0 +1,127 @@
+<br /><br /><br />
+<h2>Kategorie bearbeiten</h2>
+<div class="h_sep" style="margin: 10px 0px 0px 0px;">
+	<span class="left">&nbsp;</span>
+	<span class="right">&nbsp;</span>
+	<span class="center">&nbsp;</span>
+</div><br />
+<form class="tf_form" method="post" id="edit_category_form">
+	<input type="hidden" name="cat_id" value="{@pp:id}" />
+	<input type="hidden" name="cat_action" value="edit" />
+	<p>
+		<label for="cat_name" class="tf_label" style="width: 100px;">Name:</label>
+		<input type="text" class="tf_input small" name="cat_name" value="{@pp:name}" id="cat_name"/>
+	</p>
+	<p>
+		<label for="cat_webname" class="tf_label" style="width: 100px;">Webname:</label>
+		<input type="text" class="tf_input small" name="cat_webname" value="{@pp:webname}" id="cat_webname"/>
+	</p>
+	<p>
+		<label for="cat_status" class="tf_label" style="width: 100px;">Status:</label>
+		{@pp:status}
+	</p>
+	<p>
+		<label for="cat_desc" class="tf_label" style="width: 100px;">Beschreibung:</label>
+	</p>
+	<div style="padding-left: 110px; margin-top: -20px; margin-bottom: 10px; height: 100px;">
+	{@pp:desc_textarea}
+	</div>
+	<p>
+		<span class="tf_label" style="width: 100px;">Bild:</span>
+	</p>
+	<div id="category_img" style="padding-left: 110px; margin-top: -20px; margin-bottom: 10px;">
+		<img src="{@pp:abs_root}_core/getImage.php?path={@pp:img_path}&height=80&width=80" class="img"/> <a href="javascript:void(0);" onclick="showEditImages();">&Auml;ndern</a>
+	</div>
+	<div id="category_images" style="display: none;">
+		<div class="box" style="width: auto; right: 0px; margin-left: 110px;">
+			<div class="action">
+				<div id="image_loading_div"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/loading.gif"/></div>
+				<a href="javascript:void(0);" onclick="loadProductImagesUpload();" id="gallery_images_upload_link">Upload</a>
+				<a href="javascript:void(0);" onclick="loadProductImages();"id="gallery_images_images_link" style="display: none;"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/addon/action_delete2.png" /></a>
+			</div>
+			
+			<h3><a href="javascript:void(0);" onclick="$('#box_content_images').slideToggle();" id="product_image_title">Bilder</a></h3>
+			<div class="content" id="box_content_images">
+				<div class="h_sep_down" id="admin_top_hr" style="margin: 5px -7px 5px -7px;">
+					<span class="left">&nbsp;</span>
+					<span class="right">&nbsp;</span>
+					<span class="center">&nbsp;</span>
+				</div>
+				<div id="images_div"></div>
+				<div id="images_upload"></div>
+			</div>
+		</div>
+	</div>
+	<p>
+		<span class="tf_label" style="width: 60px;">&nbsp;</span>
+		<button class="button small" type="submit"><span>Speichern</span></button>&nbsp;
+	 	<button class="button small" type="button" onclick="alert('asdf');showCategoryEdit({@pp:node_id}); return false;"><span>Abbrechen</span></button>
+	</p>
+</form>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#edit_category_form').attr('action', '#!/chapter/cat/action/edit/id/{@pp:id}/');
+	});
+
+	function showEditImages() {
+		$('#category_images').show();
+		pi_page = pi_page_old = undefined;
+		loadProductImages();
+	}
+
+	function setCategoryImage(id) {
+		showImageLoadingDiv();
+		getService('Category', 'admin', 'args[action]=setCategoryImage&args[id]='+id+'&args[cat]={@pp:id}&args[link]=#!/chapter/cat/&args[noMsg]=true', 
+				function (msg) {
+					if(msg) reloadAdressPath();
+					hideImageLoadingDiv();
+				});
+	}
+	
+	/** image loading **/
+	var pi_page, pi_page_old;
+
+	function showImageLoadingDiv() { $('#image_loading_div').show(); }
+	function hideImageLoadingDiv() { $('#image_loading_div').hide(); }
+
+	function loadGallery(page) {
+		pi_page = page;
+		loadProductImages();
+	}
+
+	function reloadProductImages() {
+		pi_page_old = undefined;
+		loadProductImages();
+	}
+	
+	function loadProductImages() {
+		if(pi_page != pi_page_old || pi_page_old == undefined) {
+			if(pi_page == undefined) pi_page = 1;
+			showImageLoadingDiv();
+			getService('Category', 'admin', 'args[action]=loadProductImages&args[id]={@pp:service}&args[page]='+pi_page+'&args[reloadFunction]=reloadProductImages&args[useFunction]=setCategoryImage', 
+					function (msg) {
+				 		$('#images_upload').hide();
+						$('#images_div').html(msg).show();
+						$('#gallery_images_images_link').hide();
+						$('#gallery_images_upload_link').show();
+						$('#product_image_title').html('Bilder');
+						hideImageLoadingDiv();
+					});
+			pi_page_old = pi_page;
+		}	
+	}
+
+	function loadProductImagesUpload() {
+		showImageLoadingDiv();
+		getService('Category', 'admin', 'args[action]=loadProductImagesUpload&args[id]={@pp:service}&args[link]=#!/chapter/cat/', 
+				function (msg) {
+			 		$('#images_div').hide();
+					$('#images_upload').html(msg).show();
+					$('#gallery_images_images_link').show();
+					$('#gallery_images_upload_link').hide();
+					$('#product_image_title').html('Bilderupload');
+					hideImageLoadingDiv();
+					pi_page_old = undefined;
+				});
+	}
+</script>

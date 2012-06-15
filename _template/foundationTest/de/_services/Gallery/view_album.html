@@ -1,0 +1,30 @@
+<div id="album_div">
+	<a href="javascript:void(0);" onclick="$.address.path('');" class="tf_button small" >&lt; Back to all albums</a>
+	<h1>{@pp:name} </h1>
+	{@pp:image_count} images
+	<p>
+		{@pp:description}
+	</p>
+	<div class="pagina">
+		{pp:Pagina(count:{@pp:pagina_count}, active:{@pp:pagina_active}, url:#/album/{@pp:albumId}/page/{page})}
+	</div>
+	<div id="album_images">
+		<pp:dynamic name="image">
+		<div class="image" id="image-{@pp:id}" style="width: {@pp:div_width}px; height: {@pp:div_height}px;">
+			<div class="img_wrapper_main">
+				<div class="img_wrapper">
+					<a href="javascript:void(0);" onclick="$.address.path('/album/'+active_album+'/page/'+active_page+'/image/{@pp:id}');">
+						<img src="{@pp:root}_core/getImage.php?path={@pp:path}&height={@pp:height}&width={@pp:width}" class="img"/>
+					</a>
+					<div class="title">
+						{@pp:short_name}
+					</div>	
+				</div>
+			</div>
+		</div>
+		</pp:dynamic>
+	</div>
+</div>
+<div class="pagina">
+	{pp:Pagina(count:{@pp:pagina_count}, active:{@pp:pagina_active}, url:#/album/{@pp:albumId}/page/{page})}
+</div>

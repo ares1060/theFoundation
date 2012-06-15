@@ -1,0 +1,13 @@
+<div id="gallery_albums">
+	<pp:dynamic name="albums">
+		<div class="album">
+			<h3><a href="javascript:void(0);" onclick="$.address.path('/album/{@pp:id}');">{@pp:name}</a></h3>
+			<p>
+				{@pp:desc}
+			</p>
+			<p class="footer">
+				{@pp:imageCount} images
+			</p>
+		</div>	
+	</pp:dynamic>
+</div>

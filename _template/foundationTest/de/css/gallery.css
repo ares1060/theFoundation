@@ -1,0 +1,84 @@
+@CHARSET "UTF-8";
+/*  ---------- base  ---------- */
+#loading_div {
+	float: right;
+	padding: 1px 5px 1px 5px;
+	line-height: 20px;	
+	margin-top: -38px;
+	margin-bottom: -1px;
+	background: white;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border: 1px solid #888888;
+}
+#loading_div img {margin-bottom: -5px;}
+
+/* ---------- main  ----------*/
+.album {
+	margin-bottom: 10px;	
+}
+
+/* ---------- album --------- */
+#back_button {
+	margin-top: -5px;
+	position: absolute;
+	left: 10px;
+}
+#title {
+	width: 100%;
+	text-align: center;
+	display: block;
+	overflow: hidden;
+	padding-top: 5px;
+}
+#album_div #album_images, #gallery_main #gallery_view_image {
+	overflow: hidden;
+	color: #aaaaaa;
+	background: #222222;
+	border-top: 1px solid #888888;
+	border-bottom: 1px solid #888888;
+	margin: 0px -10px 10px -20px;
+	padding: 0px 0px 10px 0px;
+}
+#album_div #album_images .img, #gallery_main #gallery_view_image .img {
+	box-shadow: 0px 0px 15px #111111;
+	-moz-box-shadow: 0px 0px 15px #111111;
+	-webkit-box-shadow: 0px 0px 15px #111111;	
+}
+#gallery_main #gallery_view_image {margin-top: 10px; padding: 10px 0 10px 0;}
+/* vertical align
+	 @see http://www.jakpsatweb.cz/css/css-vertical-center-solution.html
+*/
+#album_div {
+}
+#album_div #album_images .image {
+	display: block;
+	overflow: hidden;
+	float: left;	
+	margin: 0px 0px 0px 0px;
+	text-align: center;
+	position: relative;
+}
+#album_div #album_images .image .img_wrapper_main, #gallery_view_image_wrapper_table {	
+	display: table; 
+	height: 100%; 
+	#position: relative; 
+	width: 100%;
+	text-align: center;
+	margin: 10px;
+}
+#album_div #album_images .image .img_wrapper, #gallery_view_image_wrapper_table #gallery_view_image_wrapper{
+	#position: absolute; 
+	#top: 50%;
+	display: table-cell; 
+	vertical-align: middle;
+}
+#album_div #album_images .image .img_wrapper img, #gallery_view_image_wrapper_table #gallery_view_image_wrapper #gallery_view_image_content {
+	#position: relative; 
+	#top: -50%;
+}
+/* image navigation */
+#navigation {float: right;}
+#navigation .nav {margin-left: 3px;}
+#navigation a:hover {text-decoration: none;}

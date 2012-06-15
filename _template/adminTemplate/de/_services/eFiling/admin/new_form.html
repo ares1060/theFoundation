@@ -1,0 +1,51 @@
+<div id="edit_form">
+	<form action="" method="post" class="tf_form" id="edit_form_form">
+		<input type="hidden" name="action" value="new_form" />
+		<h1>Neues Formular</h1>
+		<div class="h_sep" id="admin_top_hr" style="margin: 5px 0px 10px 0px;">
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+		<div class="tf_form_block" style="position: absolute; left: 550px;">
+			<p>
+				<span class="tf_label">&nbsp;</span>
+				<span>&nbsp;</span>
+			</p>
+			<p>
+				<label for="ef_from" class="tf_label">Verf&uuml;gbar von:</label>
+				<input type="text" id="ef_from" name="ef_from" value="" class="tf_input small"/>
+			</p>
+			<p>
+				<label for="ef_to" class="tf_label">Verf&uuml;gbar bis:</label>
+				<input type="text" id="ef_to" name="ef_to" value="" class="tf_input small"/>
+			</p>
+		</div>
+		<div class="tf_form_block">
+			<p>
+				<span class="tf_label">Id:</span>
+				<span style="padding-top: 5px; display: inline-block;">wird automatisch generiert</span>
+			</p>
+			
+			<p>
+				<label for="ef_name" class="tf_label">Name:</label>
+				<input type="text" id="ef_name" name="ef_name" value="" class="tf_input middle"/>
+			</p>
+			<p>
+				<label for="ef_desc" class="tf_label">Beschreibung:</label>
+				<textarea id="ef_desc" name="ef_desc" class="tf_input middle" rows="5"></textarea>
+			</p>
+				<p>
+					<span class="tf_label">&nbsp;</span>
+					<button class="button small" type="submit"><span>Speichern</span></button>
+					<button class="button small" onclick="unsetAdressPath(new Array('action', 'id'));return false;"><span>Abbrechen</span></button>
+				</p>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+	<!--
+	$('#edit_form').ready(function () {
+		$('#edit_form_form').attr('action', '../efiling/#!/chapter/forms/page/'+active_page);//+'/action/edit/id/'+active_id);
+	});
+</script>

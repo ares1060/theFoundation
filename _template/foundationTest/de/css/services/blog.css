@@ -1,0 +1,179 @@
+@CHARSET "UTF-8";
+/*----- BASE ---- */
+#blog {
+	width: 1020px;	
+}
+/* ---- service --- */
+/* -------   SIDEBAR -------- */
+#sidebar_right {
+    float: right;
+    width: 170px;
+    margin-right: 0px;
+    margin-left: 20px;
+    margin-top: -5px;
+}
+#sidebar_right .sidebar_box {
+    border: 1px solid #444444;
+    border-radius: 5px 5px 0px 0px;
+    -moz-border-radius: 5px 5px 0px 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+    margin-bottom: 10px;
+}
+#sidebar_right .sidebar_box div.header {
+    font-size: 14px;
+    font-weight: bold;
+    
+    display: block;
+    background: white;
+    border-bottom: 1px solid #444444;
+    border-radius: 5px 5px 0px 0px;
+    -moz-border-radius: 5px 5px 0px 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+    
+    padding: 5px 0px 5px 5px;
+    color: #444444;
+}
+#sidebar_right .sidebar_box div.content{
+    background: white;
+    /*box-shadow: rgba(0,0,0,.2) 0px 5px 5px -2px inset;*/
+}
+#sidebar_right .sidebar_box div.footer {
+    height: 5px;
+    font-size: 1px;
+}
+/* --------   Sidebar - Content ---------*/
+#sidebar_right .sidebar_box div.content ul{
+    list-style: none;
+}
+#sidebar_right .sidebar_box div.content ul li a {
+    padding: 3px;
+    padding-left: 7px;
+    color: #444444;
+    text-decoration: none;
+    display: block;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+}
+#sidebar_right .sidebar_box div.content ul li a:hover {
+    background: #EEEEFF;
+    color: #3B5998;
+    border-top: 1px solid #3B5998;
+    border-bottom: 1px solid #3B5998;
+}
+/* ------- Pagina __--------*/
+.blog_pagina {
+    width: 820px;
+    height: 30px;
+}
+/* ---------  List - entry ----- */
+.blog_entry {
+    width: 800px;
+}
+.blog_entry .header {
+    height: 47px;
+    margin-bottom: 10px;
+}
+.blog_entry .header .datum{
+    border: 1px solid #444444;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    width: 43px;
+    height: 45px;
+    float: left;
+    margin-right: 10px;
+    text-align: center;
+}
+.blog_entry .header .datum .month{
+    height: 18px;
+    width: 100%;
+    display: block;
+    color: #fafafa;
+    background: #974041;
+    -moz-border-radius-topleft: 2px;
+    border-top-left-radius: 2px;
+    -moz-border-radius-topright: 2px;
+    border-top-right-radius: 2px;
+}
+.blog_entry .header .datum .day{
+    font-size: 20px;
+}
+.blog_entry .header .title {
+    font-size: 22px;
+}
+.blog_entry .header .title a {
+    text-decoration: none;
+    color: #222222;
+}
+.blog_entry .header .bottom {
+    padding-top: 2px;
+    height: 17px;
+}
+.blog_entry .header .bottom .bottom_elem {
+    float: left;
+    margin-right: 15px;
+}
+.blog_entry .header .bottom .author{
+    padding-left: 15px;
+    background: url(../../img/Blog/mini-user.png) top left no-repeat;
+}
+.blog_entry .header .bottom .category{
+    padding-left: 17px;
+    background: url(../../img/Blog/mini-category.gif) top left no-repeat;
+    font-size: 10px;
+    height: 15px;
+}
+.blog_entry .header .bottom .category ul{
+    list-style: none;
+}
+.blog_entry .header .bottom .category ul li{
+    padding-top: 3px;
+    float: left;
+    margin-right: 2px;
+}
+.blog_entry .header .bottom .category ul li a{
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #fafafa;
+    background: #444444;
+    text-decoration: none;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+}
+.blog_entry .header .bottom .category ul li a:hover{
+    background: #666666;
+}
+.blog_entry .description {
+    padding: 10px;
+}
+.blog_entry .footer {
+    margin-bottom: 30px;
+    margin-top: 5px;
+    padding-top: 5px;
+    border-top: 1px solid #dddddd;
+}
+.blog_entry .footer .tags {
+    padding-left: 17px;
+    background: url(../../img/Blog/mini-tags.gif) top left no-repeat;
+    font-size: 10px;
+    height: 15px;
+}
+.blog_entry .footer .tags ul{
+    list-style: none;
+}
+.blog_entry .footer .tags ul li{
+    padding-top: 1px;
+    float: left;
+    margin-right: 2px;
+}
+.blog_entry .footer .tags ul li a{
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #fafafa;
+    background: #444444;
+    text-decoration: none;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+}
+.blog_entry .footer .tags ul li a:hover{
+    background: #666666;
+}

@@ -1,0 +1,65 @@
+<div class="datagroup" style="width: 600px; padding-left: 10px;">
+	<div class="tf_form" >
+		<h2>{@pp:name}</h2>
+		<div class="h_sep" id="admin_top_hr" style="margin: 5px 0px 10px 0px;">
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+		<div class="tf_form_block">
+		<pp:dynamic name="data">
+			<pp:dynamic name="eFiling_dy_string">
+				<input type="hidden" id="ef_data_{@pp:id}" name="ef_data[{@pp:id}]" value="{@pp:val}" />
+				<p>
+					<span class="tf_label">{@pp:name}:</span>
+					<span class="ef_input middle">{@pp:val}</span>
+				</p>
+			</pp:dynamic>
+			<pp:dynamic name="eFiling_dy_soznr">
+				<input type="hidden" id="ef_data_{@pp:id}" name="ef_data[{@pp:id}]" value="{@pp:val}" />
+				<p>
+					<span class="tf_label">{@pp:name}:</span>
+					<span class="ef_input middle">{@pp:val}</span>
+				</p>
+			</pp:dynamic>
+			<pp:dynamic name="eFiling_dy_email">
+				<input type="hidden" id="ef_data_{@pp:id}" name="ef_data[{@pp:id}]" value="{@pp:val}"/>
+				<p>
+					<span class="tf_label">{@pp:name}:</span>
+					<span class="ef_input middle">{@pp:val}</span>
+				</p>
+			</pp:dynamic>
+			<pp:dynamic name="eFiling_dy_int">
+				<input type="hidden" id="ef_data_{@pp:id}" name="ef_data[{@pp:id}]" value="{@pp:val}" />
+				<p>
+					<span class="tf_label">{@pp:name}:</span>
+					<span class="ef_input middle">{@pp:val}</span>
+				</p>
+			</pp:dynamic>
+			<pp:dynamic name="eFiling_dy_textfield">
+				<input type="hidden" id="ef_data_{@pp:id}" name="ef_data[{@pp:id}]" value="{@pp:val}" />
+				<p>
+					<span class="tf_label" >{@pp:name}:</span>
+					<span class="ef_input middle">{@pp:val}</span>
+				</p>
+			</pp:dynamic>
+			<pp:dynamic name="eFiling_dy_check">
+				<input type="hidden" id="ef_data_{@pp:id}" name="ef_data[{@pp:id}]" value="{@pp:val}" />
+				<p>
+					<span class="tf_label">{@pp:name}:</span>
+					<pp:dynamic name="eFiling_dy_check_yes"><span class="ef_input middle"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/status/yes.png" style="margin-bottom: -3px;"/>&nbsp;&nbsp; Ja </span></pp:dynamic>
+					<pp:dynamic name="eFiling_dy_check_no"><span class="ef_input middle"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/status/no.png" style="margin-bottom: -3px;" />&nbsp;&nbsp; Nein </span></pp:dynamic>
+				</p>
+			</pp:dynamic>
+			<pp:dynamic name="eFiling_dy_date">
+				<input type="hidden" id="ef_data_{@pp:id}" name="ef_data[{@pp:id}]" value="{@pp:val}" />
+				<p>
+					<span class="tf_label">{@pp:name}:</span>
+					<span class="ef_input middle">{@pp:val}</span>
+				</p>
+			</pp:dynamic>
+		</pp:dynamic>
+		</div>
+	</div>
+	<br/>
+</div>

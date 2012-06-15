@@ -1,0 +1,175 @@
+<div id="upload_form_dyn">
+	{pp:UIWidgets(widget:Hidden, name:MAX_FILE_SIZE, value:{@pp:max_file_size})}
+	{pp:UIWidgets(widget:Hidden, id:selected_type, value:html, name:selected_type)}
+	<div id="switch_upload">
+		<div class="h_sep_down" id="admin_top_hr" style="margin: 0px 0 0 0px;">
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+		<ul>
+			<li><a href="javascript:void(0)" onclick="show('html')" id="m_html">HTML</a></li>
+			<li><a href="javascript:void(0)" onclick="show('flash')" id="m_flash">Flash</a></li>
+			<li><a href="javascript:void(0)" onclick="show('ftp')" id="m_ftp">FTP</a></li>
+		</ul>
+		<div class="h_sep" id="admin_top_hr_d"> <!-- style="margin: -35px 0 0 0px;"  -->
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+	</div>
+	<div id="upload_form_html" class="tab">
+		{pp:UIWidgets(widget:FileUploadInput, name:files[], id:upload_0, label:{@pp:label})}
+		<pp:dynamic name="uiWidget_fileUpload_more_than_one">
+			<a href="javascript:void(0);" onclick="addUpload()"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/action/add.png" /></a>
+			<div id="upload_add"></div>
+		</pp:dynamic>
+	</div>
+	<div id="upload_form_flash" class="tab">
+		<div id="upload_form_flash_wrapper">
+			<div id="upload_form_flash_button" class="tf_button">Durchsuchen...</div>
+			<div style="position:absolute; top:0; left:5px; z-index:100;"><div id="upload_form_flash_swf"></div></div>
+			<div id="upload_form_flash_files"></div>
+		</div>
+		
+		<script type="text/javascript" src="{@pp:root}{@pp:service_folder}/UIWidgets/assets/swfobject.js"></script>
+		<script type="text/javascript">
+		<!--
+			var fileCount = 0;
+		
+			function handleReady(){
+				$('#upload_form_flash_swf')[0].browseForFiles();
+			}
+		
+			function handleOver(){
+				$('#upload_form_flash_button').addClass('hover');
+			}
+			
+			function handleOut(){
+				$('#upload_form_flash_button').removeClass('hover');
+			}
+			
+			function handleAddFile(name){
+				fileCount++;
+				$('#upload_form_flash_files').append('<div class="upload_form_flash_files_row"><div class="bar"></div><span class="name">'+name+'</span></div>');
+			}
+			
+			function handleProgessFile(file, progress){
+				$('#upload_form_flash_files .upload_form_flash_files_row').each(function(){
+					if($(this).html() == file){
+						$(this).find('.bar').animate({width:$(this).width()*(1-(progress/100))});
+					}
+				});
+			}
+			
+			function handleErrorFile(file, msg){
+				if(msg == 'FILE_TOO_BIG'){
+					alert("The file \""+file+"\" is too big.");
+				} else if(msg == 'DUPLICATE_FILE'){
+					alert("The file \""+file+"\" is already in the upload queue.");
+				} else {
+					$('#upload_form_flash_files .upload_form_flash_files_row').each(function(){
+						if($(this).find('.name').html() == file){
+							$(this).find('.bar').animate({width:$(this).width()}).css('background-color', 'rgba(255,0,0,0.1)');
+						}
+					});
+				}
+			}
+			
+			function handleUploadFile(file){
+				$('#upload_form_flash_files .upload_form_flash_files_row').each(function(){
+					if($(this).find('.name').html() == file){
+						$(this).find('.bar').animate({width:$(this).width()}).css('background-color', 'rgba(0,255,0,0.1)');
+					}
+				});
+			}
+			
+			function handleHttpStatus(s){
+				//alert(s);
+			}
+			
+			function handleChunkFinished(){
+				//alert("chunk finished");
+			}
+			
+			function handleChunkError(){
+				//alert("chunk error");
+			}
+			
+			function handleUploadFinished(){
+				$('#gallery_upload_form').unbind('submit');
+				$('#gallery_upload_form').submit();
+			}
+
+			var flashvars = {
+				upload_target: '{@pp:root}{@pp:service_folder}/UIWidgets/assets/upload.php',
+				max_file_size: {@pp:max_file_size}/1000, /*in kb*/
+				max_upload_count: {@pp:max_uploads}, /*maximum count of parallel uploads*/
+				multipart : false
+			};
+			var params = {
+				menu: "false",
+				scale: "noScale",
+				allowFullscreen: "false",
+				allowScriptAccess: "always",
+				wmode: "transparent"
+			};
+			var attributes = {
+				id:"upload_form_flash_swf"
+			};
+			
+			swfobject.embedSWF("{@pp:root}{@pp:service_folder}/UIWidgets/assets/FlashUploader.swf", "upload_form_flash_swf", $("#upload_form_flash_button").width()+20, 30, "10.0.0", "", flashvars, params, attributes);	
+		
+			$('#gallery_upload_form').submit(function(){
+				if(fileCount > 0){
+					$('#gallery_upload_form :submit').animate({opacity:0.5}, 500);
+					$('#gallery_upload_form :submit').attr('disabled', 'disabled');
+					$('#gallery_upload_form :reset').animate({opacity:0.5}, 500);
+					$('#gallery_upload_form :reset').attr('disabled', 'disabled');
+					$('#gallery_upload_form :submit').parent().append('<img src="{@pp:root}{@pp:tpl_folder}/img/loading.gif" class="loading" alt="loading" style="margin:0 0 -6px 0;" width="20" height="20"/>');
+					var w = $('#gallery_upload_form .loading').width();
+					$('#gallery_upload_form .loading').width(0);
+					$('#gallery_upload_form .loading').animate({width: w});
+					$('#upload_form_flash_swf')[0].startUpload();
+					return false;	
+				} else return true;
+			});
+			
+			$('#gallery_upload_form').bind('reset', function(){
+				if(fileCount > 0){
+					$('#upload_form_flash_swf')[0].clearQueue();
+					$('#upload_form_flash_files').html('');
+					fileCount = 0;
+				}
+			});
+		//-->
+		</script>
+	</div>
+	<div id="upload_form_ftp" class="tab">
+		Hier k&ouml;nnen sie Bilder aus dem FTP-Ordner verwenden.
+		<div id="upload_form_ftp_files">
+			
+		</div> 
+	</div>
+</div>
+<script type="text/javascript">
+<!--
+	var max_uploads = {@pp:max_uploads};
+	var ftp_types = '{@pp:type}';
+	
+	$('#upload_form_dyn').ready(function() {show('flash'); loadFTPUploads();});
+
+	function show(id) {
+		$('#upload_form_dyn > .tag').hide();
+		$('#upload_form_html').hide();
+		$('#upload_form_flash').hide();
+		$('#upload_form_ftp').hide();
+		$('#m_html').removeClass('selected');
+		$('#m_flash').removeClass('selected');
+		$('#m_ftp').removeClass('selected');
+		$('#m_'+id).addClass('selected');
+		$('#upload_form_'+id).show();
+		$('#selected_type').val(id);
+	}
+//-->
+</script>

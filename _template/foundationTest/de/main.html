@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="{@pp:root}{@pp:tpl_root_folder}/css/foundation.css" /> 
+<link rel="stylesheet" type="text/css" href="{@pp:root}{@pp:tpl_folder}/css/main.css" />
+{@pp:extra_css}
+<script type="text/javascript" src="{@pp:root}{@pp:tpl_folder}/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="{@pp:root}{@pp:tpl_root_folder}/js/foundation.js"></script>
+{@pp:extra_js}
+<title>{@pp:title}</title>
+<script type="text/javascript">
+<!--
+	//$(document).ready(function () {$('#debug_msg_content').hide();});
+	var to_root = '{@pp:root}';
+	var tpl_root = to_root+'{@pp:tpl_folder}';
+//-->
+</script>
+</head>
+<body>
+	<div id="main">
+		<div id="header">
+			<div id="debug_msg">
+				<a href="javascript:void(0);" onclick="$('#debug_msg_content').toggle();" style="float: right; margin:3px 5px -35px 0px;"><img src="{@pp:root}{@pp:tpl_folder}/img/debug.png" /></a>
+				<div id="debug_msg_content">
+					{pp:Messages("action":"viewType", "type":"debug")}
+				</div>
+			</div>
+			<div id="loginform">	
+				{pp:User(action:user_actions)}
+			</div>
+			<a href="{@pp:root}foundationTest/index.php" id="logo"><img src="{@pp:root}{@pp:tpl_folder}/img/logo.png" /></a>
+		</div>
+		<div id="menu">
+			<ul id="menu_list">
+				<li {@pp:mainMenu_0}><a href="{@pp:root}foundationTest/home.php">Home</a></li>
+				<li {@pp:mainMenu_1}><a href="{@pp:root}foundationTest/blog.php">Blog</a></li>
+				<li {@pp:mainMenu_4}><a href="{@pp:root}foundationTest/gallery.php">Gallery</a></li>
+				<li {@pp:mainMenu_2}><a href="{@pp:root}foundationTest/guestbook.php">Guestbook</a></li>
+				<li {@pp:mainMenu_3}><a href="{@pp:root}foundationTest/doc/">Documentation</a></li>
+				<li {@pp:mainMenu_5}><a href="{@pp:root}foundationTest/newsletter.php">Newsletter</a></li>
+				<li {@pp:mainMenu_6}><a href="{@pp:root}foundationTest/eFiling.php">eFiling</a></li>
+			</ul>
+		</div>
+		<div id="content">
+			{@pp:content}
+		</div>
+		<div id="footer">
+			<a href="{@pp:root}foundationTest/home.php">Home</a> | <a href="{@pp:root}foundationTest/blog.php">Blog</a> | <a href="{@pp:root}foundationTest/guestbook.php">Guestbook</a> | <a href="{@pp:root}foundationTest/documentation.php">Documentation</a><br />
+			&copy; Copyright 2011 - TheFoundation <br /><img src="{@pp:root}{@pp:tpl_folder}/img/logo_button.png" style="border: 1px solid #222222;"/>
+		</div>
+	</div>
+</body>
+</html>

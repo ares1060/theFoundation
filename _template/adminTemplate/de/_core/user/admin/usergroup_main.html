@@ -1,0 +1,34 @@
+{pp:Pagina("count":"{@pp:pagina_count}", "active":"{@pp:pagina_active}", "url":"JavaScript:setAdressPathKey('page', '{page}');", "template":"pagina_modern")}<br />
+<div class="tf_table">
+	<table>
+		<tr>
+			<th style="width: 30px;">ID</th>
+			<th style="width: 30px;">&nbsp;</th>
+			<th style="width: 150px;">Name</th>
+			<th style="width:100px;"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/statistic.png" /></th>
+			<th>&nbsp;</th>
+			<th style="width: 50px;">&nbsp;</th>
+		</tr>
+		<pp:dynamic name="group">
+			<tr>
+				<td class="number">{@pp:id}</td>
+				<td class="center"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/status/{@pp:name}.png" /></td>
+				<td>{@pp:name}</td>
+				<td class="number">{@pp:count} Benutzer</td>
+				<td>&nbsp;</td>
+				<td class="center border-left special">&nbsp;
+					<pp:dynamic name="edit">
+						<a href="javascript:void(0);" onclick="setAdressPathKey('action', 'edit');setAdressPathKey('id', '{@pp:id}');" alt="Bearbeiten" title="Bearbeiten"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/action/edit.png"/></a>&nbsp;
+						<a href="javascript:void(0);" onclick="setAdressPathKey('action', 'delete');setAdressPathKey('id', '{@pp:id}');" alt="L&ouml;schen" title="L&ouml;schen"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/action/delete.gif"/></a>
+					</pp:dynamic>
+				</td>
+			</tr>
+		</pp:dynamic>
+	</table>
+</div>
+<pp:dynamic name="no_rights_create">
+<script type="text/javascript">
+	$('#create_link').hide();
+	$('#seperator').hide();
+</script>
+</pp:dynamic>

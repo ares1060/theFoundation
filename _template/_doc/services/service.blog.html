@@ -1,0 +1,356 @@
+<div id="docu_content">
+	<div id="version">
+		<div class="content">0.1r2</div>
+		<div class="footer">Version</div>
+	</div>
+    <h1>Service: Blog</h1>
+    <div id="info">
+    	Service for displaying and editing Data for a Blog.<br />
+    	<ul class="required">
+    		<li class="header">Required Services:</span> 
+    		<li><a href="core.php">Core</a> <span class="c_comment">(Always required)</span></li>
+    		<li><a href="service.php?chap=pagina">Pagina</a></li>
+    		<li><a href="service.php?chap=comment">Comment</a> <span class="c_comment">(if Comments enabled)</span></li>
+    	</ul>
+    </div>
+    <h3>Function Reference <!-- a href="javascript:void(0);" onclick="$('#functions').toggleSlide();" class="show_more">more/less</a//--></h3>
+    <h4>Extra functions</h4>
+   	<div id="functions" class="doc_block">
+   		<div class="function">
+    		<span class="header"><span class="func_public">&nbsp;</span> public function renderList($mode, $cat='', $tags='', $page=1)</span>
+    		<div class="content">
+    			Displays a list of Blog-entrys defined by categories, tags and/or pages.
+    			<ul>
+    				<li class="header">Parameter</li>
+    				<li><span class="c_type">string</span> <span class="c_var">$mode</span> <span class="c_comment">//Mode of the list</span>
+    					<ul class="values">
+    						<li><span class="c_string">list</span> <span class="c_comment">see renderList</span></li> 
+                            <li><span class="c_string">view</span> <span class="c_comment">see renderSingle</span></li>
+                            <li><span class="c_string">cat</span> <span class="c_comment">see renderList</span></li> 
+                            <li><span class="c_string">tag</span> <span class="c_comment">see renderList</span></li>
+                            <li><span class="c_string">list_categories</span> <span class="c_comment">see renderSideMenuCategories</span></li> 
+                            <li><span class="c_string">list_tags</span> <span class="c_comment">see renderSideMenuTags</span></li>
+    					</ul>
+    				</li>
+    				<li><span class="c_type">string</span> <span class="c_var">$cat</span> <span class="c_comment">//Categories (default='') </span></li>
+    				<li><span class="c_type">string</span> <span class="c_var">$tags</span> <span class="c_comment">//Tags (default='') </span></li>
+    				<li><span class="c_type">int</span> <span class="c_var">$page</span> <span class="c_comment">//active Page (Pagina)(default=1) </span></li>
+    			</ul>
+    		</div>
+        </div>
+   		<div class="function">
+    		<span class="header"><span class="func_public">&nbsp;</span> public function renderSideMenuCategories()</span>
+    		<div class="content">
+    			Displays a sidebox with Category-Links for the Blog
+    		</div>
+        </div>
+        <div class="function">
+    		<span class="header"><span class="func_public">&nbsp;</span> public function renderSideMenuTags()</span>
+    		<div class="content">
+    			Displays a sidebox with Tag-Links for the Blog
+    		</div>
+        </div>
+        <div class="function">
+    		<span class="header"><span class="func_public">&nbsp;</span> public function renderSingle($id)</span>
+    		<div class="content">
+    			Displays single Blog entry with the id $id.
+    			<ul>
+    				<li class="header">Parameter</li>
+    				<li><span class="c_type">int</span> <span class="c_var">$id</span> <span class="c_comment">//the id of the entry to be viewed</span></li>
+    			</ul>
+    		</div>
+        </div>
+    </div>
+    <h4 style="margin-bottom: -10px; margin-top: 10px;">Functions from IService</h4>
+	<div id="functions_i" class="doc_block">
+		<div class="function">
+        	<span class="header"><span class="func_public">&nbsp;</span> public function admin($args)</span>
+    		<div class="content">
+    			<span class="empty" style="text-align: left;">Function not used yet.</span>
+    		</div>
+		</div>
+		<div class="function">
+        	<span class="header"><span class="func_public">&nbsp;</span> public function data($args)</span>
+    		<div class="content">
+    			<span class="empty" style="text-align: left;">Function not used yet.</span>
+    		</div>
+		</div>
+		<div class="function">
+        	<span class="header"><span class="func_public">&nbsp;</span> public function run($args)</span>
+    		<div class="content">
+    			<span class="empty" style="text-align: left;">Function not used yet.</span>
+    		</div>
+		</div>
+		<div class="function">
+        	<span class="header"><span class="func_public">&nbsp;</span> public function view($args)</span>
+    		<div class="content">
+    			Wrapper function for functions mentioned above.<br/>
+    			<ul>
+    				<li class="header">Parameter</li>
+    				<li><span class="c_type">string</span> <span class="c_var">$args['mode']</span> <span class="c_comment"></span>
+    					<ul class="values">
+    						<li><span class="c_string">mode</span> <span class="c_comment">list</span></li>
+    						<li><span class="c_string">list</span>  <span class="c_comment">see renderList()</span></li> 
+                            <li><span class="c_string">view</span>  <span class="c_comment">see renderSingle()</span></li>
+                            <li><span class="c_string">cat</span>  <span class="c_comment">see renderList()</span></li> 
+                            <li><span class="c_string">tag</span>  <span class="c_comment">see renderList()</span></li>
+                            <li><span class="c_string">list_categories</span>  <span class="c_comment">see renderSideMenuCategories()</span></li> 
+                            <li><span class="c_string">list_tags</span>  <span class="c_comment">see renderSideMenuTags()</span></li>
+    					</ul>
+    				</li>
+    				<li><span class="c_type">string</span> <span class="c_var">$args['page']</span> <span class="c_comment"> active page</span></li>
+    			</ul>
+    			
+    		</div>
+		</div>
+   	</div>
+   	<h3>Config <!-- a href="javascript:void(0);" onclick="$('#config').toggleSlide();" class="show_more">more/less</a//--></h3>
+	<div id="config" class="doc_block">
+		<ul>
+		    <li><span class="c_var">$this->config</span>['per_page_list'] = 10;</li>
+    	    <li><span class="c_var">$this->config</span>['per_page_kategory'] = 10;</li>
+    	    <li><span class="c_var">$this->config</span>['per_page_tag'] = 10;</li>
+    		<li>&nbsp;</li>
+    	    <li><span class="c_var">$this->config</span>['tpl_root'] = '_services/Blog/';</li>
+    	    <li><span class="c_var">$this->config</span>['tpl']['list/main'] = $this->config['tpl_root'].'list';</li>
+    	    <li><span class="c_var">$this->config</span>['tpl']['list/cat'] = $this->config['tpl_root'].'cat';</li>
+    	    <li><span class="c_var">$this->config</span>['tpl']['list/tags'] = $this->config['tpl_root'].'tags';</li>
+    	    <li><span class="c_var">$this->config</span>['tpl']['view/main'] = $this->config['tpl_root'].'view';</li>
+    	    <li><span class="c_var">$this->config</span>['tpl']['stuff/list_categories'] = $this->config['tpl_root'].'side_categories';</li>
+    	    <li><span class="c_var">$this->config</span>['tpl']['stuff/list_tags'] = $this->config['tpl_root'].'side_tags';</li>
+	    	<li>&nbsp;</li>
+    	    <li><span class="c_var">$this->config</span>['loc_file'] = $GLOBALS['config']['root'].'/_localization/_services/Blog.loc.php';</li>
+   	   		<li>&nbsp;</li>
+    	    <li><span class="c_var">$this->config</span>['css_file'] = 'services/blog.css';</li>
+		</ul>
+	</div>
+	<h3>Examples <!-- a href="javascript:void(0);" onclick="$('#examples').toggleSlide();" class="show_more">more/less</a//--></h3>
+	<div id="examples" class="doc_block">
+    	<h4>Example for using the Blog Service in an PerPedes (html) Template:</h4>
+		<div class="code">
+	        <ol>
+	            <li><span class="c_base">&#123;pp:</span><span class="c_class">Blog</span>(<span class="c_param">mode:</span>list, <span class="c_param">page:</span>2)<span class="c_base">&#125;</span> <span class="c_comment">&#060;!--Displays page 2 of the blog//--&#062;</span></li>
+	            <li class="odd"><span class="c_base">&#123;pp:</span><span class="c_class">Blog</span>(<span class="c_param">mode:</span>cat, <span class="c_param">page:</span>2, <span class="c_param">cat:</span>test)<span class="c_base">&#125;</span> <span class="c_comment">&#060;!--Displays just page 2 of category test//--&#062;</span></li>
+	        </ol>
+	    </div>
+	    <br />
+	    <h4>Example for using the Blog Service in php:</h4>
+	    <div class="code">
+	        <ol>
+	            <li><span class="c_base">require_once(</span>'_core/theFoundation.php'<span class="c_base">)</span>; <span class="c_comment">//Include PerPedes</span></li>
+	            <li class="odd">&nbsp;</li>
+	            <li><span class="c_param">$sp</span> = <span class="c_base">new</span> <span class="c_class">ServiceProvider()</span>; <span class="c_comment">//Init ServiceProvider</span></li>
+	            <li class="odd">&nbsp;</li>
+	            <li><span class="c_param">$sp</span>-><span class="c_class">view(</span>'Blog', <span class="c_base">array(</span>'mode'=>'tag', </li>
+	            <li class="odd"><span class="c_tab">&nbsp;</span><span class="c_tab">&nbsp;</span><span class="c_tab">&nbsp;</span>'tag'=>'test', </li>
+	            <li ><span class="c_tab">&nbsp;</span><span class="c_tab">&nbsp;</span><span class="c_tab">&nbsp;</span>'page'=>1<span class="c_base">)</span><span class="c_class">)</span>;</li>
+	            <li class="odd">&nbsp;</li>
+	            <li><span class="c_base">echo</span> <span class="c_param">$sp</span>-><span class="c_class">render()</span>; <span class="c_comment">//The Tag Page of the Tag "test" will be rendered at page 1 </li>
+	        </ol>
+	    </div>
+	</div>
+   	<h3>Database Design <!-- a href="javascript:void(0);" onclick="$('#database').toggleSlide();" class="show_more">more/less</a//--></h3>
+	<div id="database" class="doc_block">
+		<div class="table">
+            <div class="header">{prefix}blog_entry</div>
+            <div class="content">
+                <ul>
+                    <li class="field">e_id <span class="type">int</span></li>
+                    <li class="field">title_de <span class="type">varchar(255)</span></li>
+                    <li class="field">desc_de <span class="type">text</span></li>
+                    <li class="field">content_de <span class="type">text</span></li>
+                    <li class="field">author <span class="type">int</span></li>
+                    <li class="field">creation_date <span class="type">datetime</span></li>
+                    <li class="field">last_edit_date <span class="type">datetime</span></li>
+                    <li class="field">status <span class="type">int</span></li>
+                    <li class="field">comments <span class="type">int</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="table">
+          	<div class="header">{prefix}blog_category</div>
+            <div class="content">
+                <ul>
+                    <li class="field">k_id <span class="type">int</span></li>
+                    <li class="field">name_de <span class="type">varchar(30)</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="table">
+            <div class="header">{prefix}blog_tags</div>
+            <div class="content">
+                <ul>
+                    <li class="field">t_id <span class="type">int</span></li>
+                    <li class="field">name_de <span class="type">varchar(30)</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="table">
+            <div class="header">{prefix}blog_entry_tags</div>
+            <div class="content">
+                <ul>
+                    <li class="field">t_id <span class="type">int</span></li>
+                    <li class="field">e_id <span class="type">int</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="table">
+            <div class="header">{prefix}blog_entry_category</div>
+            <div class="content">
+                <ul>
+                    <li class="field">k_id <span class="type">int</span></li>
+                    <li class="field">e_id <span class="type">int</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="clearer">&nbsp;</div>
+	</div>
+</div>
+   	<!-- 
+    <br />
+    <h3>Example for using the Blog Service in an PerPedes (html) Template:</h3>
+    <div class="code">
+        <ol>
+            <li><span class="code_base">&#123;pp:</span><span class="code_class">Blog</span>(<span class="code_param">mode:</span>list, <span class="code_param">page:</span>2)<span class="code_base">&#125;</span> <span class="code_comment">&#060;!--Displays page 2 of the blog//--&#062;</span></li>
+            <li class="odd"><span class="code_base">&#123;pp:</span><span class="code_class">Blog</span>(<span class="code_param">mode:</span>cat, <span class="code_param">page:</span>2, <span class="code_param">cat:</span>test)<span class="code_base">&#125;</span> <span class="code_comment">&#060;!--Displays just page 2 of category test//--&#062;</span></li>
+        </ol>
+    </div>
+    <br />
+    <h3>Example for using the Blog Service in php:</h3>
+    <div class="code">
+        <ol>
+            <li><span class="code_base">require_once(</span>'_core/perpedes.php'<span class="code_base">)</span>; <span class="code_comment">//Include PerPedes</span></li>
+            <li class="odd">&nbsp;</li>
+            <li><span class="code_param">$sp</span> = <span class="code_base">new</span> <span class="code_class">ServiceProvider()</span>; <span class="code_comment">//Init ServiceProvider</span></li>
+            <li class="odd">&nbsp;</li>
+            <li><span class="code_param">$sp</span>-><span class="code_class">view(</span>'Blog', <span class="code_base">array(</span>'mode'=>'tag', </li>
+            <li class="odd"><span class="code_tab">&nbsp;</span><span class="code_tab">&nbsp;</span><span class="code_tab">&nbsp;</span>'tag'=>'test', </li>
+            <li ><span class="code_tab">&nbsp;</span><span class="code_tab">&nbsp;</span><span class="code_tab">&nbsp;</span>'page'=>1<span class="code_base">)</span><span class="code_class">)</span>;</li>
+            <li class="odd">&nbsp;</li>
+            <li><span class="code_base">echo</span> <span class="code_param">$sp</span>-><span class="code_class">render()</span>; <span class="code_comment">//The Tag Page of the Tag "test" will be rendered at page 1 </li>
+        </ol>
+    </div>
+    <br />
+    <h3>Function Reference:</h3>
+   	<div id="functions">
+    	<div class="function">
+    		<span class="header">renderSideMenuCategories()</span>
+    		<div class="content">
+    			Displays a sidebox with Category-Links for the Blog
+    		</div>
+        </div>
+        <div class="function">
+    		<span class="header">renderSideMenuTags()</span>
+    		<div class="content">
+    			Displays a sidebox with Tag-Links for the Blog
+    		</div>
+        </div>
+        <div class="function">
+    		<span class="header">renderSingle($id)</span>
+    		<div class="content">
+    			Displays single Blog entry with the id $id.
+    		</div>
+        </div>
+        <div class="function">
+    		<span class="header">renderList($mode, $cat='', $tags='', $page=1)</span>
+    		<div class="content">
+    			Displays a list of Blog-entrys defined by categories, tags and/or pages.
+    		</div>
+        </div>
+		<div class="function">
+        	<span class="header">view($args)</span>
+    		<div class="content">
+    			Wrapper function for functions mentioned above.<br/>
+    			args:<br />
+    			<ul class="tags">
+    				<li><span class="header">mode</span>
+    					<ul class="options">
+    						<li><span class="header">list</span> see renderList</li> 
+                            <li><span class="header">view</span> see renderSingle</li>
+                            <li><span class="header">cat</span> see renderList</li> 
+                            <li><span class="header">tag</span> see renderList</li>
+                            <li><span class="header">list_categories</span> see renderSideMenuCategories</li> 
+                            <li><span class="header">list_tags</span> see renderSideMenuTags</li>
+    					</ul>
+    				</li>
+    				<li><span class="header">page</span></li>
+    			</ul>
+    		</div>
+		</div>
+	</div>
+	<br />
+	<h3>Database Design</h3>
+	<div id="database">
+        <div class="table">
+            <div class="header">{prefix}blog_entry</div>
+            <div class="content">
+                <ul>
+                    <li class="field">e_id <span class="type">int</span></li>
+                    <li class="field">title_de <span class="type">varchar(255)</span></li>
+                    <li class="field">desc_de <span class="type">text</span></li>
+                    <li class="field">content_de <span class="type">text</span></li>
+                    <li class="field">author <span class="type">int</span></li>
+                    <li class="field">creation_date <span class="type">datetime</span></li>
+                    <li class="field">last_edit_date <span class="type">datetime</span></li>
+                    <li class="field">status <span class="type">int</span></li>
+                    <li class="field">comments <span class="type">int</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="table">
+          	<div class="header">{prefix}blog_category</div>
+            <div class="content">
+                <ul>
+                    <li class="field">k_id <span class="type">int</span></li>
+                    <li class="field">name_de <span class="type">varchar(30)</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="table">
+            <div class="header">{prefix}blog_tags</div>
+            <div class="content">
+                <ul>
+                    <li class="field">t_id <span class="type">int</span></li>
+                    <li class="field">name_de <span class="type">varchar(30)</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="table">
+            <div class="header">{prefix}blog_entry_tags</div>
+            <div class="content">
+                <ul>
+                    <li class="field">t_id <span class="type">int</span></li>
+                    <li class="field">e_id <span class="type">int</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="table">
+            <div class="header">{prefix}blog_entry_category</div>
+            <div class="content">
+                <ul>
+                    <li class="field">k_id <span class="type">int</span></li>
+                    <li class="field">e_id <span class="type">int</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var lastused = 'view';
+    $(document).ready(function() {
+        $('#tab_admin').hide();
+        $('#tab_data').hide();
+        $('#tab_run').hide();
+        $('#blog_modes').hide();
+    });
+    function triggerFunctionMenu(id) {
+        if(id != lastused){
+            $('#tab_'+lastused).hide();
+            $('#tab_'+id).show();
+            lastused = id;
+        }
+    }
+    function toggleMore(id) {
+        $('#'+id).toggle();
+    }
+</script> -->

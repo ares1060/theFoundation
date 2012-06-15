@@ -1,0 +1,166 @@
+<div id="edit_form">
+	<form action="" method="post" class="tf_form" id="edit_form_form">
+		<input type="hidden" name="id" value="{@pp:id}" />
+		<input type="hidden" name="action" value="edit_form" />
+		<h1>Formular bearbeiten</h1>
+		<div class="h_sep" id="admin_top_hr" style="margin: 5px 0px 10px 0px;">
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+		<div class="tf_form_block" style="position: absolute; left: 550px;">
+			<p>
+				<span class="tf_label">&nbsp;</span>
+				<span>&nbsp;</span>
+			</p>
+			<p>
+				<label for="ef_from" class="tf_label">Verf&uuml;gbar von:</label>
+				<input type="text" id="ef_from" name="ef_from" value="{@pp:from}" class="tf_input small"/>
+			</p>
+			<p>
+				<label for="ef_to" class="tf_label">Verf&uuml;gbar bis:</label>
+				<input type="text" id="ef_to" name="ef_to" value="{@pp:to}" class="tf_input small"/>
+			</p>
+		</div>
+		<div class="tf_form_block">
+			<p>
+				<span class="tf_label">Id:</span>
+				<span style="padding-top: 5px; display: inline-block;">{@pp:id}</span>
+			</p>
+			
+			<p>
+				<label for="ef_name" class="tf_label">Name:</label>
+				<input type="text" id="ef_name" name="ef_name" value="{@pp:name}" class="tf_input middle"/>
+			</p>
+			<p>
+				<label for="ef_desc" class="tf_label">Beschreibung:</label>
+				<textarea id="ef_desc" name="ef_desc" class="tf_input middle" rows="5">{@pp:desc}</textarea>
+			</p>
+				<p>
+					<span class="tf_label">&nbsp;</span>
+					<button class="button small" type=""><span>Speichern</span></button>
+					<button class="button small" onclick="unsetAdressPath(new Array('action', 'id'));return false;"><span>Abbrechen</span></button>
+				</p>
+		</div>
+	</form>
+	<br />
+	<h1>Datengruppen <span class="small">Vorschau</span></h1>
+	<div id="edit_form_datagroups">
+		<div class="datagroup addDataGroup" id="addDataGroup_top" style="margin-bottom: -5px; margin-top: 3px;">
+			<a href="javascript: void(0);" onclick="loadNewDataGroup('addDataGroup_top');"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/actions/add.png" class="icon"/>Neue Gruppe hinzuf&uuml;gen</a>
+		</div>
+		<div id="addDataGroup_top_content" class="addDataGroup_content">
+			<div style="margin-top: 60px; text-align: center;"><img src="{@pp:abs_root}{@pp:tpl_root_folder}/img/loading.gif" /><br /><br />Laden...</div>
+		</div>
+		<div class="h_sep_down" id="admin_top_hr" style="margin: 13px -5px 10px -5px;">
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+		<pp:dynamic name="groups">
+		<div class="ef_datagroup">
+			<div class="datagroup_action">
+				<div class="actions">
+					<ul>
+						<li><a href="javascript:void(0);" onclick="setAdressPathKeys(new Array('chapter', 'action', 'id'),new Array('group', 'edit', '{@pp:id}'));"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/actions/edit.png" class="icon"/> Bearbeiten</a></li>
+						<li><a href="javascript:void(0);" onclick="removeGroup({@pp:id});"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/actions/delete.png" class="icon"/> L&ouml;schen</a></li>
+					</ul>
+				</div>
+				<div class="move">
+					<ul>
+						<pp:dynamic name="notTop"><li><a href="javascript:void(0);" onclick="moveUp({@pp:id}, {@pp:newOrder});"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/actions/move_up.png" class="icon" alt=" Hinauf bewegen" title=" Hinauf bewegen"/></a></li></pp:dynamic>
+						<pp:dynamic name="Top"><li style="height: 28px;">&nbsp;</li></pp:dynamic>
+						<pp:dynamic name="notBottom"><li><a href="javascript:void(0);" onclick="moveDown({@pp:id}, {@pp:newOrder});"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/actions/move_down.png" class="icon" alt="Hinunter bewegen" title="Hinunter bewegen"/></a></li></pp:dynamic>
+					</ul>
+				</div>
+			</div>
+			<div class="data_group_blocker"></div>
+			<div id="data_group_{@pp:id}">
+				<img src="{@pp:abs_root}{@pp:tpl_root_folder}/img/loading.gif" />
+			</div>
+			<script type="text/javascript">
+				<!--
+					$('#data_group_{@pp:id}').ready(function () {
+						getService('eFiling', 'admin', 'args[chapter]=view_group&args[id]={@pp:id}', 
+								function (msg) {
+									$('#data_group_{@pp:id}').html(msg);
+								});
+					});
+				//-->
+			</script>
+		</div>
+		</pp:dynamic>
+		<pp:dynamic name="noDatagroups">
+		<div class="addDataGroup">
+			<h3 style="color:#666; padding: 10px;">Noch keine Datengruppen hinzugef&uuml;gt</h3>
+		</div>
+		</pp:dynamic><!-- 
+		<div class="h_sep" id="admin_top_hr" style="margin: 10px -5px 13px -5px;">
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+		<div id="addDataGroup_top_content" class="addDataGroup_content">
+			<div style="margin-top: 60px; text-align: center;"><img src="{@pp:abs_root}{@pp:tpl_root_folder}/img/loading.gif" /><br /><br />Laden...</div>
+		</div>
+		<div class="datagroup addDataGroup" style="margin-top: -5px; margin-bottom: 5px;">
+			<a href="javascript: void(0);" onclick=""><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/actions/add.png" class="icon"/>Neue Gruppe hinzuf&uuml;gen</a>
+		</div> -->
+	</div>
+	<br /><br />
+</div>
+<script type="text/javascript">
+	<!--
+	$('#edit_form').ready(function () {
+		$('#edit_form_form').attr('action', '../efiling/#!/chapter/forms/page/'+active_page);//+'/action/edit/id/'+active_id);
+	});
+	
+	/**
+	 * removes Group from Form 
+	 */
+	function removeGroup(id){
+		showAdminLoadingDiv();
+		getService('eFiling', 'admin', 'args[action]=deleteGroupFromForm&args[form]='+active_id+'&args[id]='+id+'&args[noMsg]=true', 
+				function (msg) {
+					window.setTimeout('location.reload()', 0);
+				});
+	}
+
+	function moveDown(id, newOrder){
+		showAdminLoadingDiv();
+		getService('eFiling', 'admin', 'args[action]=moveGroupInForm&args[id]='+id+'&args[order]='+newOrder+'&args[form]='+active_id+'&args[noMsg]=true', 
+				function (msg) {
+					window.setTimeout('location.reload()', 0);
+				});
+	}
+
+	function moveUp(id, newOrder){
+		showAdminLoadingDiv();
+		getService('eFiling', 'admin', 'args[action]=moveGroupInForm&args[id]='+id+'&args[order]='+newOrder+'&args[form]='+active_id+'&args[noMsg]=true', 
+				function (msg) {
+					window.setTimeout('location.reload()', 0);
+				});
+	}
+	function closeNewDataGroup() {
+		$('#addDataGroup_top').show();
+		$('#addDataGroup_top_content').hide();
+	}
+	function loadNewDataGroup(id){
+		$('#'+id).hide();
+		$('#'+id+'_content').show();
+		showAdminLoadingDiv();
+		getService('eFiling', 'admin', 'args[chapter]=get_availableDataGroups&args[form]='+active_id, 
+				function (msg) {
+					hideAdminLoadingDiv();
+					$('#'+id+'_content').html(msg);
+				});
+	}
+	function addGroupToForm(id){
+		showAdminLoadingDiv();
+		getService('eFiling', 'admin', 'args[action]=addGroupToForm&args[form]='+active_id+'&args[id]='+id+'&args[noMsg]=true', 
+				function (msg) {
+					window.setTimeout('location.reload()', 0);
+				});
+	}
+	//-->
+</script>

@@ -1,0 +1,10 @@
+<span class="uiwidget_inputwrap uiwidget_inputwrap_{@pp:type}">
+	<pp:dynamic name="label">
+		<label for="{@pp:id}" class="uiwidget_label uiwidget_label_{@pp:type}">{@pp:label}:</label>
+	</pp:dynamic>
+	<span class="uiwidget_counter_box">
+		<button type="button" class="uiwidget_counter_plus" onclick="$('#{@pp:id}').val(parseInt($('#{@pp:id}').val())+1);"><span>+</span></button>
+		<input type="text" name="{@pp:name}" id="{@pp:id}" value="{@pp:value}" class="uiwidget uiwidget_input uiwidget_{@pp:type} uiwidget_counter"/>
+		<button type="button" class="uiwidget_counter_minus" onclick="if(parseInt($('#{@pp:id}').val()) > 0) {$('#{@pp:id}').val(parseInt($('#{@pp:id}').val())-1);}"><span>-</span></button>
+	</span>
+</span>

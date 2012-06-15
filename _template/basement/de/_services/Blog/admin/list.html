@@ -1,0 +1,156 @@
+<div id="admin_blog_main_breadcrumb">
+	<div id="pagina_top">{pp:Pagina(count:{@pp:pagina_count}, active:{@pp:pagina_active}, url:#/list/page/{page})}</div>
+</div>
+<!-- <div id="detail_menu">
+	<a href="javascript:void(0);" onclick="active_type='simple';loadList()" <pp:dynamic name="simple_sel">class="sel"</pp:dynamic><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/simple_small.png" alt="simple" title="view simple"/></a>
+	<a href="javascript:void(0);" onclick="active_type='detail';loadList()" <pp:dynamic name="detail_sel">class="sel"</pp:dynamic>><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/detail_small.png" alt="detail" title="view detail"/></a>
+</div>//-->
+<pp:dynamic name="detail">
+	<div id="admin_blog_main_list">
+		<table id="entry_table">
+		<thead>
+			<tr>
+				<th class="col1" style="vertical-align: middle; text-align: center;">{pp:UIWidgets(widget:Checkbox, id:admin_blog_checkbox)}</th>
+				<th class="col_title">Title</th>
+				<th class="col_infos">Infos</th>
+				<th class="col_date">Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			<pp:dynamic name="entry">
+				<tr id="admin_blog_entry-{@pp:id}" class="admin_blog_entry">
+					<td style="padding-top: 30px; text-align: center;">{pp:UIWidgets(widget:Checkbox, id:admin_blog_checkbox_{@pp:id})}</td>
+					<td> 
+			           <span class="title"><a href="javascript:void(0);" onclidk="loadView({@pp:id})">{@pp:titel}</a> </span><br />
+			           <span class="admin_blog_entry_actions_div">
+							<a href="javascript:void(0)" class=" light" onclick="showDescription({@pp:id})" id="description-{@pp:id}">Einleitung zeigen</a> |
+							<a href="javascript:void(0)" class=" light">L&ouml;schen</a>
+						</span>
+			           <!-- <span class="desc">{@pp:description}</span> -->
+			        </td>
+			        <td>
+			        	<span class="info_block"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/author-bw.png" class="author_img"/> {@pp:author}</span>
+			        	<span class="info_block"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/views-bw.png" class="views_img"/> views</span>		        	
+			        	<span class="info_block"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/comments-bw.png" class="comments_img"/> comments</span>
+			        	<span class="info_block"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/cat-bw.png" class="cat_img"/> cat</span><br />
+			        	<span class="info_block" style="width: 300px;"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/tags-bw.png" class="tags_img"/> tags</span><br />
+			        </td>
+			        <td>
+			        	<div class="datum">
+		                    <span class="month">{@pp:date_month_name}</span>
+		                    <span class="day">{@pp:date_day}</span>
+		                </div>
+		                {@pp:date_time}
+			        </td>
+				</tr>
+				<script type="text/javascript">
+				<!--
+					$('#admin_blog_entry-{@pp:id}').hover(
+						function () {
+								$(this).children('td').children('.admin_blog_entry_actions_div').show();
+								$(this).children('td').children('.info_block').children('.author_img').attr('src', '{@pp:root}{@pp:tpl_root_folder}/img/blog/author.png');
+								$(this).children('td').children('.info_block').children('.comments_img').attr('src', '{@pp:root}{@pp:tpl_root_folder}/img/blog/comments.png');
+								$(this).children('td').children('.info_block').children('.views_img').attr('src', '{@pp:root}{@pp:tpl_root_folder}/img/blog/views.png');
+								$(this).children('td').children('.info_block').children('.tags_img').attr('src', '{@pp:root}{@pp:tpl_root_folder}/img/blog/tags.png');
+								$(this).children('td').children('.info_block').children('.cat_img').attr('src', '{@pp:root}{@pp:tpl_root_folder}/img/blog/cat.png');
+						}, 
+						function () {
+							$(this).children('td').children('.admin_blog_entry_actions_div').hide();
+							$(this).children('td').children('.info_block').children('.author_img').attr('src', '{@pp:root}{@pp:tpl_root_folder}/img/blog/author-bw.png');
+							$(this).children('td').children('.info_block').children('.comments_img').attr('src', '{@pp:root}{@pp:tpl_root_folder}/img/blog/comments-bw.png');
+							$(this).children('td').children('.info_block').children('.views_img').attr('src', '{@pp:root}{@pp:tpl_root_folder}/img/blog/views-bw.png');
+							$(this).children('td').children('.info_block').children('.tags_img').attr('src', '{@pp:root}{@pp:tpl_root_folder}/img/blog/tags-bw.png');
+							$(this).children('td').children('.info_block').children('.cat_img').attr('src', '{@pp:root}{@pp:tpl_root_folder}/img/blog/cat-bw.png');
+						}
+					);
+				//-->
+				</script>
+			</pp:dynamic>
+		</tbody>
+		</table>
+	</div>
+</pp:dynamic>
+<pp:dynamic name="simple">
+	<div id="admin_blog_main_list">
+		<table id="entry_table">
+		<thead>
+			<tr>
+				<th class="col1" style="vertical-align: middle; text-align: center;">{pp:UIWidgets(widget:Checkbox, id:admin_blog_checkbox)}</th>
+				<th class="col_status">&nbsp;</th>
+				<th class="col_title">Title</th>
+				<th class="col_author"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/author.png" class="author_img"/> Author</th>
+				<th class="col_cat"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/cat.png" class="cat_img"/> Category</th>
+				<th class="col_date"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/time.png" class="cat_img"/> Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			<pp:dynamic name="entry_simple">
+				<tr id="admin_blog_entry-{@pp:id}" class="admin_blog_entry simple">
+					<td style="vertical-align: middle; text-align: center;">{pp:UIWidgets(widget:Checkbox, id:admin_blog_checkbox_{@pp:id})}</td>
+					<td style="vertical-align: middle; text-align: center;" ><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/status/{@pp:status}.png"/></td>
+					<td> 						
+			           <span class="title"><a href="javascript:void(0);" onclick="$.address.path('/post/{@pp:id}/');">{@pp:titel}</a></span><br />
+			           <span class="admin_blog_entry_actions_div">
+							<!-- <a href="javascript:void(0)" class=" light" onclick="showDescription({@pp:id})" id="description-{@pp:id}">Einleitung zeigen</a> | -->
+							<a href="javascript:void(0)" onclick="$.address.path('/post/{@pp:id}/');" class=" light">Bearbeiten</a> | 
+							<a href="javascript:void(0)" class=" light">Deaktivieren</a> | 
+							<a href="javascript:void(0)" class=" light">In den Papierkorb</a>
+						</span>
+			        </td>
+			        <td>{@pp:author}</td>
+			        <td>cats</td>
+			        <td>
+		                {@pp:date_full}<br />
+		                {@pp:date_time}
+			        </td>
+				</tr>
+				<script type="text/javascript">
+				<!--
+					$(document).ready(function () {
+						$('body').append('<div id="infos-{@pp:id}" class="info_box">'+
+								'<span class="info_block"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/time.png" class="views_img"/> {@pp:date_full} {@pp:date_time}</span><br />'+
+								'<span class="info_block"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/author.png" class="author_img"/> {@pp:author}</span>'+     	
+					        	'<span class="info_block"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/comments.png" class="comments_img"/> comments</span>'+
+								'<span class="info_block"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/views.png" class="views_img"/> views</span>'+  
+					        	'<span class="info_block"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/cat.png" class="cat_img"/> cat</span>'+
+					        	'<span class="info_block" style="width: 300px;"><img src="{@pp:root}{@pp:tpl_root_folder}/img/blog/tags.png" class="tags_img"/> tags</span>'+
+					        '</div>');
+						$('#admin_blog_entry-{@pp:id}').mousemove(function(e) {
+							active_mouseover = {@pp:id};
+						     var position = $(this).position();
+						     var offset = $(this).offset();
+						     var x = e.pageX - (offset.left);
+						     var y = e.pageY - (offset.top);
+							if($('#infos-{@pp:id}').is(':visible')) {
+							    $('#infos-{@pp:id}')
+							      .css({'left': e.pageX+16, 'top': e.pageY+16});
+							} else {
+								setTimeout(function() {
+									if(active_mouseover == {@pp:id}) $('#infos-{@pp:id}').css({'left': e.pageX+16, 'top': e.pageY+16}).show();
+								}, 700);
+							}
+						  }).mouseout(function () {$('#infos-{@pp:id}').hide(); active_mouseover=-1;});
+					});
+					$('#admin_blog_entry-{@pp:id}').hover(
+						function () {
+								$(this).children('td').children('.admin_blog_entry_actions_div').show();
+						}, 
+						function () {
+							$(this).children('td').children('.admin_blog_entry_actions_div').hide();
+						}
+					);
+				//-->
+				</script>
+			</pp:dynamic>
+		</tbody>
+		</table>
+	</div>
+</pp:dynamic>
+<div id="table_footer">
+	<div id="pagina_bottom">{pp:Pagina(count:{@pp:pagina_count}, active:{@pp:pagina_active}, url:#/list/page/{page})}</div>
+</div>
+<script type="text/javascript">
+<!--
+	var active_mouseover = -1;
+//-->
+</script>

@@ -1,0 +1,35 @@
+<style type="text/css" media="screen">
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/shop.css);
+</style>
+<div class="shop_categories">
+	<div class="shop_breadcrumb">
+		<pp:dynamic name="breadcrumb">
+			<span class="bread_crumb"><a href="{@pp:pre_link}kategorie/{@pp:webname}/">{@pp:name}</a> ></span>
+		</pp:dynamic>
+	</div>
+	<h1>Kategorie: {@pp:name}</h1>
+	<div class="shop_categories_content">
+	<pp:dynamic name="child">
+		<span class="shop_category">
+			<a href="{@pp:pre_link}kategorie/{@pp:webname}/">
+				<img src="{@pp:abs_root}_core/getImage.php?path={@pp:img_path}&width=200&height=200"/>
+				<span class="shop_name">{@pp:name}</span>
+			</a>
+		</span>
+	</pp:dynamic>
+	
+	<pp:dynamic name="product">
+		<span class="shop_product">
+			<a href="{@pp:pre_link}{@pp:id}_{@pp:webname}/">
+				<img src="{@pp:abs_root}_core/getImage.php?path={@pp:img_path}&width=200&height=300"/>
+				<span class="shop_name">{@pp:name}</span>
+			</a>
+		</span>
+	</pp:dynamic>
+	
+	<pp:dynamic name="nothing_there">
+		<span class="no_content">Derzeit sind leider keine Produkte verf&uuml;gbar.</span>
+	</pp:dynamic>
+	
+	</div>
+</div>

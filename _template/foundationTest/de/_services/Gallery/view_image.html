@@ -1,0 +1,23 @@
+<span id="navigation">
+	<pp:dynamic name="prev_nExists"><span class="nav tf_button small" id="prev_image">&lt;</span></pp:dynamic><pp:dynamic name="prev_exists"><a href="javascript:void(0);" onclick="$.address.path('/album/'+active_album+'/page/'+active_page+'/image/'+{@pp:prevImageId});"><span class="nav tf_button small" id="prev_image">&lt;</span></a></pp:dynamic><pp:dynamic name="next_nExists"><span class="nav tf_button small" id="next_image">&gt;</span></pp:dynamic><pp:dynamic name="next_exists"><a href="javascript:void(0);" onclick="$.address.path('/album/'+active_album+'/page/'+active_page+'/image/'+{@pp:nextImageId});"><span class="nav tf_button small" id="next_image">&gt;</span></a></pp:dynamic>
+</span>
+<div id="title">
+	<div id="back_button"><a href="javascript:void(0);" onclick="$.address.path('/album/'+active_album+'/page/'+active_page);" class="tf_button small" > &lt;  Back to album</a></div>
+	{@pp:name}
+</div>
+
+<div id="gallery_view_image">
+	<div id="gallery_view_image_wrapper_table">
+		<div id="gallery_view_image_wrapper">
+			<div id="gallery_view_image_content">
+				<img src="{@pp:root}{@pp:tpl_root_folder}/img/loading.gif" id="image_loading"/>
+				<img src="{@pp:root}_core/getImage.php?path={@pp:path}&height=600&width=800" id="gallery_view_image_image" class="img"/>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+<!--
+	$('#gallery_view_image_image').load(function () {$('#image_loading').hide();});
+//-->
+</script>

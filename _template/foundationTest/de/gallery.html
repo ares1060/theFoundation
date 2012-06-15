@@ -1,0 +1,40 @@
+<div id ="loading_div">Loading... <img src="{@pp:root}{@pp:tpl_root_folder}/img/loading.gif" /></div>
+<div id="gallery_main">
+	
+</div>
+<script type="text/javascript">
+<!--
+	var active_album;
+	var active_image;
+	var active_page;
+	
+	/* --- deep link --- */
+	$.address.change(function(event) {  updateDeepLink(); });  
+	$.address.init(function(event) {  updateDeepLink(); });  
+
+    function updateDeepLink() {
+        params = $.address.pathNames(); 
+        
+        active_image = -1;
+        active_album = -1;
+        active_page = 1;
+        
+        if(params.length > 0 && params[0] == 'album') active_album = params[1];
+
+        if(params.length > 2 && params[2] == 'image') {active_image = params[3];}
+        if(params.length > 2 && params[2] == 'page') {active_page = params[3];}
+
+        if(params.length > 4 && params[4] == 'image') {active_image = params[5];}
+        
+        loadPage();
+    }
+
+    function loadPage() {		    
+		if(active_image > 0) loadImage(active_image);
+		else {
+			if(active_album > 0) loadAlbum(active_album);
+			else loadMain();
+		} 
+    }
+//-->
+</script>

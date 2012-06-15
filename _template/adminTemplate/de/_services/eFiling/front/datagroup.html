@@ -1,0 +1,63 @@
+<div class="datagroup" style="width: 600px; padding-left: 10px;">
+	<form action="" method="post" class="tf_form" >
+		<h2>{@pp:name}</h2>
+		<div class="h_sep" id="admin_top_hr" style="margin: 5px 0px 10px 0px;">
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+		<div class="tf_form_block">
+		<pp:dynamic name="data">
+			<pp:dynamic name="eFiling_dy_string">
+				<p>
+					<label class="tf_label" for="tf[{@pp:id}]">{@pp:name}:</label>
+					<input type="text" id="tf[{@pp:id}]" name="tf[{@pp:id}]" value="" class="tf_input middle"/>
+				</p>
+			</pp:dynamic>
+			<pp:dynamic name="eFiling_dy_soznr">
+				<p>
+					<label class="tf_label" for="tf[{@pp:id}]">{@pp:name}:</label>
+					<input type="text" id="tf[{@pp:id}]" name="tf[{@pp:id}]" value="" class="tf_input small"/>
+				</p>
+			</pp:dynamic>
+			<pp:dynamic name="eFiling_dy_email">
+				<p>
+					<label class="tf_label" for="tf[{@pp:id}]">{@pp:name}:</label>
+					<input type="text" id="tf[{@pp:id}]" name="tf[{@pp:id}]" value="" class="tf_input middle"/>
+				</p>
+			</pp:dynamic>
+			<pp:dynamic name="eFiling_dy_int">
+				<p>
+					<label class="tf_label" for="tf[{@pp:id}]">{@pp:name}:</label>
+					<input type="text" id="tf[{@pp:id}]" name="tf[{@pp:id}]" value="" class="tf_input small"/>
+				</p>
+			</pp:dynamic>
+			<pp:dynamic name="eFiling_dy_text">
+				<p>
+					<label class="tf_label" for="tf[{@pp:id}]">{@pp:name}:</label>
+				</p>
+				<div class="eFiling_text">{@pp:info}</div>
+			</pp:dynamic>
+			<pp:dynamic name="eFiling_dy_textfield">
+				<p>
+					<label class="tf_label" for="tf[{@pp:id}]">{@pp:name}:</label>
+					<textarea id="tf[{@pp:id}]" name="tf[{@pp:id}]" class="tf_input middle" rows="5">&nbsp;</textarea>
+				</p>
+			</pp:dynamic>
+			<pp:dynamic name="eFiling_dy_check">
+				<p>
+					<label class="tf_label" for="tf[{@pp:id}]">{@pp:name}:</label>
+					<input type="checkbox" id="tf[{@pp:id}]" name="tf[{@pp:id}]" value="" class="" style="padding-top: 5px; display: inline-block;"/><span>&nbsp;</span>
+				</p>
+			</pp:dynamic>
+			<pp:dynamic name="eFiling_dy_date">
+				<p>
+					<label class="tf_label" for="tf[{@pp:id}]">{@pp:name}:</label>
+					<input type="text" id="tf[{@pp:id}]" name="tf[{@pp:id}]" value="" class="tf_input middle"/>
+				</p>
+			</pp:dynamic>
+		</pp:dynamic>
+		</div>
+	</form>
+	<br/>
+</div>

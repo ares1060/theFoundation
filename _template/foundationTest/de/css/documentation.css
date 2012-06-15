@@ -1,0 +1,239 @@
+@CHARSET "UTF-8";
+/* ---- BASE ---- */
+#docu_content {
+	/*margin-left: 200px;*/	
+	color: #444444;
+}
+span.empty{
+	display: block;
+	text-align: center;
+	color: #cccccc;
+	padding: 5px;
+	font-size: 14px;	
+}
+#docu_content .show_more, #docu_content .version {
+	font-size: 12px;	
+	font-weight: normal;
+}
+#docu_content .doc_block {
+	border: 1px solid #aaaaaa;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;	
+}
+h3{ margin: 20px 0px 2px 5px; font-size: 14px; font-weight: normal;}
+h4{ padding-left: 5px; font-weight: normal;	}
+/* --- code types --- -*/
+span.c_comment {color: #888888; font-style: italic; padding-left: 5px;}
+span.c_type {color: #444444;}
+span.c_var {color: #0000aa;}
+span.c_const {color: #0000aa;}
+span.c_string {color: #000000;}
+/* -- light color for code div --*/
+.code span.c_base {color: #ffaaaa;}
+.code span.c_class {color: #aaffaa;}
+.code span.c_param {color: #aaaaff;}
+
+/* ----- version ----- */
+#version {
+	float: right;
+	height: 52px;
+	width: 70px;
+	border: 1px solid #888888;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+#version .content{
+	font-size: 16px;
+	padding: 7px 0px 7px 0px;
+	text-align: center;
+}
+#version .footer{
+	border-top: 1px solid #888888;
+	padding: 2px;
+	font-weight: bold;
+	text-align: center;
+	background: #444444;
+	color: #eeeeee;
+	border-radius: 0px 0px 3px 3px;
+	-moz-border-radius: 0px 0px 3px 3px;
+	-webkit-border-radius: 0px 0px 3px 3px;
+}
+/* ----- info -----*/
+#info ul {
+	list-style: none; 
+	width: 300px; 
+	border: 1px solid #888888;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	margin-top: 10px;
+}
+#info ul li{
+	padding: 3px 5px 3px 15px;
+	border-bottom: 1px solid #dddddd;	
+}
+#info ul li.header{padding-left: 5px; background: #EEEEFF;}
+#info ul li:last-child{
+	border-bottom: 0px;
+	border-radius: 0px 0px 5px 5px;
+	-moz-border-radius: 0px 0px 5px 5px;
+	-webkit-border-radius: 0px 0px 5px 5px;
+}
+#info ul li:first-child{
+	border-radius: 5px 5px 0px 0px;
+	-moz-border-radius: 5px 5px 0px 0px;
+	-webkit-border-radius: 5px 5px 0px 0px;
+}
+
+/* ---- functions ----*/
+#functions_i {margin-top: 10px;}
+#functions .function, #functions_i .function{
+	border-bottom: 1px solid #dddddd;
+	padding: 5px;
+}
+#functions .function:hover, #functions_i .function:hover { background: #EEEEFF;}
+#functions .function:last-child, #functions_i .function:last-child{
+	border-bottom: 0px;
+	border-radius: 0px 0px 5px 5px;
+	-moz-border-radius: 0px 0px 5px 5px;
+	-webkit-border-radius: 0px 0px 5px 5px;
+}
+#functions .function:first-child, #functions_i .function:first-child{
+	border-radius: 5px 5px 0px 0px;
+	-moz-border-radius: 5px 5px 0px 0px;
+	-webkit-border-radius: 5px 5px 0px 0px;
+}
+#functions .function .header, #functions_i .function .header{
+	display: block;
+	font-weight: bold;	
+	font-size: 13px;
+	margin-bottom: 3px;
+}
+#functions .function .func_public, #functions_i .function .func_public {
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	background: url(../img/doc/public.png) top left no-repeat;	
+}
+#functions .function .func_private, #functions_i .function .func_private {
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	background: url(../img/doc/private.png) top left no-repeat;	
+}
+#functions .function .content , #functions_i .function .content{
+	color: #888888;
+}
+#functions .function .content ul , #functions_i .function .content ul { list-style: none;}
+#functions .function .content ul li, #functions_i .function .content ul li {
+	margin-left: 25px;
+	list-style: square;
+}
+#functions .function .content ul li ul, #functions_i .function .content ul li ul {
+	margin-bottom: 5px;
+	list-style: round;	
+}
+#functions .function .content ul li.header, #functions_i .function .content ul li.header{
+	margin-left: 10px;
+	font-weight: normal;
+	color: #444444;
+	margin-top: 5px;
+	font-size: 12px;
+}
+#functions .seperator {
+	border-bottom: 1px solid #aaaaaa;
+	padding: 7px 3px 3px 3px;
+	font-weight: bold;
+}
+/* ----- config -----*/
+#config ul {list-style: none;}
+#config ul li{
+	padding: 3px 5px 3px 5px;
+	border-bottom: 1px solid #dddddd;	
+}
+#config ul li:hover { background: #EEEEFF;}
+#config ul li:last-child{
+	border-bottom: 0px;
+	border-radius: 0px 0px 5px 5px;
+	-moz-border-radius: 0px 0px 5px 5px;
+	-webkit-border-radius: 0px 0px 5px 5px;
+}
+#config ul li:first-child{
+	border-radius: 5px 5px 0px 0px;
+	-moz-border-radius: 5px 5px 0px 0px;
+	-webkit-border-radius: 5px 5px 0px 0px;
+}
+/* ------ examples -----*/
+#examples {border: 0px !important;}
+.code {
+    background: #444444;
+    color: #fafafa;
+    padding: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    margin-top: 3px;
+}
+.code ol{
+    list-style-type: decimal;
+    margin-left: 35px;
+}
+.code ol li{
+    border-left: 1px solid #fafafa;
+    margin-right: -5px;
+    padding: 2px;
+    padding-left: 5px;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+.code ol li.odd {
+    background: #333333;
+}
+.code span.code_tab {float: left; display: block; width: 30px; height: 10px;}
+/* ------ database -----*/
+#database {
+    font-size: 12px;
+    margin-top: 3px;
+    border: 0px !important;
+}
+#database div.table{
+    display: block;
+    width: 190px;
+    float: left;
+    border: 1px solid #444444;
+    padding: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+#database div.table div.header {
+    background: #444444;
+    margin: -5px;
+    padding: 3px;
+    margin-bottom: 5px;
+    color: #fafafa;
+}
+#database div.table div.content ul {
+    list-style: none;
+}
+#database div.table div.content ul li:last-child {
+    border-bottom: 0px;
+    margin-bottom: -5px;
+}
+#database div.table div.content ul li {
+    border-bottom: 1px solid #888888;
+    margin: -5px;
+    margin-bottom: 5px;
+    padding: 3px;
+    padding-left: 5px;
+    font-weight: bold;
+}
+#database div.table div.content ul li .type {
+    font-weight: normal;
+    padding-left: 5px;
+    color: #4477aa;
+}

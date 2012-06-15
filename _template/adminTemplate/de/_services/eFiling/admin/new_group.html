@@ -1,0 +1,41 @@
+<div id="edit_group">
+	<form action="" method="post" class="tf_form" id="new_group_form">
+		<input type="hidden" name="action" value="new_group" />
+		<h1>Neue Datengruppe</h1>
+		<div class="h_sep" id="admin_top_hr" style="margin: 5px 0px 10px 0px;">
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+		<div class="tf_form_block" style="position: absolute; left: 550px;">
+			&nbsp;
+		</div>
+		<div class="tf_form_block">
+			<p>
+				<span class="tf_label">Id:</span>
+				<span style="padding-top: 5px; display: inline-block;">wird automatisch generiert</span>
+			</p>
+			
+			<p>
+				<label for="ef_name" class="tf_label">Name:</label>
+				<input type="text" id="ef_name" name="ef_name" value="" class="tf_input middle"/>
+			</p>
+			<p>
+				<label for="ef_desc" class="tf_label">Beschreibung:</label>
+				<textarea id="ef_desc" name="ef_desc" class="tf_input middle" rows="5"></textarea>
+			</p>
+				<p>
+					<span class="tf_label">&nbsp;</span>
+					<button class="button small" type=""><span>Speichern</span></button>
+					<button class="button small" onclick="unsetAdressPath(new Array('action', 'id'));return false;"><span>Abbrechen</span></button>
+				</p>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+	<!--
+	$('#edit_form').ready(function () {
+		$('#new_group_form').attr('action', '../efiling/#!/chapter/group/page/'+active_page);//+'/action/edit/id/'+active_id);
+	});
+	//-->
+</script>

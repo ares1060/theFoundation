@@ -1,0 +1,16 @@
+<table id="{@pp:id}" class="uiwidget_table" border="1">
+	<pp:dynamic name="thead">
+	<thead>
+		<tr class="uiwidget_tablehead_row">
+			<pp:dynamic name="theadcol"><td class="uiwidget_tablehead_col"{@pp:attributes}>{@pp:value}</td></pp:dynamic>
+		</tr>
+	</thead>
+	</pp:dynamic>
+	<tbody>
+		<pp:dynamic name="row">
+		<tr class="uiwidget_table_row">
+			<pp:dynamic name="col"><td class="uiwidget_table_col"{@pp:attributes}>{@pp:value}</td></pp:dynamic>
+		</tr>
+		</pp:dynamic>
+	</tbody>
+</table>

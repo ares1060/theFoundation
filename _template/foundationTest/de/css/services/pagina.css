@@ -1,0 +1,35 @@
+@CHARSET "UTF-8";
+/* -------------  Pagina ---------- */
+.pagina {
+    width: 100%;
+    margin-bottom: 10px;
+    height: 22px;
+}
+.pagina ul {
+    list-style: none;
+    height: 22px;
+}
+.pagina ul li{
+    float: right;
+    padding-left: 5px;
+    margin-top: 3px;
+}
+.pagina ul li a{
+    text-decoration: none;
+    padding: 3px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border: 1px solid #FFC531;
+    background: white;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.pagina ul li a:hover{
+    background: #fafafa;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}   
+.pagina ul li.active a{
+    background: #EEEEFF;
+    border: 1px solid #444444;
+}

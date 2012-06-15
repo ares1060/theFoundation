@@ -1,0 +1,145 @@
+{pp:UIWidgets(widget:Hidden, value:neverMind)}
+<div id="gallery_overlay" onclick="closeAll()">&nbsp;</div>
+<div class="messages" id="gallery_messages">{pp:Messages(action:viewType, type:error/info)}</div>
+<div id="loading_div">Loading... <img src="{@pp:root}{@pp:tpl_root_folder}/img/loading.gif" /></div>
+<div class="clearer">&nbsp;</div>
+<div id="gallery">
+	<div id="gallery_actions">
+		<ul id="right_actions">
+			<li class="spacer">&nbsp;</li>
+			<li id="edit_action"><a href="javascript:void(0);" onclick="openEdit();" class="menu_link"><img src="{@pp:root}{@pp:tpl_root_folder}/img/gallery/edit.png" /><br />Edit</a>
+				<ul id="edit_action_ul" class="submenu">
+					<li>
+						<div id="edit_action_div" class="action_box">&nbsp;</div>
+					</li>
+				</ul>
+			</li>
+			<li id="delete_action"><a href="javascript:void(0);" onclick="openDelete();" class="menu_link"><img src="{@pp:root}{@pp:tpl_root_folder}/img/gallery/delete.png" /><br />Delete</a>
+				<ul id="delete_action_ul" class="submenu">
+					<li id="delete_action_selected_images"><a href="javascript:void(0)" onclick="deleteImages()">Delete selected images</a></li>
+					<li id="delete_action_image"><a href="javascript:void(0)" onclick="deleteImage(active_image);">Delete image</a></li>
+					<li id="delete_action_album"><a href="javascript:void(0)" onclick="deleteAlbum(active_album);">Delete album</a></li>
+				</ul>
+			</li>
+			<!-- <li id="settings_action"><a href="javascript:void(0);" onclick="openNewAlbum();" class="menu_link"><img src="{@pp:root}{@pp:tpl_root_folder}/img/gallery/settings.png" /><br />Settings</a>
+				<ul id="settings_ul" class="submenu">
+					<li>
+						<div id="settings_div" class="action_box">&nbsp;asdf</div>
+					</li>
+				</ul>
+			</li> -->
+		</ul>
+		<ul>
+			<li class="spacer">&nbsp;</li>
+			<li id="upload_action"><a href="javascript:void(0);" onclick="openUpload();" class="menu_link"><img src="{@pp:root}{@pp:tpl_root_folder}/img/gallery/upload.png" /><br />Upload</a>
+				<ul id="upload_ul" class="submenu">
+					<li>
+						<div id="upload_div" class="action_box">&nbsp;</div>
+					</li>
+				</ul>
+			</li>
+			<li id="new_album_action"><a href="javascript:void(0);" onclick="openNewAlbum();" class="menu_link"><img src="{@pp:root}{@pp:tpl_root_folder}/img/gallery/new_album.png" /><br />New Album</a>
+				<ul id="new_album_ul" class="submenu">
+					<li>
+						<div id="new_album_div" class="action_box">&nbsp;</div>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<div id="gallery_sidebar" class="gallery_sidebar">
+		<ul>
+			<li class="header">Albums
+				<ul>
+					<pp:dynamic name="albums">
+						<li {@pp:selected} id="album_sidebar-{@pp:id}">
+							<a href="javascript:void(0);" onclick="$.address.value('/album/{@pp:id}');" <pp:dynamic name="hidden">class="hidden"</pp:dynamic>>{@pp:name}
+								<span class="album_actions">
+									<pp:dynamic name="password"> <span class="hidden"><img src="{@pp:root}{@pp:tpl_root_folder}/img/gallery/status_password.png" alt="password protected" title="password protected"/></span></pp:dynamic>
+								</span>
+							</a>
+						</li>
+					</pp:dynamic>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<div id="gallery_subcontent">
+		{@pp:content}
+		<div id="no_album">No album yet</div>
+	</div>
+</div>
+<script type="text/javascript">
+	<!--
+		var active_album = {@pp:active_album};
+		var active_page = {@pp:active_page};
+		var active_image = {@pp:active_image};
+
+		var delete_success_msg = '{@pp:delete_success_message}';
+		var delete_error_msg = '{@pp:delete_error_message}';
+		var delete_success_msg_album = '{@pp:delete_success_message_album}';
+		var delete_error_msg_album = '{@pp:delete_error_message_album}';
+		
+		var link = '{@pp:link}';
+		var params;
+		
+		//var link = '';
+		/* --- deep link --- */
+		$.address.change(function(event) {  updateDeepLink(); });  
+		$.address.init(function(event) {  updateDeepLink(); });  
+
+	    function updateDeepLink() {
+	        params = $.address.pathNames();  
+	        if(params.length == 0) {
+		        loadFirstAlbum();
+	        }
+	        active_image = -1;
+	        if(params.length > 0 && params[0] == 'album') active_album = params[1];
+	        if(params.length > 2 && params[2] == 'image') {
+		        active_image = params[3];
+	        }
+	        if(params.length > 2 && params[2] == 'page') {
+				if(params.length > 4 && params[4] == 'image') {
+					$.address.value('/album/'+params[1]+'/image/'+params[5]);
+				} else active_page = params[3];
+		        
+	        }
+	        loadPage();
+	    }
+
+	    function loadPage() {		    
+			if(active_image > 0) loadImage(active_image);
+			else {
+				if(active_album > 0) loadAlbum(active_album);
+			} 
+	    }
+
+	    /* ---- contextMenu sidebar ----- */
+	    $('#gallery_sidebar > ul > li.header > ul > li').each(function () {
+			$(this).contextMenu('context_menu_sidebar_'+$(this).attr('id'), {}, {showMenu: function (element) {loadContextContentSidebar(this, element);}, hideMenu: contextClosedSidebar});
+		});
+
+		function loadContextContentSidebar(menu, element) {
+			context_open = true;
+			var id = menu.attr('id').substr(menu.attr('id').search('-')+1, menu.attr('id').length);
+			element.addClass('selected');
+			menu.html('<li class="context_delete"><a href="javascript:void(0);" onclick="deleteAlbum('+id+');">delete album</a></li>');
+		}
+
+		function contextClosedSidebar() {
+			context_open = false;
+			$('#album_sidebar-'+active_album).parent().children('li').removeClass('selected');
+			$('#album_sidebar-'+active_album).addClass('selected');
+		}
+
+	    /* --- ready --- */
+		/*$(document).ready(function () {
+			
+			if(active_image > 0) loadImage(active_image);
+			else {
+				if(active_album != -1) loadAlbum(active_album);
+			}
+			
+		});*/
+	//-->
+</script>

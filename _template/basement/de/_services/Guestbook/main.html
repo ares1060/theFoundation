@@ -1,0 +1,13 @@
+<div id="guestbook">
+    {pp:Guestbook(action:pagina, page:{@GET:page}, target:{@pp:target})}
+    <pp:dynamic name="entry">
+        <div class="guestbook_entry">
+            <span class="title"><strong>{@pp:titel}</strong> von <a href="mailto:{@pp:email}">{@pp:author}</a> </span>
+            <span class="small">um {@pp:datum}</span>
+            <div class="inhalt">
+                {@pp:inhalt}
+            </div>
+        </div>
+    </pp:dynamic>
+    {pp:Guestbook(action:pagina, page:{@GET:page}, target:{@pp:target})}
+</div>

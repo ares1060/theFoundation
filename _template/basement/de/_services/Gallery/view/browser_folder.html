@@ -1,0 +1,15 @@
+<div class="smallGallery gallery_browser">
+	<pp:dynamic name="image">
+		<div class="smallGallery_image">
+			<a href="{@pp:abs_root}_core/getImage.php?path={@pp:path}&height=600&width=800" rel="shadowbox[product];player=img"><img src="{@pp:abs_root}_core/getImage.php?path={@pp:path}&height=60&width=60&mode=cropscale"/></a>
+		</div>
+	</pp:dynamic>
+	<pp:dynamic name="showmore">
+		<div class="smallGallery_image more_images">
+			<span>{@pp:more_images} <br />weitere</span>
+		</div>
+	</pp:dynamic>
+	<pp:dynamic name="more_links">
+		<a href="{@pp:abs_root}_core/getImage.php?path={@pp:path}&height=600&width=800" rel="shadowbox[product];player=img"></a>
+	</pp:dynamic>
+</div>

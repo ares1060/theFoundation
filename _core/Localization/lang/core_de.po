@@ -1,0 +1,165 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: core\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-03-09 16:30+0100\n"
+"PO-Revision-Date: 2012-03-21 21:58+0100\n"
+"Last-Translator: - <->\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: $this->_\n"
+"X-Poedit-Basepath: /Applications/MAMP/htdocs/eclipse/TheFoundation/\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: _core\n"
+
+#: _core/_model/Service.php:41
+msgid "FILE_NOT_FOUND"
+msgstr "Die Datei \"{file}\" konnte nicht gefunden werden"
+
+#: _core/_model/ServiceProvider.php:83
+#: _core/_model/ServiceProvider.php:87
+msgid "SERVICE_NOT_FOUND"
+msgstr "Das Service konnte nicht gefunden werden"
+
+#: _core/Messages/Messages.php:59
+msgid "INTERNAL_ERROR"
+msgstr "Ein interner Fehler ist aufgetreten"
+
+#: _core/Template/Template.php:277
+#: _core/Template/Template.php:331
+msgid "DYNAMIC_NOT_FOUND"
+msgstr "Dynamicbereich \"{template}:{dynamic}\" konnte nicht gefunden werden"
+
+#: _core/User/User.php:366
+msgid "_login blocked"
+msgstr "Falsches Passwort oder falscher Benutzername"
+
+#: _core/User/User.php:370
+msgid "_login deleted"
+msgstr "Falsches Passwort oder falscher Benutzername"
+
+#: _core/User/User.php:374
+msgid "_login has to activate"
+msgstr "Falsches Passwort oder falscher Benutzername"
+
+#: _core/User/User.php:378
+#: _core/User/User.php:384
+#: _core/User/User.php:388
+msgid "_wrong pwd"
+msgstr "Falsches Passwort oder falscher Benutzername"
+
+#: _core/User/User.php:420
+msgid "New user created successfully"
+msgstr ""
+
+#: _core/User/User.php:423
+msgid "New user could not be created"
+msgstr ""
+
+#: _core/User/User.php:427
+msgid "You are not authorized 1"
+msgstr ""
+
+#: _core/User/User.php:431
+#: _core/User/User.php:984
+msgid "_Nick not available"
+msgstr ""
+
+#: _core/User/User.php:786
+#: _core/User/User.php:812
+#: _core/User/User.php:826
+#: _core/User/User.php:872
+#: _core/User/User.php:898
+#: _core/User/User.php:1071
+#: _core/User/User.php:1072
+#: _core/User/User.php:1122
+#: _core/User/User.php:1123
+#: _core/User/User.php:1135
+#: _core/User/User.php:1136
+#: _core/User/User.php:1228
+#: _core/User/User.php:1229
+#: _core/User/User.php:1263
+#: _core/User/User.php:1264
+#: _core/User/User.php:1324
+#: _core/User/User.php:1325
+msgid "You are not authorized"
+msgstr ""
+
+#: _core/User/User.php:801
+msgid "Delete User success"
+msgstr ""
+
+#: _core/User/User.php:804
+#: _core/User/User.php:808
+msgid "Delete User error"
+msgstr ""
+
+#: _core/User/User.php:896
+msgid "_User Update success"
+msgstr ""
+
+#: _core/User/User.php:897
+msgid "_User Update error"
+msgstr ""
+
+#: _core/User/User.php:912
+#: _core/User/User.php:970
+msgid "_Password is not the same"
+msgstr ""
+
+#: _core/User/User.php:916
+#: _core/User/User.php:974
+msgid "_Password is too weak"
+msgstr ""
+
+#: _core/User/User.php:932
+msgid "Userimage upload success"
+msgstr ""
+
+#: _core/User/User.php:934
+msgid "Userimage upload error"
+msgstr ""
+
+#: _core/User/User.php:951
+msgid "Profile picture set successfully"
+msgstr ""
+
+#: _core/User/User.php:952
+msgid "Profile picture could not be set"
+msgstr ""
+
+#: _core/User/User.php:980
+msgid "_no Nick"
+msgstr ""
+
+#: _core/User/User.php:990
+msgid "_no Email"
+msgstr ""
+
+#: _core/User/User.php:994
+msgid "_wrong Email"
+msgstr ""
+
+#: _core/User/User.php:1032
+msgid "All User Option"
+msgstr ""
+
+#: _core/User/User.php:1055
+msgid "_Status: Active"
+msgstr ""
+
+#: _core/User/User.php:1056
+msgid "_Status: Blocked"
+msgstr ""
+
+#: _core/User/User.php:1057
+msgid "_Status: Deleted"
+msgstr ""
+
+#: _core/User/User.php:1058
+msgid "_Status: Has to activate"
+msgstr ""
+

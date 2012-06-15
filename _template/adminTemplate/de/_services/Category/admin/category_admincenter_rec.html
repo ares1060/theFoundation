@@ -1,0 +1,49 @@
+<div class="category_node_admincenter {@pp:first}" id="category_node_{@pp:id}">
+	<div id="category_node_{@pp:id}_drop_before" class="category_node_admincenter_drop_before droppable dropbox">&nbsp;</div>
+	<div id="category_node_{@pp:id}_content" class="category_node_main">
+		<div class="category_node_admincenter_content droppable" id="category_node_{@pp:id}_dropzone">
+			<pp:dynamic name="img_exists"><div class="category_img" style="background: url({@pp:abs_root}_core/getImage.php?path={@pp:img_path}&height=100&width=100) center no-repeat;">&nbsp;</div></pp:dynamic>
+			<soan class="name">{@pp:name} <pp:dynamic name="offline">[Versteckt]</pp:dynamic></span> <!--  #{@pp:id} - {@pp:parent_id}-->
+			<div id="category_node_{@pp:id}_edit" class="category_node_admincenter_edit">&nbsp;</div>
+		</div>
+		<div style="display: inline-block;">
+			<div class="actions" id="category_node_{@pp:id}_actions">
+				<a href="javascript:void(0);" onclick="showCategoryEdit({@pp:id});"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/category/actions/edit.png" class="icon"/></a>&nbsp;
+				<a href="javascript:void(0);" onclick="deleteCat({@pp:id});"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/category/actions/delete.png" class="icon"/></a>
+			</div>
+		</div>
+		<pp:dynamic name="divs"></pp:dynamic>
+	</div>
+	<div class="children">
+		{@pp:children}
+	</div>
+	<div id="category_node_{@pp:id}_drop_after" class="category_node_admincenter_drop_after droppable dropbox">&nbsp;</div>
+</div>
+<script type="text/javascript">
+	$('#category_node_{@pp:id}_content').hover(function () { $('#category_node_{@pp:id}_actions').toggle(); });
+
+	$('#category_node_{@pp:id}').data('id', '{@pp:id}');
+	$('#category_node_{@pp:id}_dropzone').data('id', '{@pp:id}');
+	$('#category_node_{@pp:id}_drop_after').data('id_after', '{@pp:id}');
+	$('#category_node_{@pp:id}_drop_before').data('id_before', '{@pp:id}');
+
+	$('#category_node_{@pp:id}').draggable({
+		cursor: 'move',
+		helper: 'clone'
+	});
+	$('#category_node_{@pp:id}_content .category_node_admincenter_content').droppable({
+		accept: '.category_node_admincenter',
+		hoverClass: 'hovered',
+		drop: handleCatDrop
+	});
+	$('#category_node_{@pp:id}_drop_after').droppable({
+		accept: '.category_node_admincenter',
+		hoverClass: 'hovered',
+		drop: handleCatDrop
+	});
+	$('#category_node_{@pp:id}_drop_before').droppable({
+		accept: '.category_node_admincenter',
+		hoverClass: 'hovered',
+		drop: handleCatDrop
+	});
+</script>

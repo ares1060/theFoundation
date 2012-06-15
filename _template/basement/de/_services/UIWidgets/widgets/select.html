@@ -1,0 +1,10 @@
+<span class="uiwidget_selectwrap uiwidget_selectwrap_{@pp:type}">
+	<pp:dynamic name="label">
+		<label for="{@pp:id}" class="uiwidget_label uiwidget_label_{@pp:type} tf_label">{@pp:label}:</label>
+	</pp:dynamic>
+	<select size="{@pp:size}" name="{@pp:name}" id="{@pp:id}" class="uiwidget_input uiwidget_input_{@pp:type}" {@pp:multiple} style="margin-top: 4px;">
+	<pp:dynamic name="option">
+		<option value="{@pp:value}" class="uiwidget_option uiwidget_option_{@pp:type}" {@pp:selected}>{@pp:caption}</option>
+	</pp:dynamic>
+	</select>
+</span>

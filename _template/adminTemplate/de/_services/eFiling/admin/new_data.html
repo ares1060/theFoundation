@@ -1,0 +1,57 @@
+<div id="edit_data">
+	<form action="" method="post" class="tf_form" id="new_data_form">
+		<input type="hidden" name="action" value="new_data" />
+		<h1>Neue Formulardaten</h1>
+		<div class="h_sep" id="admin_top_hr" style="margin: 5px 0px 10px 0px;">
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+		<div class="tf_form_block">
+			<p>
+				<span class="tf_label">Id:</span>
+				<span style="padding-top: 5px; display: inline-block;">wird automatisch generiert</span>
+			</p>
+			<p>
+				<label for="ef_group" class="tf_label">Gruppe:</label>
+				{@pp:groups}<span>&nbsp;</span>
+			</p>
+			<p>
+				<label for="ef_type" class="tf_label">Type:</label>
+				<select name="ef_type" id="ef_type">
+					<option value="0">Eingabetext</option>
+					<option value="1">Zahl</option>
+					<option value="2">Textfeld</option>
+					<option value="3">Datum</option>
+					<option value="4">Checkbox</option>
+					<option value="5">Sozialversicherungsnummer</option>
+					<option value="6">Nur Text</option>
+					<option value="7">E-Mail</option>
+				</select><span>&nbsp;</span>
+			</p>
+			<p>
+				<label for="ef_name" class="tf_label">Name:</label>
+				<input type="text" id="ef_name" name="ef_name" value="" class="tf_input middle"/>
+			</p>
+			<p>
+				<label for="ef_info" class="tf_label">Info:</label>
+				<textarea id="ef_info" name="ef_info" class="tf_input middle" rows="5"></textarea>
+			</p>
+			<p>
+				<label for="ef_send" class="tf_label">Send:</label>
+				<input type="checkbox" name="ef_send" id="ef_send"  style="padding-top: 5px; display: inline-block;"/>
+			</p>
+			<p>
+				<span class="tf_label">&nbsp;</span>
+				<button class="button small" type="submit"><span>Speichern</span></button>
+				<button class="button small" onclick="unsetAdressPath(new Array('chapter', 'action', 'id'));return false;"><span>Abbrechen</span></button>
+			</p>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+	<!--
+	$('#edit_form').ready(function () {
+		$('#new_data_form').attr('action', '../efiling/#!/chapter/group/page/'+active_page+'/action/edit/id/'+id);//+'/action/edit/id/'+active_id);
+	});
+</script>

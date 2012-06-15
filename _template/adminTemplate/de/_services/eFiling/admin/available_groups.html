@@ -1,0 +1,29 @@
+<div class="available_groups">
+	<a href="javascript:void(0);" onclick="closeNewDataGroup();" class="closeButton">
+		<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/actions/close.png"/>
+	</a>
+	<pp:dynamic name="group">
+		<div class="av_group">
+			<a class="av_link" href="javascript:void(0);" onclick="addGroupToForm({@pp:id});">&nbsp;</a>
+			<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/actions/add.png" class="addButton"/>
+			<h3>{@pp:name}</h3>
+			<div class="h_sep_down" id="admin_top_hr" style="margin: 0px -5px 0px -5px;">
+				<span class="left">&nbsp;</span>
+				<span class="right">&nbsp;</span>
+				<span class="center">&nbsp;</span>
+			</div>
+			<p style="padding: 10px;">
+				{@pp:desc}
+			</p>
+		</div>
+	</pp:dynamic>
+	<div class="av_group no-style" style="text-align: center;">
+		<a class="av_link" href="javascript:void(0);" onclick="setAdressPathKeys(new Array('chapter', 'action'),new Array('group', 'new'));unsetAdressPath(new Array('id'));">&nbsp;</a>
+		<br /><br />
+		<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/eFiling/add.png" /><br />
+		<h3>Neue Gruppe</h3>
+	</div>
+	<pp:dynamic name="noGroups">
+	<div class="noAvGroups">Keine Gruppen verf&uuml;gbar</div>
+	</pp:dynamic>
+</div>

@@ -1,0 +1,58 @@
+<div id="sidebar_right">
+    {pp:Blog(mode:list_categories)}
+    {pp:Blog(mode:list_tags)}
+</div>
+<div id="blog">
+    <h1>{@pp:headline}</h1>
+	<div class="blog_pagina">
+    	<pp:dynamic name="show_pagina">
+    		{pp:Pagina(count:{@pp:pagina_count}, active:{@pp:pagina_active}, url:{@pp:base}home.php?page={page})}
+    	</pp:dynamic>
+    </div>
+    <pp:dynamic name="no_results">
+		<span class="no_results">{@pp:noResults}</span>
+	</pp:dynamic>
+    <pp:dynamic name="entry">
+        <div class="blog_entry">
+            <div class="header"> 
+                <div class="datum">
+                    <span class="month">{@pp:date_month_name}</span>
+                    <span class="day">{@pp:date_day}</span>
+                </div>
+                <span class="title"><a href="{@pp:base}blog.php?mode=view&amp;id={@pp:id}">{@pp:titel}</a></span>
+                <div class="bottom">
+                    <span class="author bottom_elem">{@pp:author}</span>
+                    <span class="category bottom_elem">
+                        <pp:dynamic name="category_list">
+	                        <ul>
+	                        <pp:dynamic name="category">
+	                            <li><a href="{@pp:base}blog.php?mode=cat&amp;cat={@pp:cat_webname}">{@pp:cat_name}</a></li>
+	                        </pp:dynamic>
+	                        </ul>
+	                     </pp:dynamic>
+                    </span>
+                </div>
+            </div>
+            <div class="description">
+                {@pp:description}
+            </div>
+            <div class="footer">
+                <div class="tags">
+                    <pp:dynamic name="tags_list">
+	                    <ul>
+	                    <pp:dynamic name="tags">
+	                        <li><a href="{@pp:base}blog.php?mode=tag&amp;tag={@pp:tag_webname}">{@pp:tag_name}</a></li>
+	                    </pp:dynamic>
+	                    </ul>
+	                </pp:dynamic>
+                </div>
+            </div>
+        </div>
+    </pp:dynamic>
+	<div class="blog_pagina">
+    	<pp:dynamic name="show_pagina">
+    		{pp:Pagina(count:{@pp:pagina_count}, active:{@pp:pagina_active}, url:{@pp:base}home.php?page={page})}
+    	</pp:dynamic>
+    </div>
+</div>
+<div class="clearer">&nbsp;</div>

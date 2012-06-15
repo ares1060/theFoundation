@@ -1,0 +1,35 @@
+<div id="sidebar">
+	<ul>
+		<li {@pp:selected_0}><a href="basics.php"> Basics</a>
+			<pp:dynamic name="basics">
+			<ul>
+				<li {@pp:selected_0_0}><a href="basics.php?chap=template">Template</a></li>
+				<li {@pp:selected_0_1}><a href="basics.php?chap=filesystem">System</a></li>
+			</ul>
+			</pp:dynamic>
+		</li>
+		<li {@pp:selected_1}><a href="core.php"> Core</a>
+			<pp:dynamic name="core">
+			<ul>
+				<li {@pp:selected_1_0}><a href="core.php?chap=database">Database</a></li>
+				<li {@pp:selected_1_1}><a href="core.php?chap=localization">Localization</a></li>
+				<li {@pp:selected_1_2}><a href="core.php?chap=messages">Messages</a></li>
+				<li {@pp:selected_1_3}><a href="core.php?chap=template">Template</a></li>
+				<li {@pp:selected_1_4}><a href="core.php?chap=user">User</a></li>
+			</ul>
+			</pp:dynamic>
+		</li>
+		<li {@pp:selected_2}><a href="service.php"> Services</a>
+			<ul>
+				<pp:dynamic name="service">
+				<li {@pp:selected}><a href="service.php?chap={@pp:webname}">{@pp:name}</a></li>
+				</pp:dynamic>
+			</ul>
+		</li>
+	</ul>
+</div>
+<div id="subcontent">
+	<div class="messages" style="margin-left: 200px;">{pp:Messages(action:viewType, type:error/info)}</div>
+	{@pp:subcontent}
+</div>
+<div class="clearer">&nbsp;</div>

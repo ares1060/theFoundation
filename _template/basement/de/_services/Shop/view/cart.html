@@ -1,0 +1,46 @@
+<pp:dynamic name="something">
+	<a href="../produkte/" class="button_continue_shopping shop_button" style="margin-left: 0px;">&nbsp;</a>
+	<div class="tf_table">
+		<table>
+			<thead>
+				<tr>
+					<th>Img</th>
+					<th>Name</th>
+					<th>Kategorie</th>
+					<th>Preis</th>
+					<th style="width: 70px;">Anzahl</th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<pp:dynamic name="artikel">
+				<tr class="row">
+					<td class="center"><img src="{@pp:abs_root}_core/getImage.php?path={@pp:img_path}&height=40&width=100" /></td>
+					<td><a href="../{@pp:id}_{@pp:webname}/">{@pp:name}</a></td>
+					<td><a href="../kategorie/{@pp:cat_webname}/">{@pp:cat_name}</a></td>
+					<td class="number">{@pp:price}&euro;</td>
+					<td class="number">{pp:UIWidgets("widget":"Counter", "id":"cart_{@pp:id}", "value":"{@pp:anzahl}")}</td>
+					<td class="number"><strong>{@pp:total}&euro;</strong></td>
+				</tr>
+				</pp:dynamic>
+				<tr class="border-top">
+					<td colspan="3">&nbsp;</td>
+					<td class="number" colspan="2">Artikel gesamt:</td>
+					<td class="number"><strong>{@pp:total}&euro;</strong></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<a href="../produkte/" class="button_checkout shop_button"style="margin-right: 0px;">&nbsp;</a>
+	<a href="../produkte/" class="button_reset shop_button" >&nbsp;</a>
+</pp:dynamic>
+<pp:dynamic name="nothing">
+	<div id="cart_no_content">Keine Artikel vorhanden.</div>
+</pp:dynamic>
+<script type="text/javascript">
+	$('#shopping_cart').hide();
+
+	function clearCart() {
+		
+	}
+</script>

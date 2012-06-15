@@ -1,0 +1,59 @@
+<div id="docu_content">
+    <h1>Core: Database <!-- a href="javascript:void(0);" onclick="$('#info').toggleSlide();" class="show_more">more/less</a --></h1>
+    <div id="info">
+    	Creates Database Connection and handles Querys.
+    </div>
+    <h3>Function Reference <!-- a href="javascript:void(0);" onclick="$('#functions').toggleSlide();" class="show_more">more/less</a//--></h3>
+   	<div id="functions" class="doc_block">
+   		<div class="function">
+    		<span class="header"><span class="func_public">&nbsp;</span> public function bool($query)</span>
+    		<div class="content">
+    			Returnes true if $query returns a result.
+    			<ul>
+    				<li class="header">Parameter</li>
+    				<li><span class="c_type">string</span> <span class="c_var">$query</span> <span class="c_comment">//the query string</span></li>
+    			</ul>
+    		</div>
+        </div>
+        <div class="function">
+    		<span class="header"><span class="func_public">&nbsp;</span> public function exists($query)</span>
+    		<div class="content">
+    			Returnes true if $query returns a result.
+    			<ul>
+    				<li class="header">Parameter</li>
+    				<li><span class="c_type">string</span> <span class="c_var">$query</span> <span class="c_comment">//the query string</span></li>
+    			</ul>
+    		</div>
+        </div>
+        <div class="function">
+    		<span class="header"><span class="func_private">&nbsp;</span> private function connect()</span>
+    		<div class="content">
+    			Connects to Database. You can edit Authorization Data in the config file.
+    		</div>
+        </div>
+        <div class="function">
+    		<span class="header"><span class="func_public">&nbsp;</span> public function getQueryCount()</span>
+    		<div class="content">
+    			Returns count of all querys used while building the site.
+    		</div>
+        </div>
+   	</div>
+   	<h3>Config <!-- a href="javascript:void(0);" onclick="$('#config').toggleSlide();" class="show_more">more/less</a//--></h3>
+	<div id="config" class="doc_block">
+		<ul>
+			<li><span class="c_const">$GLOBALS</span>['db']['database_host'] <span class="c_comment">//Host of the database</span></li>
+		    <li><span class="c_const">$GLOBALS</span>['db']['database_user'] <span class="c_comment">//Username of the database</span></li>
+		    <li><span class="c_const">$GLOBALS</span>['db']['database_pwd'] <span class="c_comment">//Password of the database</span></li>
+		    <li><span class="c_const">$GLOBALS</span>['db']['database_table'] <span class="c_comment">//Database name</span></li>
+		    <li><span class="c_const">$GLOBALS</span>['db']['db_prefix'] <span class="c_comment">//Database prefix</span></li>
+		</ul>
+	</div>
+	<h3>Examples <!-- a href="javascript:void(0);" onclick="$('#examples').toggleSlide();" class="show_more">more/less</a//--></h3>
+	<div id="examples" class="doc_block">
+		<span class="empty">No Examples yet.</span>
+	</div>
+   	<h3>Database Design <!-- a href="javascript:void(0);" onclick="$('#database').toggleSlide();" class="show_more">more/less</a//--></h3>
+	<div id="database" class="doc_block">
+		<span class="empty">No Database used.</span>
+	</div>
+</div>

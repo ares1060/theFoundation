@@ -1,0 +1,36 @@
+<div class="categories" id="categories_{@pp:service}">
+	<pp:dynamic name="children">{@pp:content}</pp:dynamic>
+</div>
+<style type="text/css">
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/services/category.css);
+</style>
+<script type="text/javascript">
+	function selectCategory_{@pp:service}(id) {
+		if('{@pp:param}' != 'new') {
+			$('div.category_node_text').removeClass('sel');
+			$('div.category_node_text > span').removeClass('sel');
+	
+			$('#category_node_nr-'+id).addClass('sel');
+			$('#category_node_nr-'+id+' > span').addClass('sel');
+	
+			$('#categories_saved_text').show().html('<img src="{@pp:abs_root}{@pp:tpl_folder}/img/loading.gif" style="margin: -2px;"/>');
+			getService('{@pp:service}', 'admin', 'args[action]=setCategory&args[service]={@pp:service}&args[id]={@pp:param}&args[cat]='+id, 
+					function (msg) {
+						$('#categories_saved_text').html('gespeichert');
+						$('#categories_saved_text').delay(1000).fadeOut(200);
+					});
+		} else {
+			if(typeof newCategory_checkOtherData == 'function') {
+				if(!newCategory_checkOtherData()) {
+					getService('{@pp:service}', 'admin', 'args[action]=setCategory&args[service]={@pp:service}&args[id]={@pp:param}&args[cat]='+id, 
+						function (msg) {
+							if(msg != false) $.address.path(newCategory_link+'action/edit/id/'+msg+'/');
+						});
+				} else {
+					alert('Ihre eingegebenen Daten werden verloren gehen. Sichern sie zuerst.');
+				}
+			}
+		}
+	}
+	
+</script>
