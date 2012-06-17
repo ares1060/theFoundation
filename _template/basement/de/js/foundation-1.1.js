@@ -94,7 +94,14 @@ var tf = {
 	 */
 	showAdminLoading: function () {
 		this.tf_loading_counter++; 
-		$('#admin_loading_div').show(); 
+		$('#admin_loading_div').fadeIn(200); 
+	},
+	/**
+	 * hides Admin Loading div in Admincenter
+	 */
+	hideAdminLoading: function() {
+		this.tf_loading_counter--; 
+		if(this.tf_loading_counter <= 0) $('#admin_loading_div').fadeOut(700);
 	},
 	/**
 	 * loads Settings and fills given div with return
@@ -114,13 +121,6 @@ var tf = {
 					$('#'+div_id).html(msg);
 				}
 		});
-	},
-	/**
-	 * hides Admin Loading div in Admincenter
-	 */
-	hideAdminLoading: function() {
-		this.tf_loading_counter--; 
-		if(this.tf_loading_counter <= 0) $('#admin_loading_div').hide();
 	},
 	/**
 	 * little string replace function 

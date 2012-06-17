@@ -65,6 +65,7 @@ h3 span.small { font: 13px/1.2em 'Open Sans',arial,serif; font-weight: 300; }
 	
 	
 }
+
 /* ############## TOPBAR ############## */
 #logo {
 	position: absolute;
@@ -76,8 +77,11 @@ h3 span.small { font: 13px/1.2em 'Open Sans',arial,serif; font-weight: 300; }
 	right: 0px;	
 	padding: 13px 10px;
 	color: #ddd;
+	font-family: 'Open Sans';
+	font-weight: 300;
 }
-#topbar_right #logout-icon{
+/* ---- logout icon ---- */
+#topbar_right #topbar-logout-icon{
 	width: 20px;
 	height: 20px;
 	display: inline-block;
@@ -85,22 +89,63 @@ h3 span.small { font: 13px/1.2em 'Open Sans',arial,serif; font-weight: 300; }
 	top: -1px;
 	position: relative;
 }
-#topbar_right a#logout-icon:hover {
+#topbar_right a#topbar-logout-icon:hover {
 	background: url(../img/icons/icon-logout-white.png) top left no-repeat;
 	text-decoration: none;
 }
-#topbar #topbar-user {
-	padding: 3px 10px 0px 0px;
+/* ---- view as icon (just admin) ---- */
+#topbar_right #topbar-view_as {
+	display: inline-block;
+	position: relative;
+	z-index: 200;
+	height: 28px;
+}
+#topbar_right #topbar-view_as #view_as_dropdown {
+	width: auto;
+	position: absolute;
+	top: 28px;
+	right: 0px;
+	background: white;
+	border: 1px solid #ddd;
+	display: none;
+}
+#topbar_right #topbar-view_as-icon{
+	padding: 0px 0px 0px 25px;
+	width: auto;
+	height: 20px;
+	display: inline-block;
+	background: url(../img/icons/icon-view_as-grey.png) top left no-repeat;
+	top: -1px;
+	position: relative;
+}
+#topbar_right a#topbar-view_as-icon:hover {
+	background: url(../img/icons/icon-view_as-white.png) top left no-repeat;
+	text-decoration: none;
+}
+#topbar_right #topbar-view_as-icon.active {
+	color: #ffd200;	
+	background: url(../img/icons/icon-view_as-yellow.png) top left no-repeat;
+	margin-right: 10px;
+}
+#topbar_right #topbar-view_as-icon.active:hover {
+	background: url(../img/icons/icon-view_as-yellow.png) top left no-repeat;
+}
+/* ---- user icon ---- */
+#topbar #topbar-user-icon {
+	padding: 3px 25px 0px 0px;
+	background: url(../img/icons/icon-user-grey.png) top right no-repeat;
 	font-size: 13px;	
 	display: inline-block;
 	color: #ddd;
+	margin-right: 10px;
 }
-#topbar #topbar-user:hover {
+#topbar #topbar-user-icon:hover {
 	color: #fff;
+	background: url(../img/icons/icon-user-white.png) top right no-repeat;
 	text-decoration: none;	
 }
 #admin_loading_div {
-	margin: 7px auto 0px auto;
+	/*margin: 7px auto 0px auto;
 	position: relative;
 	height: 15px;
 	margin-bottom: -34px;
@@ -112,10 +157,33 @@ h3 span.small { font: 13px/1.2em 'Open Sans',arial,serif; font-weight: 300; }
 	border-color:#ffe466 #ad941f #ad941f #ffe466;
 	box-shadow: 0px 0px 10px 10px rgba(0,0,0,.1);
 	color: #222;
-	display: none;
+	display: none;*/
+    text-align: center;
+    text-shadow: 0 1px 1px #FFFFFF;
+    height: 15px;
+    margin: 7px auto 0px auto;
+	margin-bottom: -34px;
+	width: 110px;
+	position: relative;
+	
+	background-color: #A5B8DA;
+    background-image: -moz-linear-gradient(center top , #A5B8DA, #7089B3);
+    border-color: #758FBA #6C84AB #5C6F91;
+    border-radius: 18px 18px 18px 18px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 0 #AEC3E5 inset;
+    color: #FFFFFF;
+    font: bold 11px/1 "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif;
+    padding: 4px 15px 6px 15px;
+    text-align: center;
+    text-shadow: 0 -1px 1px #64799E;
+    text-transform: uppercase;
+    display: none;
 }
 #admin_loading_div img {
-	margin-bottom: -3px;
+	margin-bottom: -1px;
+	margin-top: 3px;
 	margin-right: 5px;	
 }
 
@@ -143,6 +211,12 @@ h3 span.small { font: 13px/1.2em 'Open Sans',arial,serif; font-weight: 300; }
 }
 #menu ul li a:hover {
 	text-decoration: none;	
+}
+#menu ul li.title {
+	padding: 10px 0px 10px 25px;
+	font-family: 'Open Sans';
+	font-weight: 300;
+	color: #ddd;	
 }
 #menu ul li.seperator {
 	height: 1px;
@@ -259,7 +333,36 @@ h3 span.small { font: 13px/1.2em 'Open Sans',arial,serif; font-weight: 300; }
 	height: auto;
 	position: relative;
 }
-
+/* ############## FOOTER ############## */
+#footer {
+	position: absolute;
+	bottom: -115px;
+	left: 0px;
+	right: 0px;
+	width: auto;
+	height: 100px;
+	color: #666;
+	text-align: center;
+	font-size: 12px;
+	line-height: 0.8;
+}
+#footer ul { 
+	list-style: none; 
+	width: 400px; 
+	margin: 0 auto;
+	display: block;
+}
+#footer ul li {
+	display: inline-block;	
+}
+#footer ul li a {
+	padding: 5px 10px;
+	color: #aaa;	
+}
+#footer ul li a:hover {
+	text-decoration: underline;
+	color: #ffd200;
+}
 
 
 

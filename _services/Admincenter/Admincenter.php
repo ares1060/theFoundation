@@ -123,7 +123,13 @@
 				$service = isset($_GET['service']) ? $_GET['service'] : 'overview';
 
         		$tpl = new ViewDescriptor($this->_setting('tpl.admincenter.main'));
-
+        		
+        		if($_SESSION['User']['group'] == 'root'){
+        			$user = new SubViewDescriptor('view_as');
+        			
+        			$tpl->addSubView($user);
+        		}
+        		
         		$tpl->addValue('site_title', $this->_setting('site_title'));
         		
         		if(isset($_SESSION['User']) && $_SESSION['User']['nick'] == 'root' && isset($_SESSION['User']['defaultPwd']) && $service != 'profile' && $this->_setting('show_defaultPwd_alert')) $tpl->showSubView('defaultPassword');

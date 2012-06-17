@@ -386,3 +386,39 @@ button.button:active {
     box-shadow: 0 0 1px 1px #E3E3E3 inset;
     color: #000000;
 }
+button.button.small, input.button.small {
+	padding: 5px 15px 6px 15px;	
+}
+/* ===== DROPDOWN ===== */
+.tf_dropdown {
+	background-color: white;
+    box-shadow: 2px 2px 2px #777777;
+    position: absolute;
+    width: 100%;
+    border: 1px solid #CCCCCC !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) !important;
+    padding: 0 0 6px;
+    white-space: nowrap;
+    font-family: 'Helvetica Neue', Helvetica;
+    font-weight: normal;
+    font-size: 14px;	
+}
+.tf_dropdown ul { list-style: none; }
+.tf_dropdown ul li.option a {
+	display: block;
+    padding: 8px 44px 8px 16px;
+    text-decoration: none;
+    white-space: nowrap;
+    color: #444;	
+}
+.tf_dropdown ul li.option a:hover {
+	background: #eee;
+	color: #222;
+	text-decoration: none;	
+}
+.tf_dropdown ul li.seperator {
+	border-top: 1px solid #EBEBEB;
+    margin-bottom: 5px;
+    margin-top: 5px;	
+    height: 1px;
+}

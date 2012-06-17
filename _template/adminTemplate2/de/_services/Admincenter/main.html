@@ -23,6 +23,20 @@
 			template: 'adminTemplate2',
 			login_url: '{@pp:abs_root}_admincenter/login/'
 		});
+		$(document).ready(function() {
+			$('#topbar-view_as').hover(function() {
+				$('#view_as_dropdown').toggle();
+			});
+		});
+		function setUser(id, name) {
+			if(id == -1) {
+				$('#topbar-view_as-icon').html(name);
+				$('#topbar-view_as-icon').removeClass('active');
+			} else {
+				$('#topbar-view_as-icon').html(name);
+				$('#topbar-view_as-icon').addClass('active');
+			}
+		}
 	//-->
 	</script>
 	<title>{@pp:title}</title>
@@ -30,11 +44,28 @@
 <body>
 	<div id="topbar">
 		<div id="logo"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/logo_wide_small.png" /></div>
-			<div id="admin_loading_div"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/loading.gif" /> Lade Daten...</div>
+			<div id="admin_loading_div"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/loading_blue1.gif" /> Lade Daten...</div>
 		<div id="topbar_right">
 			<!-- <img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/status/{@pp:user_group}.png" class="icon"/>&nbsp;&nbsp; -->
-			<a href="{@pp:abs_root}_admincenter/tf/profile/" id="topbar-user">{@pp:user_nick}</a> 
-			<a href="{@pp:abs_root}_admincenter/logout/" id="logout-icon"> &nbsp;</a>
+			<a href="{@pp:abs_root}_admincenter/tf/profile/" id="topbar-user-icon">{@pp:user_nick}</a> 
+			<pp:dynamic name="view_as">
+				<div id="topbar-view_as">
+					<a href="javascript:void(0);" id="topbar-view_as-icon">&nbsp;</a> 
+					<div class="tf_dropdown view_as_dropdown" id="view_as_dropdown">
+						<ul>
+							<li class="option"><a href="javascript:void(0);" onclick="setUser(-1, '&nbsp;');">Eigene Daten anzeigen</a></li>
+							<li class="seperator">&nbsp;</li>
+							<li  class="option"><a href="javascript:void(0);" onclick="setUser(1, 'Max');">Max</a></li>
+							<li  class="option"><a href="javascript:void(0);" onclick="setUser(2, 'Moritz');">Moritz</a></li>
+							<li  class="option"><a href="javascript:void(0);" onclick="setUser(3, 'Quizmaster');">Quizmaster</a></li>
+							<pp:dynamic name="view_as_user">
+								<li  class="option"><a href="javascript:void(0);">{@pp:user_nick}</a></li>
+							</pp:dynamic>
+						</ul>
+					</div>
+				</div>
+			</pp:dynamic>
+			<a href="{@pp:abs_root}_admincenter/logout/" id="topbar-logout-icon"> &nbsp;</a>
 		</div>
 	</div>
 	<div id="menu">
@@ -56,6 +87,8 @@
 				</a>
 			</li>
 			<!-- <li class="seperator">&nbsp;</li>
+			<li class="padding">&nbsp;</li> -->
+			<!-- <li class="seperator">&nbsp;</li>
 			<li class="title">Services</li> -->
 			<pp:dynamic name="menu_big_services">
 				<li class="seperator">&nbsp;</li>
@@ -68,7 +101,7 @@
 				</li>
 			</pp:dynamic>
 			<!-- <li class="seperator">&nbsp;</li>
-			<li class="title" style="height: 0px;">&nbsp;</li> -->
+			<li class="title" style="height: 0px;">&nbsp;</li> 
 			<li class="seperator">&nbsp;</li>
 			<li class="menu_block {@pp:menu_about}">
 				<div class="right"><div class="img">&nbsp;</div></div>
@@ -76,15 +109,25 @@
 					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/menu/about_big.png" class="menu_icon" />
 					<span class="menu_title">About</span>
 				</a>
-			</li>
+			</li>-->
 			<li class="seperator">&nbsp;</li>
 		</ul>
 	</div>
 	<div id="main">
 		<div id="inner_content">
-				{@pp:content}
-			</div>
+			{@pp:content}
+		</div>
+		<div id="footer">
+			<ul>
+				<li><a href="{@pp:abs_root}_admincenter/tf/overview/">&Uuml;bersicht</a> |</li>
+				<li><a href="{@pp:abs_root}_admincenter/tf/profile/">Mein Profil</a> |</li>
+				<li><a href="{@pp:abs_root}_admincenter/tf/about/">About</a> |</li>
+				<li><a href="j{@pp:abs_root}_admincenter/tf/help/">Hilfe</a></li>
+			</ul><br />
+			Diese Seite wurde mit TheFoundation erstellt.
+		</div>
 	</div>
+	
 </div>
 </body>
 </html>
