@@ -1,0 +1,14 @@
+<div class="category_node {@pp:first}">
+	<pp:dynamic name="radio">
+		<div class="category_node_text">
+			<input type="radio" name="category[]" value="{@pp:id}" {@pp:selected_radio} /> &nbsp;&nbsp;{@pp:name} 
+		</div>
+	</pp:dynamic>
+	<pp:dynamic name="divs">
+		<div class="category_node_text {@pp:selected_class}" id="category_node_nr-{@pp:id}">
+			 <a href="javascript:void(0);" onclick="selectCategory_{@pp:service}({@pp:id});">{@pp:name}  <pp:dynamic name="offline">[Versteckt]</pp:dynamic></a><span {@pp:selected_with_class_attr}>&nbsp;</span>
+		</div>
+	</pp:dynamic>
+	<pp:dynamic name="img_exists"></pp:dynamic>
+	{@pp:children}
+</div>

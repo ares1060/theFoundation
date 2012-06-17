@@ -1,0 +1,133 @@
+@CHARSET "UTF-8";
+/* ----- PAGINA ------ */
+.pagina {
+	position: relative;
+	height: 30px;
+	overflow: hidden;
+	padding: 0px;
+}
+.pagina .pagina_main {
+	width: auto;
+	display: inline-block;
+	position: absolute;
+	right: 0px;	
+	top: 0px;
+	bottom: 0px;
+}
+.pagina ul{
+	list-style:none;
+	overflow: hidden;
+	height: 100%;
+	padding: 0px 5px;
+	margin: 0px;
+	width: auto;
+}
+.pagina ul li {
+	float: right;
+	height: 100%;
+	margin-left: 3px;
+}
+.pagina ul li a {
+    background: none repeat scroll 0 0 #E9E9E9;
+    border: 1px solid #BBBBBB;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: inset 0 1px 4px rgba(255,255,255,0.75);
+    color: #333333;
+    font: bold 12px/1 "helvetica neue",helvetica,arial,sans-serif;
+    text-align: center;
+    text-shadow: 0 1px 0 #FFFFFF;
+    padding: 6px 10px 8px 10px;
+    display: inline-block;
+}
+.pagina ul li.active a,.pagina ul li a:hover {
+	background: url("../../img/interface/bg_dark.png") repeat scroll left top transparent;
+    box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5) inset;; //inset 0 1px 4px rgba(255,255,255,0.75);
+    border-color: #000;
+    color: #ddd;
+    cursor: pointer;
+    text-decoration:none;
+}
+/*
+.pagina ul li span.text {
+	padding: 6px 0px 6px 12px;	
+	display: block;
+}
+.pagina ul li a{
+	padding: 7px 12px 8px 12px;
+	//border: 1px solid #ccc;
+	border-radius: 0px;
+	display: block;	
+	vertical-align: middle;
+	color: #444444;
+	font-size: 12px;
+	
+}
+.pagina ul li a:hover {
+	text-decoration: none;	
+	color: #fff;
+	background-color: #222;
+	background-image: -moz-linear-gradient(top,#444 0,#222 100%);
+	background-image: -ms-linear-gradient(top,#444 0,#222 100%);
+	background-image: -o-linear-gradient(top,#444 0,#222 100%);
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#444),color-stop(100%,#222));
+	background-image: -webkit-linear-gradient(top,#444 0,#222 100%);
+	background-image: linear-gradient(to bottom,#444 0,#222 100%);
+
+	box-shadow: 0px 1px 0px 0px rgba(0,0,0,.5) inset;
+}
+.pagina ul li.active a, .pagina ul li a:hover{
+	
+	color: #fff;
+	background-color: #222;
+	background-image: -moz-linear-gradient(top,#444 0,#222 100%);
+	background-image: -ms-linear-gradient(top,#444 0,#222 100%);
+	background-image: -o-linear-gradient(top,#444 0,#222 100%);
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#444),color-stop(100%,#222));
+	background-image: -webkit-linear-gradient(top,#444 0,#222 100%);
+	background-image: linear-gradient(to bottom,#444 0,#222 100%);
+
+	box-shadow: 0px 1px 0px 0px rgba(0,0,0,.5) inset;
+}*/
+/* ----- NORMAL ---- */
+/* ----- PAGINA ------ */
+/*
+.pagina_normal  ul{
+	list-style:none;
+	overflow: hidden;
+	height: 30px;
+}
+.pagina_normal ul li {
+	float: right;
+	margin-left: 4px;	
+}
+.pagina_normal ul li span.text {
+	padding: 6px 0px 6px 12px;	
+	display: block;
+}
+.pagina_normal ul li a{
+	padding: 6px 12px 6px 12px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	display: block;	
+	vertical-align: middle;
+	color: #444444;
+	font-size: 12px;
+	
+	background-color: #f6f6f6;
+	background-image: -moz-linear-gradient(top,#fff 0,#e0e0e0 100%);
+	background-image: -ms-linear-gradient(top,#fff 0,#e0e0e0 100%);
+	background-image: -o-linear-gradient(top,#fff 0,#e0e0e0 100%);
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(100%,#e0e0e0));
+	background-image: -webkit-linear-gradient(top,#fff 0,#e0e0e0 100%);
+	background-image: linear-gradient(to bottom,#fff 0,#e0e0e0 100%);
+	box-shadow: 4px 4px 4px rgba(255,255,255,.4) inset;
+}
+.pagina_normal ul li a:hover {
+	border: 1px solid #aaaaaa;
+	text-decoration: none;	
+}
+.pagina_normal ul li.active a{
+	background: rgba(0,0,0,.02);
+	background-image: none;	
+	box-shadow: 0 1px 1px rgba(255, 255, 255,1);
+}*/

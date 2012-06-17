@@ -1,0 +1,158 @@
+<span style="float: right;"><a href="javascript:void(0);" onclick="loadProductImagesUpload_wysiwyg()">Upload</a></span>
+<h3>Bild einf&uuml;gen</h3>
+	<div class="h_sep_down" style="margin: 5px -4px 5px -5px;">
+		<span class="left">&nbsp;</span>
+		<span class="right">&nbsp;</span>
+		<span class="center">&nbsp;</span>
+	</div>
+<div id="gallery_wysiwyg">
+	<div class="top_pagina">
+		<div class="right">{pp:Pagina("count":"{@pp:pagina_count}", "active":"{@pp:pagina_active}", "url":"JavaScript:loadGallery('{page}');")}</div>
+	</div>
+	<div class="h_sep" style="margin: 0px -10px 5px -10px;">
+		<span class="left">&nbsp;</span>
+		<span class="right">&nbsp;</span>
+		<span class="center">&nbsp;</span>
+	</div>
+	<div id="album_div_wysiwyg">
+		<pp:dynamic name="no_images"><div id="no_images_wysiwyg">Noch keine Bilder vorhanden</div></pp:dynamic>
+		<pp:dynamic name="images">
+			<!-- do not change ids or classes - used by scripts -->
+			<div class="image" id="image_wysiwyg-{@pp:id}">
+				<div class="img_wrapper_main">
+					<div class="img_wrapper">
+						<a href="javascript:void(0);" onclick="selectImage_wysiwyg({@pp:id}); {@pp:clickAction}" onmouseover="$('#images_delete_wysiwyg_{@pp:id}').show();" onmouseout="$('#images_delete_wysiwyg_{@pp:id}').hide();">
+							<pp:dynamic name="offline">
+								<div class="offline">Versteckt</div>
+							</pp:dynamic>
+							<pp:dynamic name="main_image">
+								<div class="main_image">Hauptbild</div>
+							</pp:dynamic>
+							<span class="images_delete_action" id="images_delete_wysiwyg_{@pp:id}">
+								<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/addon/action_delete2.png" onclick="deleteImage_wysiwyg({@pp:id});"/>
+							</span>
+							<img src="{@pp:root}_core/getImage.php?path={@pp:path}&height=80&width=80" class="img"/>
+						</a>	
+					</div>
+				</div>
+			</div>
+		</pp:dynamic>
+	</div>
+</div>
+<div id="gallery_wysiwyg_actions">
+	<div class="h_sep" style="margin: 0px 1px -4px 0px;">
+		<span class="left">&nbsp;</span>
+		<span class="right">&nbsp;</span>
+		<span class="center">&nbsp;</span>
+	</div>
+	<ul id="gallery_wysiwyg_actions_ul_enabled">
+		<li id="gallery_wysiwyg_actions_delete"><a href="javascript:void(0);" onclick="deleteActiveImage_wysiwyg();" title="L&ouml;schen" alt="L&ouml;schen" class="link">L&ouml;schen</a></li>
+		<li id="gallery_wysiwyg_actions_main_image"><a href="javascript:void(0);" onclick="setMainImage_wysiwyg();" title="Hauptbild" alt="Hauptbild"class="link">Hauptbild</a></li>
+		<li id="gallery_wysiwyg_actions_hide"><a href="javascript:void(0);" onclick="hideImage_wysiwyg();" title="Verstecken" alt="Verstecken"class="link">Verstecken</a></li>
+		<pp:dynamic name="use_activated"><li id="gallery_wysiwyg_actions_use"><a href="javascript:void(0);" onclick="activateUseFunction_wysiwyg();" title="Verwenden" alt="Verwenden" class="link">Verwenden</a></li></pp:dynamic>
+	</ul>
+	<ul id="gallery_wysiwyg_actions_ul_show_enabled">
+		<li id="gallery_wysiwyg_actions_delete"><a href="javascript:void(0);" onclick="deleteActiveImage_wysiwyg();" title="L&ouml;schen" alt="L&ouml;schen" class="link">L&ouml;schen</a></li>
+		<li id="gallery_wysiwyg_actions_main_image"><a href="javascript:void(0);" onclick="setMainImage_wysiwyg();" title="Hauptbild" alt="Hauptbild"class="link">Hauptbild</a></li>
+		<li id="gallery_wysiwyg_actions_show"><a href="javascript:void(0);" onclick="showImage_wysiwyg();" title="Anzeigen" alt="Anzeigen"class="link">Anzeigen</a></li>
+		<pp:dynamic name="use_activated"><li id="gallery_wysiwyg_actions_use"><a href="javascript:void(0);" onclick="activateUseFunction_wysiwyg();" title="Verwenden" alt="Verwenden" class="link">Verwenden</a></li></pp:dynamic>
+	</ul>
+	<ul id="gallery_wysiwyg_actions_ul_disabled">
+		<li id="gallery_wysiwyg_actions_delete"><span class="link">L&ouml;schen</span></li>
+		<li id="gallery_wysiwyg_actions_main_image"><span class="link">Hauptbild</span></li>
+		<li id="gallery_wysiwyg_actions_hide"><span class="link">Verstecken</span></li>
+		<pp:dynamic name="use_activated_wo_links"><li id="gallery_wysiwyg_actions_use"><span class="link">Verwenden</span></li></pp:dynamic>
+	</ul>
+</div>
+<style type="text/css" media="screen">
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/services/gallery_wysiwyg.css);
+</style>
+<script type="text/javascript">
+	$('#gallery_wysiwyg').ready(function () { old_select_wysiwyg = undefined; updateActions_wysiwyg(-1);});
+	
+	var old_select_wysiwyg;
+	function selectImage_wysiwyg(id){
+		if(old_select_wysiwyg != undefined) $('#image-'+old_select_wysiwyg).removeClass('selected');
+		if(old_select_wysiwyg != id) {
+			$('#image_wysiwyg-'+id).addClass('selected');
+			old_select_wysiwyg = id;
+		} else old_select_wysiwyg = undefined;
+
+		updateActions_wysiwyg(id);
+	}
+
+	function deleteActiveImage_wysiwyg() { if(old_select_wysiwyg != undefined) deleteImage_wysiwyg(old_select_wysiwyg); };
+
+	function activateUseFunction_wysiwyg() {
+		if(old_select_wysiwyg != undefined) {@pp:useFunction}(old_select_wysiwyg);
+	}
+	
+	function updateActions_wysiwyg(id){
+		if(old_select_wysiwyg == undefined) {
+			$('#gallery_wysiwyg_actions_ul_disabled').show();
+			$('#gallery_wysiwyg_actions_ul_enabled').hide();
+			$('#gallery_wysiwyg_actions_ul_show_enabled').hide();
+		} else {
+			if($('#image-'+id+' > div > div > a > .offline').length == 0) {
+				$('#gallery_wysiwyg_actions_ul_disabled').hide();
+				$('#gallery_wysiwyg_actions_ul_enabled').show();
+				$('#gallery_wysiwyg_actions_ul_show_enabled').hide();
+			} else {
+				$('#gallery_wysiwyg_actions_ul_disabled').hide();
+				$('#gallery_wysiwyg_actions_ul_enabled').hide();
+				$('#gallery_wysiwyg_actions_ul_show_enabled').show();
+			}
+		}
+	}
+
+	function setMainImage_wysiwyg(){
+		if(old_select != undefined){
+			showImageLoadingDiv();
+			getService('Gallery', 'run', 'args[action]=set_folder_thumb&args[id]={@pp:folder_id}&args[thumb]='+old_select_wysiwyg, 
+				function (msg) {
+					hideImageLoadingDiv();
+					{@pp:reloadFunction}
+				});
+		}
+	}
+
+	function deleteImage_wysiwyg(id) {
+		showImageLoadingDiv();
+		getService('Gallery', 'run', 'args[action]=delete_image&args[id]='+id, 
+				function (msg) {
+					hideImageLoadingDiv();
+					{@pp:reloadFunction}
+				});
+	}
+
+	function showImage_wysiwyg() {
+		if(old_select_wysiwyg != undefined){
+			showImageLoadingDiv();
+			getService('Gallery', 'run', 'args[action]=show_image&args[id]='+old_select_wysiwyg, 
+				function (msg) {
+					hideImageLoadingDiv();
+					//{@pp:reloadFunction}
+				});
+		}
+	}
+	function hideImage_wysiwyg() {
+		if(old_select_wysiwyg != undefined){
+			showImageLoadingDiv();
+			getService('Gallery', 'run', 'args[action]=hide_image&args[id]='+old_select_wysiwyg, 
+				function (msg) {
+					hideImageLoadingDiv();
+					{@pp:reloadFunction}
+				});
+		}
+	}
+
+	function loadProductImagesUpload_wysiwyg() {
+		showImageLoadingDiv();
+		alert('args[action]=loadWysiwygUpload&args[album]={@pp:album_id}&args[folder]={@pp:folder_id}&args[link]={@pp:link}');
+		getService('Gallery', 'admin', 'args[action]=loadWysiwygUpload&args[album]={@pp:album_id}&args[folder]={@pp:folder_id}&args[link]={@pp:link}', 
+				function (msg) {
+					$('#gallery_wysiwyg').parent().html(msg);
+					hideImageLoadingDiv();
+				});
+	}
+</script>

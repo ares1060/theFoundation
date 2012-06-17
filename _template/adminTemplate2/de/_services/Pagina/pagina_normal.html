@@ -1,0 +1,11 @@
+<div class="pagina_normal">
+    <ul>
+        <pp:dynamic name="items">
+            <li {@pp:active}><a href="{@pp:link}">{@pp:page_nr}</a></li>
+        </pp:dynamic>
+        <li class="active"><span class="text">Seite:&nbsp;&nbsp;</span></li>
+    </ul>
+</div>
+<style type="text/css" media="screen">
+	@import url({@pp:root}{@pp:css_url});
+</style>

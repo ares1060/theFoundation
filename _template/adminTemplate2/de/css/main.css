@@ -54,7 +54,6 @@ h3 span.small { font: 13px/1.2em 'Open Sans',arial,serif; font-weight: 300; }
 	top: 45px;
 	left: 130px;
 	right: 0px;
-	bottom: 0px;
 	width: auto;
 	height: auto;
 	min-height: 400px;
@@ -64,13 +63,13 @@ h3 span.small { font: 13px/1.2em 'Open Sans',arial,serif; font-weight: 300; }
 	box-shadow: 0px 0px 10px 10px rgba(0,0,0,.1);
 	border: 1px solid #fff #000 #000 #fff;
 	
-	overflow: hidden;
+	
 }
 /* ############## TOPBAR ############## */
 #logo {
 	position: absolute;
-	left: -12px;
-	top: -6px;	
+	left: -10px;
+	top: -4px;	
 }
 #topbar_right {
 	position: absolute;
@@ -151,11 +150,14 @@ h3 span.small { font: 13px/1.2em 'Open Sans',arial,serif; font-weight: 300; }
 	border-top: 1px solid #222;	
 	padding: 0px;
 }
+#menu ul li.sel .right {
+	top: 10px;	
+}
 #menu ul li .right {
 	display: none;
 	position: absolute;
 	right: 0px;
-	top: 7px;
+	top: 8px;
 	height: 20px;
 	width: 10px;	
 	background: url(../img/interface/menu_arrow.png) top left no-repeat;
@@ -252,7 +254,10 @@ h3 span.small { font: 13px/1.2em 'Open Sans',arial,serif; font-weight: 300; }
 
 /* ############## CONTENT ############## */
 .actual_content {
-	padding: 10px;	
+	margin: 10px;	
+	overflow: hidden;
+	height: auto;
+	position: relative;
 }
 
 
