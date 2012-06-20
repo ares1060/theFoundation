@@ -422,3 +422,11 @@ button.button.small, input.button.small {
     margin-top: 5px;	
     height: 1px;
 }
+.tf_dropdown_arrow {
+	position: absolute;
+	top: -11px;
+	height: 11px;
+	width: 22px;
+	background: red;	
+	background: url(../img/interface/tf_dropdown_arrow.png) top left no-repeat;
+}

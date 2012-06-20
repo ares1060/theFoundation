@@ -24,8 +24,13 @@
 			login_url: '{@pp:abs_root}_admincenter/login/'
 		});
 		$(document).ready(function() {
-			$('#topbar-view_as').hover(function() {
-				$('#view_as_dropdown').toggle();
+			$('#topbar-view_as').mouseover(function() {
+				$('#view_as_dropdown').show();
+				//$('#topbar-view_as').addClass('selected');
+			});
+			$('#topbar-view_as').mouseout(function() {
+				$('#view_as_dropdown').hide();
+				$('#topbar-view_as').removeClass('selected');
 			});
 		});
 		function setUser(id, name) {
@@ -47,11 +52,12 @@
 			<div id="admin_loading_div"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/loading_blue1.gif" /> Lade Daten...</div>
 		<div id="topbar_right">
 			<!-- <img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/status/{@pp:user_group}.png" class="icon"/>&nbsp;&nbsp; -->
-			<a href="{@pp:abs_root}_admincenter/tf/profile/" id="topbar-user-icon">{@pp:user_nick}</a> 
+			<div class="item"><a href="{@pp:abs_root}_admincenter/tf/profile/" id="topbar-user-icon" class="item_link">{@pp:user_nick}</a></div> 
 			<pp:dynamic name="view_as">
-				<div id="topbar-view_as">
-					<a href="javascript:void(0);" id="topbar-view_as-icon">&nbsp;</a> 
-					<div class="tf_dropdown view_as_dropdown" id="view_as_dropdown">
+				<div id="topbar-view_as" class="item">
+					<a href="javascript:void(0);" id="topbar-view_as-icon" class="item_link">&nbsp;</a> 
+					<div class="tf_dropdown view_as_dropdown item_link" id="view_as_dropdown">
+						<div class="tf_dropdown_arrow" style="right: 4px;">&nbsp;</div>
 						<ul>
 							<li class="option"><a href="javascript:void(0);" onclick="setUser(-1, '&nbsp;');">Eigene Daten anzeigen</a></li>
 							<li class="seperator">&nbsp;</li>
@@ -65,7 +71,7 @@
 					</div>
 				</div>
 			</pp:dynamic>
-			<a href="{@pp:abs_root}_admincenter/logout/" id="topbar-logout-icon"> &nbsp;</a>
+			<div class="item"><a href="{@pp:abs_root}_admincenter/logout/" id="topbar-logout-icon" class="item_link""> &nbsp;</a></div>
 		</div>
 	</div>
 	<div id="menu">

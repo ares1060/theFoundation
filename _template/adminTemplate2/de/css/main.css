@@ -33,13 +33,6 @@ h3 span.small { font: 13px/1.2em 'Open Sans',arial,serif; font-weight: 300; }
 
 
 /* ############## MAIN INTERFACE ############## */
-#topbar {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 45px;
-}
 #menu {
 	position: absolute;
 	top: 45px;
@@ -67,6 +60,26 @@ h3 span.small { font: 13px/1.2em 'Open Sans',arial,serif; font-weight: 300; }
 }
 
 /* ############## TOPBAR ############## */
+#topbar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 45px;
+}
+#topbar .item {
+	height: 45px;
+	display: inline-block;	
+}
+#topbar .selected {
+	background: rgba(0,0,0,.3);
+	box-shadow: 0px 0px 3px 2px rgba(0,0,0,.5) inset;	
+}
+#topbar .item a.item_link {
+	height: 100%;
+	padding-top: 13px !Important;
+	padding-bottom: 13px !Important;
+}
 #logo {
 	position: absolute;
 	left: -10px;
@@ -75,22 +88,24 @@ h3 span.small { font: 13px/1.2em 'Open Sans',arial,serif; font-weight: 300; }
 #topbar_right {
 	position: absolute;
 	right: 0px;	
-	padding: 13px 10px;
+	padding: 0px 0px 0px 10px;
 	color: #ddd;
 	font-family: 'Open Sans';
 	font-weight: 300;
 }
 /* ---- logout icon ---- */
 #topbar_right #topbar-logout-icon{
+	padding:0px 10px;
 	width: 20px;
-	height: 20px;
 	display: inline-block;
 	background: url(../img/icons/icon-logout-grey.png) top left no-repeat;
+	background-position: 10px 13px;
 	top: -1px;
 	position: relative;
 }
 #topbar_right a#topbar-logout-icon:hover {
-	background: url(../img/icons/icon-logout-white.png) top left no-repeat;
+	background:url(../img/icons/icon-logout-white.png) top left no-repeat;
+	background-position: 10px 13px;
 	text-decoration: none;
 }
 /* ---- view as icon (just admin) ---- */
@@ -98,50 +113,56 @@ h3 span.small { font: 13px/1.2em 'Open Sans',arial,serif; font-weight: 300; }
 	display: inline-block;
 	position: relative;
 	z-index: 200;
-	height: 28px;
+	marfin-right: 5px;
 }
 #topbar_right #topbar-view_as #view_as_dropdown {
 	width: auto;
 	position: absolute;
-	top: 28px;
+	top: 44px;
 	right: 0px;
 	background: white;
 	border: 1px solid #ddd;
 	display: none;
 }
 #topbar_right #topbar-view_as-icon{
-	padding: 0px 0px 0px 25px;
+	padding: 0px 0px 0px 30px;
 	width: auto;
 	height: 20px;
 	display: inline-block;
 	background: url(../img/icons/icon-view_as-grey.png) top left no-repeat;
+	background-position: 10px 13px;
 	top: -1px;
 	position: relative;
 }
 #topbar_right a#topbar-view_as-icon:hover {
 	background: url(../img/icons/icon-view_as-white.png) top left no-repeat;
+	background-position: 10px 13px;
 	text-decoration: none;
 }
 #topbar_right #topbar-view_as-icon.active {
-	color: #ffd200;	
+	padding: 0px 5px 0px 35px;
+		color: #ffd200;	
 	background: url(../img/icons/icon-view_as-yellow.png) top left no-repeat;
-	margin-right: 10px;
+	background-position: 10px 13px;
 }
 #topbar_right #topbar-view_as-icon.active:hover {
 	background: url(../img/icons/icon-view_as-yellow.png) top left no-repeat;
+	background-position: 10px 13px;
 }
 /* ---- user icon ---- */
 #topbar #topbar-user-icon {
 	padding: 3px 25px 0px 0px;
 	background: url(../img/icons/icon-user-grey.png) top right no-repeat;
+	background-position: right 10px;
 	font-size: 13px;	
 	display: inline-block;
 	color: #ddd;
-	margin-right: 10px;
+	margin-right: 5px;
 }
 #topbar #topbar-user-icon:hover {
 	color: #fff;
 	background: url(../img/icons/icon-user-white.png) top right no-repeat;
+	background-position: right 10px;
 	text-decoration: none;	
 }
 #admin_loading_div {
@@ -194,7 +215,7 @@ h3 span.small { font: 13px/1.2em 'Open Sans',arial,serif; font-weight: 300; }
 	height: auto;
 }
 #menu ul li a {
-	padding: 5px 0px 5px 5px;
+	padding: 5px 0px 5px 10px;
 	display: block;
 }
 #menu ul li.sel {

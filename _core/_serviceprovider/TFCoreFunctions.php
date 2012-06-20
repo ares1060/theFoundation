@@ -136,7 +136,7 @@
          * @param $user_id
          */
         protected function checkRight($action, $param='', $user_id=-1){
-        	$user_id = ($user_id == -1 && isset($_SESSION['User']) && $_SESSION['User']['id']) ? $_SESSION['User']['id'] : $user_id;
+        	$user_id = ($user_id == -1 && $this->sp->ref('User')->isLoggedIn()) ? $this->sp->ref('User')->getLoggedInUser()->getId() : $user_id;
         	return $this->sp->ref('Rights')->c($user_id, $this->name, $action, $param);
         }
         

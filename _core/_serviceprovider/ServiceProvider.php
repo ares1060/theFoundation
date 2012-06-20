@@ -2,10 +2,10 @@
     require_once($GLOBALS['config']['root'].'_core/Settings/Settings.php');
 	require_once($GLOBALS['config']['root'].'_core/Messages/Messages.php');
     require_once($GLOBALS['config']['root'].'_core/Database/Database.php');
+    require_once($GLOBALS['config']['root'].'_core/User/User.php');
     require_once($GLOBALS['config']['root'].'_core/Template/Template.php');
     require_once($GLOBALS['config']['root'].'_core/Localization/Localization.php');
     require_once($GLOBALS['config']['root'].'_core/Rights/Rights.php');
-    require_once($GLOBALS['config']['root'].'_core/User/User.php');
     
     class ServiceProvider {
         /**
@@ -62,10 +62,10 @@
 			$this->services['database'] =& $this->db;
             $this->msg = new Messages();
 			$this->services['messages'] =& $this->msg;
+  			$this->user = new User();
+            $this->services['user'] =& $this->user;
             $this->tpl = new Template();
 			$this->services['template'] =& $this->tpl;
-            $this->user = new User();
-            $this->services['user'] =& $this->user;
             $this->rights = new Rights();
             $this->services['rights'] =& $this->rights;
             $this->templates = array();

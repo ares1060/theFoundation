@@ -18,7 +18,7 @@
     /* $sp = new ServiceProvider(); -- will be created in theFoundation.php*/
    
 	// has to be logged in
-    if(isset($_SESSION['User'])){
+    if($sp->ref('User')->isLoggedIn()){
     	
    		$sp->ref('Template')->setTemplate('adminTemplate2');
     	echo $sp->ref('Admincenter')->tplAdmin();

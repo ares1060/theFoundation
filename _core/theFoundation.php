@@ -53,7 +53,7 @@
 	require_once($GLOBALS['config']['root'].'_core/Template/SubViewDescriptor.php');
 		
 	$sp = new ServiceProvider();
-	
+
 	/* check session expiration */
 	$sp->ref('User')->checkSessionExpiration();
 	//print_r($_SESSION);

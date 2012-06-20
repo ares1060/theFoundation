@@ -1,0 +1,132 @@
+<style type="text/css" media="screen">
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/services/pagina.css);
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/uiwidget.css);
+</style>
+<div id="admin_menu_main">
+	<div id="admin_menu_main_nav">
+		<ul id="right_action">
+			<!-- <li><a href="javascript:void(0);" class="menu_link" id="blog_admin_action_settings"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/settings.png" /><br />Einstellungen</a></li> -->
+			<li class="seperator">&nbsp;</li>
+			<li id="chapter_settings"><a href="javascript:void(0);" onclick="tfaddress.editPath({unset:['action', 'id'], set:{'chapter':'settings'}});" class="menu_link" id="blog_admin_action_settings"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/shop/gear_in.png" /><br />Einstellungen</a></li>
+			
+		</ul>
+		<ul id="chapters">
+			<li id="chapter_data"><a href="javascript:void(0);" onclick="tfaddress.editPath({unset:['action', 'id'], set:{'chapter':'data'}});" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/User/data.png" /><br />Meine Daten</a></li>
+			<li class="seperator">&nbsp;</li>
+			<li id="chapter_notifications"><a href="javascript:void(0);" onclick="tfaddress.editPath({unset:['action', 'id'], set:{'chapter':'notifications'}});" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/User/notifications.png" /><br />Mitteilungen</a></li>
+			<li id="chapter_privacy"><a href="javascript:void(0);" onclick="tfaddress.editPath({unset:['action', 'id'], set:{'chapter':'privacy'}});" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/User/privacy.png" /><br />Privatsph&auml;re</a></li>
+		</ul>
+	</div>
+</div>
+<!-- <div class="h_sep" id="admin_top_hr" style="margin: 0px -10px 10px -15px;">
+	<span class="left">&nbsp;</span>
+	<span class="right">&nbsp;</span>
+	<span class="center">&nbsp;</span>
+</div> -->
+<div class="messages" id="tf_msg" style="margin-bottom: 5px;">{pp:Messages(action:viewType, type:error/info/debug)}</div>
+<div id="user_content" class="actual_content"></div>
+<script type="text/javascript">
+	<!--
+		//var active_page = 1;
+		var active_chapter = '';
+		var active_action = '';
+
+		/* --- deep link --- */
+		$.address.change(function(event) { updateDeeplink(); });  
+		//$.address.init(function(event) {  updateDeepLink(); });
+
+		function updateDeeplink() {
+			params = tfaddress.getPathNames();
+			
+			if(params['chapter'] == undefined) { $.address.path('/chapter/data/'); params = tfaddress.getPathNames();}
+
+			active_chapter = params['chapter'];
+			active_action= params['action'];
+
+			$('#admin_menu_main_nav > ul > li').removeClass('selected');
+			
+			if(active_chapter == 'data') {
+
+				loadData();  
+				
+			} else if(active_chapter == 'notifications') { 
+
+				loadNotifications();  
+				
+			} else if(active_chapter == 'privacy') { 
+				
+				loadPrivacy();  
+				
+			} else if(active_chapter == 'settings') {
+
+				loadSettings();
+				
+			}
+		}
+		/* ---------------  orders --------------*/
+		function loadData() {
+			$('#chapter_data').addClass('selected');
+			tf.showAdminLoading();
+			tf.getService({
+				service: 'User',
+				method: 'admin', 
+				args: {
+					chapter:'profile_data'
+				},
+				handle: function (msg) {
+					$('#user_content').html(msg);
+					tf.hideAdminLoading();
+				}
+			});
+		}
+		/* ---------------  products --------------*/
+		function loadPrivacy() {
+			$('#chapter_privacy').addClass('selected');
+			tf.showAdminLoading();
+			tf.getService({
+				service: 'User',
+				method: 'admin', 
+				args: {
+					chapter:'profile_privacy'
+				},
+				handle: function (msg) {
+					$('#user_content').html(msg);
+					tf.hideAdminLoading();
+				}
+			});
+		}
+		/* ---------------  notifications --------------*/
+		function loadNotifications() {
+			$('#chapter_notifications').addClass('selected');
+			tf.showAdminLoading();
+			tf.getService({
+				service: 'User',
+				method: 'admin', 
+				args: {
+					chapter:'profile_notifications'
+				},
+				handle: function (msg) {
+					$('#user_content').html(msg);
+					tf.hideAdminLoading();
+				}
+			});
+		}
+		/* ---------------  settings --------------*/
+		function loadSettings() {
+			$('#chapter_settings').addClass('selected');
+			tf.showAdminLoading();
+			tf.getService({
+				service: 'User', 
+				method: 'admin', 
+				args: { 
+					chapter:'settings'
+				}, 
+				handle: function (msg) {
+						tf.hideAdminLoading();
+						$('#shop_content').html(msg);
+					}
+			});
+		}
+
+	//-->
+</script>

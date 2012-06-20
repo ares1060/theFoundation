@@ -117,14 +117,14 @@
         /****************************** end of standard functions ******************************/
      	/* ============================  Template  -  Admin  ============================  */
         public function tplAdmin() {
-        	if(isset($_SESSION['User'])){
+        	if($this->sp->ref('User')->isLoggedIn()){
 				header('Content-Type:text/html; charset=UTF-8');        		
 				
 				$service = isset($_GET['service']) ? $_GET['service'] : 'overview';
 
         		$tpl = new ViewDescriptor($this->_setting('tpl.admincenter.main'));
         		
-        		if($_SESSION['User']['group'] == 'root'){
+        		if($this->sp->ref('User')->getLoggedInUser()->getGroup()->getName() == 'root'){
         			$user = new SubViewDescriptor('view_as');
         			
         			$tpl->addSubView($user);
@@ -132,7 +132,7 @@
         		
         		$tpl->addValue('site_title', $this->_setting('site_title'));
         		
-        		if(isset($_SESSION['User']) && $_SESSION['User']['nick'] == 'root' && isset($_SESSION['User']['defaultPwd']) && $service != 'profile' && $this->_setting('show_defaultPwd_alert')) $tpl->showSubView('defaultPassword');
+        		if($this->sp->ref('User')->getLoggedInUser()->getNick() == 'root' && isset($_SESSION['User']['defaultPwd']) && $service != 'profile' && $this->_setting('show_defaultPwd_alert')) $tpl->showSubView('defaultPassword');
         		
         		
         		$selected_menu = array();
@@ -170,7 +170,7 @@
         		if($service == 'profile') {
         			$tpl->addValue('menu_profile', 'sel');
         			//$tpl->addValue('content', $this->sp->ref('User')->tplAdminProfile());
-        			$tpl->addValue('content', 'profile');
+        			$tpl->addValue('content', $this->sp->ref('User')->admin(array('chapter'=>'profile')));
         		} else if($service == 'overview') {
         			$tpl->addValue('menu_overview', 'sel');
         			$tpl->addValue('content', $this->tplOverview());

@@ -46,9 +46,10 @@
                                         'tpl_root_folder'=>'_template/'.$this->_setting('tpl.base_template').'/'.$GLOBALS['Localization']['language'],
                                         'tpl_folder'=>'_template/'.$this->template.'/'.$GLOBALS['Localization']['language'],
             							'service_folder' => '_services',
-                                        'user_id'=>(isset($_SESSION['User'])) ? $_SESSION['User']['id'] : '',
-                                        'user_group'=>(isset($_SESSION['User'])) ? $_SESSION['User']['group'] : '',
-            'user_nick'=>(isset($_SESSION['User'])) ? $_SESSION['User']['nick'] : '');
+                                        'user_id'=> isset($_SESSION['User']['loggedInUser']) ? $_SESSION['User']['loggedInUser']->getId() : '',
+                                        'user_group'=> isset($_SESSION['User']['loggedInUser']) ? $_SESSION['User']['loggedInUser']->getGroup()->getName() : '',
+            							'user_nick'=> isset($_SESSION['User']['loggedInUser']) ? $_SESSION['User']['loggedInUser']->getNick() : '');
+            
             foreach($_GET as $key=>$get){
                 if(!is_array($get)) $this->baseReplaces['GET:'.$key] = $get;
             }
