@@ -125,8 +125,29 @@
         		$tpl = new ViewDescriptor($this->_setting('tpl.admincenter.main'));
         		
         		if($this->sp->ref('User')->getLoggedInUser()->getGroup()->getName() == 'root'){
+        			$vu = $this->sp->ref('User')->getViewingUser();
+        			$u = $this->sp->ref('User')->getLoggedInUser();
+        			
         			$user = new SubViewDescriptor('view_as');
         			
+        			if($vu->getId() != $u->getId()){
+        				$tmp = new SubViewDescriptor('view_as_enabled');
+        				$tmp->addValue('nick', $vu->getNick());
+        				$user->addSubView($tmp);
+        			} else {
+        				$user->showSubView('view_as_disabled');
+        			}
+        			
+        			$users = $this->sp->ref('User')->getUsers();
+        			foreach($users as $u1){
+        				if($u1->getId() != $u->getId()){
+	        				$tmp = new SubViewDescriptor('view_as_user');
+	        				$tmp->addValue('id', $u1->getId());
+	        				$tmp->addValue('u_nick', $u1->getNick());
+	        				$user->addSubView($tmp);
+	        				unset($tmp);
+        				}
+        			}
         			$tpl->addSubView($user);
         		}
         		

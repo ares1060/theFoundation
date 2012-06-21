@@ -33,15 +33,6 @@
 				$('#topbar-view_as').removeClass('selected');
 			});
 		});
-		function setUser(id, name) {
-			if(id == -1) {
-				$('#topbar-view_as-icon').html(name);
-				$('#topbar-view_as-icon').removeClass('active');
-			} else {
-				$('#topbar-view_as-icon').html(name);
-				$('#topbar-view_as-icon').addClass('active');
-			}
-		}
 	//-->
 	</script>
 	<title>{@pp:title}</title>
@@ -55,21 +46,61 @@
 			<div class="item"><a href="{@pp:abs_root}_admincenter/tf/profile/" id="topbar-user-icon" class="item_link">{@pp:user_nick}</a></div> 
 			<pp:dynamic name="view_as">
 				<div id="topbar-view_as" class="item">
-					<a href="javascript:void(0);" id="topbar-view_as-icon" class="item_link">&nbsp;</a> 
+					<pp:dynamic name="view_as_disabled"><a href="javascript:void(0);" id="topbar-view_as-icon" class="item_link">&nbsp;</a></pp:dynamic> 
+					<pp:dynamic name="view_as_enabled"><a href="javascript:void(0);" id="topbar-view_as-icon" class="item_link active">{@pp:nick}</a></pp:dynamic> 
 					<div class="tf_dropdown view_as_dropdown item_link" id="view_as_dropdown">
 						<div class="tf_dropdown_arrow" style="right: 4px;">&nbsp;</div>
+						<div class="tf_dropdown_arrow active" style="right: 4px;">{@pp:nick}</div>
 						<ul>
-							<li class="option"><a href="javascript:void(0);" onclick="setUser(-1, '&nbsp;');">Eigene Daten anzeigen</a></li>
+							<li class="option"><a href="javascript:void(0);" onclick="setViewingUser(-1, '&nbsp;');">Eigene Daten anzeigen</a></li>
 							<li class="seperator">&nbsp;</li>
-							<li  class="option"><a href="javascript:void(0);" onclick="setUser(1, 'Max');">Max</a></li>
-							<li  class="option"><a href="javascript:void(0);" onclick="setUser(2, 'Moritz');">Moritz</a></li>
-							<li  class="option"><a href="javascript:void(0);" onclick="setUser(3, 'Quizmaster');">Quizmaster</a></li>
+							<!-- <li  class="option"><a href="javascript:void(0);" onclick="setViewingUser(1, 'Max');">Max</a></li>
+							<li  class="option"><a href="javascript:void(0);" onclick="setViewingUser(2, 'Moritz');">Moritz</a></li>
+							<li  class="option"><a href="javascript:void(0);" onclick="setViewingUser(3, 'Quizmaster');">Quizmaster</a></li> -->
 							<pp:dynamic name="view_as_user">
-								<li  class="option"><a href="javascript:void(0);">{@pp:user_nick}</a></li>
+								<li  class="option"><a href="javascript:void(0);" onclick="setViewingUser({@pp:id}, '{@pp:u_nick}');">{@pp:u_nick}</a></li>
 							</pp:dynamic>
 						</ul>
 					</div>
 				</div>
+				<script type="text/javascript">
+					function setViewingUser(id, name) {
+						if(id == -1) {
+							tf.showAdminLoading();
+							tf.getService({
+								service: 'User',
+								method: 'admin', 
+								args: {
+									action:'unset_viewing_user'
+								},
+								handle: function (msg) {
+									if(msg == 'true') {
+										$('#topbar-view_as-icon').html(name);
+										$('#topbar-view_as-icon').removeClass('active');
+									}
+									tf.hideAdminLoading();
+								}
+							});
+						} else {
+							tf.showAdminLoading();
+							tf.getService({
+								service: 'User',
+								method: 'admin', 
+								args: {
+									action:'set_viewing_user',
+									id: id
+								},
+								handle: function (msg) {
+									if(msg == 'true') {
+										$('#topbar-view_as-icon').html(name);
+										$('#topbar-view_as-icon').addClass('active');
+									}
+									tf.hideAdminLoading();
+								}
+							});
+						}
+					}
+				</script>
 			</pp:dynamic>
 			<div class="item"><a href="{@pp:abs_root}_admincenter/logout/" id="topbar-logout-icon" class="item_link""> &nbsp;</a></div>
 		</div>

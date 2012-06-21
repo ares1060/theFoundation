@@ -1,5 +1,6 @@
 <style type="text/css" media="screen">
 	@import url({@pp:abs_root}{@pp:tpl_folder}/css/services/pagina.css);
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/services/user.css);
 	@import url({@pp:abs_root}{@pp:tpl_folder}/css/uiwidget.css);
 </style>
 <div id="admin_menu_main">
@@ -23,7 +24,7 @@
 	<span class="right">&nbsp;</span>
 	<span class="center">&nbsp;</span>
 </div> -->
-<div class="messages" id="tf_msg" style="margin-bottom: 5px;">{pp:Messages(action:viewType, type:error/info/debug)}</div>
+<div class="messages" id="tf_msg" style="margin-bottom: 5px;">{pp:Messages("action":"viewType", "type":"error/info/debug")}</div>
 <div id="user_content" class="actual_content"></div>
 <script type="text/javascript">
 	<!--

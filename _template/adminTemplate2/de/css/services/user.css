@@ -1,0 +1,16 @@
+@CHARSET "UTF-8";
+#profile_data h2 {
+	margin-top: 20px;
+	padding-left: 20px;	
+	margin-bottom: 10px;
+}
+.tf_form .tf_form_text {
+	display: inline-block;
+	line-height: 2.1;	
+	margin-right: 10px;
+}
+#profile_email_saved_text, #profile_email_not_saved_text {
+	padding-left: 20px;	
+}
+#profile_email_saved_text { color: #69bf69; }
+#profile_email_not_saved_text { color: #d15b5b; }

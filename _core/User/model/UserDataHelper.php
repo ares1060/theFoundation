@@ -14,6 +14,15 @@
 		
 		/** ---  Getter --- */
 		/**
+		 * returnes nick availability
+		 * @param unknown_type $nick
+		 */
+		public function checkNickAvailability($nick){
+			$u = $this->mysqlRow('SELECT * FROM '.$GLOBALS['db']['db_prefix'].'user WHERE nick="'.mysql_real_escape_string($nick).'"');
+			if($u != array()) return false;
+			else return true;
+		}
+		/**
 		 * returnes Users 
 		 * @param unknown_type $page
 		 * @param unknown_type $perPage
@@ -23,7 +32,7 @@
 			$limit = '';
 			$u1 = $this->mysqlArray('SELECT * FROM '.$GLOBALS['db']['db_prefix'].'user '.$limit);
 			if($u1 != array()){
-				foreach($u1 as $U) 
+				foreach($u1 as $u) 
 					$return[] = new UserObject($u['nick'], $u['id'], $u['email'], $this->getUserGroup($u['group']), $u['status']);
 			}
 			return $return;
@@ -98,7 +107,7 @@
     				if($this->mysqlInsert('INSERT INTO '.$GLOBALS['db']['db_prefix'].'user 
     									(`nick`, `hash`, `group`, `email`, `status`) VALUES 
     									(\''.mysql_real_escape_string($nick).'\', 
-    										\''.$this->hashPassword($pwd, $this->sp->ref('TextFunctions')->generatePassword(51, 13, 7, 7)).'\', 
+    										\''.$this->sp->ref('User')->hashPassword($pwd, $this->sp->ref('TextFunctions')->generatePassword(51, 13, 7, 7)).'\', 
     										\''.mysql_real_escape_string($group).'\', 
     										\''.mysql_real_escape_string($email).'\',
     										\''.mysql_real_escape_string($status).'\');')) {
@@ -130,6 +139,76 @@
     			$this->_msg($this->_('You are not authorized', 'core'), Messages::ERROR);
         		return false;
     		}
+    	}
+    	
+    	/**
+    	 * edits User by given id
+    	 * @param $id
+    	 * @param $nick
+    	 * @param $pwd
+    	 * @param $email
+    	 * @param $status
+    	 * @param $group
+    	 * @param $userData
+    	 */
+    	public function editUser($id=-1, $nick='', $pwd='', $email='', $status=-1, $group=-1, $userData=array()){
+    		if($id == -1) $id = $this->sp->ref('User')->getLoggedInUser()->getId();
+
+    		if($id == $this->sp->ref('User')->getLoggedInUser()->getId() || $this->checkRight('administer_user')){
+    			
+    			$query = array();
+    			$err = false;
+    			
+    			// nick just can be changed by authorized uer and if available
+    			if($nick != '' && $this->checkRight('administer_user')) {
+    				if($this->checkNickAvailability($nick)){
+    					$query[] = 'nick="'.mysql_real_escape_string($nick).'"';
+    				} else $this->_msg($this->_('Nick not available'), Messages::ERROR);
+    			} else $nick = '';
+    			
+    			// accept email just if it is an email
+    			if($email != '') {
+    				if($this->sp->ref('TextFunctions')->isEmail($email)){
+    					$query[] = 'email="'.mysql_real_escape_string($email).'"';
+    				} else {
+    					$this->_msg($this->_('Please enter a valid email'), Messages::ERROR);
+    					$err = true;
+    				}
+    			}
+    			
+    			// create new password hash
+    			if($pwd != '') {
+    				if($this->sp->ref('TextFunctions')->getPasswordStrength($pwd) >= $this->_setting('pwd.min_strength')){
+    					$query[] = 'hash="'.$this->sp->ref('User')->hashPassword($pwd, $this->sp->ref('TextFunctions')->generatePassword(51, 13, 7, 7)).'"';
+    				} else {
+    					$this->_msg($this->_('New Password is too weak'), Messages::ERROR);
+    					$err = true;
+    				}
+       			}
+       			
+       			if($status != -1 && $this->checkRight('administer_user')){
+       				$query[] = 'status="'.mysql_real_escape_string($status).'"';
+       			}
+       			
+       			if($group != -1 && $this->checkRight('administer_user')){
+       				$query[] = 'group="'.mysql_real_escape_string($group).'"';
+       			}
+       			
+       			//TODO: userData
+       			//$this->debug(implode(', ', $query));
+       			       			
+       			if(!$err) {
+       				$q = $this->mysqlUpdate('UPDATE '.$GLOBALS['db']['db_prefix'].'user SET '.implode(', ', $query).' WHERE id="'.mysql_real_escape_string($id).'"');
+       				if($q) {
+       					//$this->_msg($this->_('Update successfull'), Messages::INFO);
+       					if($id == $this->sp->ref('User')->getLoggedInUser()->getId()) $this->sp->ref('User')->updateActiveUsers();
+       					return true;
+       				} else {
+       				//	$this->_msg($this->_('Update unsuccessfull'), Messages::INFO);
+       					return false;
+       				}
+       			} else return false;
+      		} else return false;
     	}
 	}
 ?>

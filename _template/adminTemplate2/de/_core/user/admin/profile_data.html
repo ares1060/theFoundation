@@ -1,0 +1,90 @@
+<div id="profile_data">
+	<h2>Grunddaten</h2>
+	<div class="profile_block">
+		<div class="tf_form">
+			<p class="tf_form_item">
+				<span class="tf_label">Nick:</span>
+				<span class="tf_form_text">{@pp:nick}</span>
+			</p>
+			<p class="tf_form_item" id="profile_email">
+				<span class="tf_label">E-Mail:</span>
+				<span class="tf_form_text" id="profile_data_email_text">{@pp:email}</span>
+				<button class="button small" onclick="$('#profile_email').hide(); $('#profile_change_email').show(); return false;"><span>&Auml;ndern</span></button>
+				<span id="profile_email_saved_text" style="display: none;">E-Mail gespeichert.</span>
+				<span id="profile_email_not_saved_text" style="display: none;">E-Mail konnte nicht gespeichert werden.</span>
+			</p>
+			<p class="tf_form_item" id="profile_change_email" style="display: none;">
+				<label for="profile_data_email" class="tf_label">E-Mail:</label>
+				<input class="tf_input small" id="profile_data_email" value="{@pp:email}"/>
+				<button type="submit" class="button small" onclick="saveEMail(); return false;"><span>Speichern</span></button>
+			</p>
+		</div>
+	</div>
+	<h2>Passwort &auml;ndern</h2>
+	<div class="profile_block">
+		<form class="tf_form" id="change_pwd">
+			<p class="tf_form_item">
+				<label class="tf_label" for="old_pwd">Altes Passwort:</label>
+				<input type="password" value="" class="tf_input small" id="old_pwd" />
+			</p>
+			<p class="tf_form_item">
+				<label class="tf_label" for="new_pwd">Neues Passwort:</label>
+				<input type="password" value="" class="tf_input small" id="new_pwd" />
+			</p>
+			<p class="tf_form_item">
+				<label class="tf_label" for="new_pwd1">Neues Passwort: <span class="small">wiederholen</span></label>
+				<input type="password" value="" class="tf_input small" id="new_pwd1" />
+			</p>
+			<p class="tf_form_item">
+				<span class="tf_label">&nbsp;</span>
+				<button type="submit" class="button" onclick="changePwd(); return false;"><span>Speichern</span></button>
+				<button type="reset" class="button"><span>Zur&uuml;cksetzten</span></button>
+			</p>
+		</form>
+	</div>
+</div>
+<br />
+<script type="text/javascript">
+	tf.createPasswordChecker('new_pwd');
+
+	function saveEMail() {
+		tf.showAdminLoading();
+		tf.getService({
+			service: 'User',
+			method: 'admin', 
+			args: {
+				action: 'profile_edit_email',
+				email: $('#profile_data_email').val()
+			},
+			handle: function (msg) {
+				tf.hideAdminLoading();
+				if(msg == 'true') {
+					$('#profile_data_email_text').html($('#profile_data_email').val());
+					$('#profile_email_saved_text').show().delay(1000).fadeOut(200);
+				} else 	$('#profile_email_not_saved_text').show().delay(1000).fadeOut(200);
+				
+				$('#profile_change_email').hide();
+				$('#profile_email').show();
+			}
+		});
+	}	
+	function changePwd() {
+		tf.showAdminLoading();
+		tf.getService({
+			service: 'User',
+			method: 'admin', 
+			args: {
+				action: 'profile_change_pwd',
+				pwd: $('#new_pwd').val(),
+				pwd1: $('#new_pwd1').val(),
+				pwd_old: $('#old_pwd').val()
+			},
+			handle: function (msg) {
+				tf.hideAdminLoading();
+				$('#old_pwd').val('');
+				$('#new_pwd').val('');
+				$('#new_pwd1').val('');
+			}
+		});
+	}
+</script>

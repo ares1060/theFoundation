@@ -1,5 +1,6 @@
 <?php
 	require_once 'classes/TextFunctionsMailChecker.php';
+	require_once 'classes/TextFunctionsPasswordStrength.php';
 	/**
      * Description
      * @author author
@@ -19,6 +20,8 @@
     	const OFFLINE = 0;
     	
     	private $smilies;
+    	
+    	private $password_strength;
     	
         function __construct(){
         	$this->name = 'TextFunctions';
@@ -69,7 +72,7 @@
         	
         	switch($action){
         		case 'getPasswordStrength':
-        			return $this->getPasswordStrength($pwd);
+        			return $this->getPasswordStrengthInfo($pwd);
         			break;
         		case 'generatePassword':
         			return $this->generatePassword(14, 4, 3, 1);
@@ -436,7 +439,8 @@
 	 	 * @param $password
 	 	 * @return int 
 	 	 */
-		function getPasswordStrength($password) {
+		
+		function OLDgetPasswordStrength($password) {
 			if ( strlen( $password ) == 0 ) {
 		        return 0;
 		    }
@@ -513,6 +517,33 @@
 		    return $strength;
 		}
 		
+		/**
+	 	 * Return strength name and value
+	 	 * @param $password
+	 	 * @return array() 
+	 	 */
+		function getPasswordStrengthInfo($password) {
+			if(!isset($this->password_strength)) $this->password_strength = new TextFunctionsPasswordStrength();
+			
+			$r = $this->password_strength->scorePwd($password);
+			
+			$r1 = array();
+			$r1['averageScoreInfo'] = $this->_($r['averageScoreInfo']);
+			$r1['averageScoreInfoNumber'] = $r['averageScoreInfoNumber'];
+			return $r1;
+		}
+    	/**
+	 	 * Return strength value 0-7
+	 	 * @param $password
+	 	 * @return int
+	 	 */
+		function getPasswordStrength($password) {
+			if(!isset($this->password_strength)) $this->password_strength = new TextFunctionsPasswordStrength();
+			
+			$r = $this->password_strength->scorePwd($password);
+			
+			return $r['averageScoreInfoNumber'];
+		}
 		/**
 		 * returnes Time from given string converted by $preg
 		 * the preg_match formular has to include following strings

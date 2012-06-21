@@ -32,6 +32,7 @@ var tf = {
 		var method = args_.method;
 		var handle = args_.handle;
 		var args = args_.args;
+		var json_return = (args_.json == undefined) ? false : args_.json;
 
 		if(this.template != undefined ) template_str = '&args[template]='+this.template;
 		else template_str = '';
@@ -47,10 +48,12 @@ var tf = {
 			success: function (answer) {
 //					(answer);
 				try {
+					console.log(answer);
 					json = answer; //jQuery.parseJSON(answer);
 					if(json.content != undefined){
 						if(json.content == 'session_expired') document.location = this.login_url;
-						handle(json.content.toString());
+						if(json_return) handle(json.content);
+						else handle(json.content.toString());
 					}
 					if(json.msg != undefined && json.msg != ''){
 						$('#tf_msg').html(json.msg);
@@ -87,7 +90,7 @@ var tf = {
 	 */
 	showMessages: function() {
 		$('#tf_msg').stop(true);
-		$('#tf_msg').show().delay(10000).hide('slow'); 
+		$('#tf_msg').show().delay(10000).slideUp('slow'); 
 	},
 	/**
 	 * shows Admin Loading div in Admincenter
@@ -130,6 +133,28 @@ var tf = {
 	 */
 	str_replace: function(search, replace, subject) {
 		return subject.split(search).join(replace);
+	},
+	createPasswordChecker: function(id){
+		$('#'+id).after('<span id="password_strength-'+id+
+					'" class="tf_password_strength">Password St&auml;rke:<span id="password_strength_text-'+id+
+					'" class="text">&nbsp;</span></span>');
+		
+		$('#'+id).keyup(function() {
+			tf.getService({
+				service: 'TextFunctions', 
+				method: 'data', 
+				args: { 
+					action:'getPasswordStrength',
+					pwd: $(this).val()
+				}, 
+				handle: function (msg) {
+					console.log(msg);
+					$('#password_strength_text-'+id).html(msg.averageScoreInfo);
+					$('#password_strength-'+id).attr('class', msg.averageScoreInfo.split(' ').join('').toLowerCase()+' tf_password_strength');
+				},
+				json: true
+			});
+		});
 	}
 };
 
@@ -278,6 +303,7 @@ var tfaddress = {
 		}	
 	}
 }
+
 
 /**
  * runs important functions on startup

@@ -17,15 +17,25 @@
 		}
 		
 		public function tplProfileData() {
-			return 'data';
+			
+			$view = new ViewDescriptor($this->_setting('usercenter.profile_data'));
+			
+			$u = $this->sp->ref('User')->getLoggedInUser();
+			
+			$view->addValue('nick', $u->getNick());
+			$view->addValue('email', $u->getEmail());
+					
+			return $view->render();
 		}
 	
 		public function tplProfileNotifications() {
-			return 'notifications';
+			$view = new ViewDescriptor($this->_setting('usercenter.profile_notification'));
+			return $view->render();
 		}
 	
 		public function tplProfilePrivacy() {
-			return 'prvacy';
+			$view = new ViewDescriptor($this->_setting('usercenter.profile_privacy'));
+			return $view->render();
 		}
 	}
 ?>

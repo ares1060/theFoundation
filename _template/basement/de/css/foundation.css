@@ -74,7 +74,7 @@ span.tf_logo_dark span, span.tf_logo_light span{
 	overflow: hidden;
 	height: 18px;
 }
-.tf_form .tf_password_strength {
+/*.tf_form .tf_password_strength {
 	display: inline-block;
 	overflow:hidden;
 	opacity: 1;
@@ -87,7 +87,7 @@ span.tf_logo_dark span, span.tf_logo_light span{
 	margin-bottom: 5px;
 	height: 18px;
 	padding: 0px;	
-}
+}*/
 .inform_box {
 	background: rgba(0,0,0,.06);
 	box-shadow: 0px 0px 2px rgba(0,0,0,.2);	
@@ -430,3 +430,25 @@ button.button.small, input.button.small {
 	background: red;	
 	background: url(../img/interface/tf_dropdown_arrow.png) top left no-repeat;
 }
+/* ---- Password strength ---- */
+.tf_password_strength {
+	display: inline-block;
+	width: 200px;
+	position: relative;	
+	margin-left: 10px;
+	padding: 1px 0px 1px 0px;
+	border-bottom: 5px solid #ddd;
+}
+.tf_password_strength .text {
+	position: absolute;
+	right: 0px;
+	top: 1px;	
+}
+.tf_password_strength.verybad { border-bottom: 5px solid #f25f60;}
+.tf_password_strength.bad { border-bottom: 5px solid #f29a5f;}
+.tf_password_strength.medium-bad { border-bottom: 5px solid #f2b75f;}
+.tf_password_strength.medium { border-bottom: 5px solid #f2d45f;}
+.tf_password_strength.medium-good { border-bottom: 5px solid #f2f25f;}
+.tf_password_strength.good { border-bottom: 5px solid #c1e35a;}
+.tf_password_strength.verygood { border-bottom: 5px solid #54d454;}
+.tf_password_strength.excellent { border-bottom: 5px solid #54b4d4;}
