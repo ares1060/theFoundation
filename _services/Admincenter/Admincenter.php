@@ -203,6 +203,7 @@
         		} else {
         			// normal menu item
         			$o = $this->sp->ref($selected_menu['class']);
+
         			if(method_exists($o, 'handleAdminPost') && $_POST != array()) $o->handleAdminPost();
         			
         			$tpl->addValue('content', $o->admin($_GET));

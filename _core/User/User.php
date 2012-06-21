@@ -32,16 +32,24 @@
             
             $this->viewAdmin = new UserAdminView($this->settings, $this->dataHelper);
             $this->viewFront = new UserFrontView($this->settings,  $this->dataHelper);
-           	
+           	           	
+            //$this->debugVar($_SESSION['User'] == null);
+            //$this->debugVar($_SESSION['User']['loggedInUser'] == null);
+            
             //load User Data From Session if available
             if(isset($_SESSION['User']) && isset($_SESSION['User']['loggedInUser'])){
             	$_SESSION['User']['viewingUser'] = $this->fixObject($_SESSION['User']['viewingUser']);
             	$_SESSION['User']['loggedInUser'] = $this->fixObject($_SESSION['User']['loggedInUser']);
             	
+            	if(get_class($_SESSION['User']['loggedInUser']) != 'UserObject') $this->debugVar('fixObject ERROR');
+            	
             	$this->loggedInUser = $_SESSION['User']['loggedInUser'];
-            	if(isset($_SESSION['User']['viewingUser'])) $this->viewingUser = $this->fixObject($_SESSION['User']['viewingUser']);
+            	
+            	if(isset($_SESSION['User']['viewingUser'])) $this->viewingUser = $_SESSION['User']['viewingUser'];
             	else $this->viewingUser = $this->loggedInUser;
+            	
             } else $this->loggedInUser = null;
+            
          }
          
          private function fixObject (&$object) {
@@ -65,6 +73,9 @@
          }
          
          public function admin($args){
+         	/*$this->debugVar($this->loggedInUser);
+         	$this->debugVar($_SESSION['User']);*/
+         	
             $chapter = (isset($args['chapter']) && $args['chapter'] != '') ? $args['chapter'] : '';
             $action = (isset($args['action']) && $args['action'] != '') ? $args['action'] : '';
             
@@ -72,12 +83,28 @@
         	$id = (isset($args['id']) && $args['id'] > 0) ? $args['id'] : -1;
         	
             switch($chapter){
-            	case 'usercenter':
+            	case 'user':
+            		return $this->viewAdmin->tplUser($page);
             		break;
             	case 'edit_user':
-            		break;
+            		return $this->viewAdmin->tplUserEdit($id);
+               		break;
             	case 'new_user':
+            		return 'new_user';
             		break;
+            	case 'usergroup':
+            		return 'usergroup';
+            		break;
+            	case 'edit_usergroup':
+            		return 'edit_usergroup';
+            		break;
+            	case 'new_usergroup':
+            		return 'new_usergroup';
+            		break;
+            	case 'userdata':
+            		return 'userdata';
+            		break;
+            	/* --- profile --- */
             	case 'profile':
             		return $this->viewAdmin->tplProfile();
             		break;
@@ -102,6 +129,28 @@
             					$this->viewingUser = $this->dataHelper->getUser($id);
             					$_SESSION['User']['viewingUser'] = $this->viewingUser;
             					return true;
+            				} else {
+            					$this->_msg($this->_('You are not authorized', 'rights'), Messages::ERROR);
+            					return false;
+            				}
+            				break;
+            			case 'edit_user_change_pwd':
+            				$pwd = (isset($args['pwd'])) ? $args['pwd'] : '';
+            				$pwd1 = (isset($args['pwd1'])) ? $args['pwd1'] : '';
+            				$u = $this->dataHelper->getUser($id);
+            				if($u != null && ($this->checkRight('administer_group', $u->getGroup()->getId()) || $this->checkRight('edit_user', $u->getId()))){
+            					if($pwd == $pwd1){
+            						if($this->dataHelper->editUser($u->getId(), '', $pwd)) {
+            							$this->_msg($this->_('Password changed successfull'), Messages::INFO);
+            							return true;
+            						} else {
+            							$this->_msg($this->_('Password could not be changed'), Messages::ERROR);
+            							return false;
+            						}
+            					} else {
+            						$this->_msg($this->_('Passwords dont match', 'core'), Messages::ERROR);
+            						return false;
+            					}
             				} else {
             					$this->_msg($this->_('You are not authorized', 'rights'), Messages::ERROR);
             					return false;
@@ -135,8 +184,7 @@
             				}
             				break;
             			default:
-            				$this->_msg($this->_('Wrong Parameters', 'core'), Messages::ERROR);
-        					return false;
+        					return $this->viewAdmin->tplUsercenter();
             				break;
             		}
             		break;
@@ -168,13 +216,47 @@
          
         public function getSettings() { return $this->settings; }
          
-        public function data($args){}
+		public function data($args){}
          
-         public function setup(){
-         	$error = true;
-        	include_once('setup/setup.php');
+		public function setup(){
+			$error = true;
+			include_once('setup/setup.php');
         	return $error;
-         }
+		}
+    	/**
+         * handles Post Variables in Admincenter
+         */
+        public function handleAdminPost(){
+		    if(isset($_POST['action'])){
+		    	switch($_POST['action']){
+		    		case 'editUser':
+		    			if(isset($_POST['eu_id']) && isset($_POST['eu_mail']) && isset($_POST['eu_status']) && isset($_POST['eu_group'])){
+		    				$user = $this->dataHelper->getUser($_POST['eu_id']);
+		    				
+		    				if($this->checkRight('edit_user', $user->getId()) || $this->checkRight('administer_group', $user->getGroup()->getId())){
+		    					//potential security risk -> check if authorized to set new group
+		    					$group = $this->checkRight('administer_group', $_POST['eu_group']) ? $_POST['eu_group'] : -1;
+		    					
+		    					if($this->dataHelper->editUser($_POST['eu_id'], '', '',$_POST['eu_mail'], $_POST['eu_status'], $group, array())){
+		    						$this->_msg($this->_('_User Update success', 'core'), Messages::INFO);
+
+		    						header('Location: '.$_SERVER["HTTP_REFERER"].$_POST['back_link']);
+			             			exit(0);
+		    					} else $this->_msg($this->_('_User Update error', 'core'), Messages::ERROR);
+		    				} else $this->_msg($this->_('You are not authorized', 'core'), Messages::ERROR);
+		    			}
+		    			break;
+		    		/*case 'upload':
+		    			$this->executeNewProfileImage();
+		    			break;
+		    		case 'newUser':
+		    			$this->executeNewUser();
+		    			break;*/
+		    		default:
+		    			break;
+		    	}
+		    }
+        }
          
         /* functions */
         /**
@@ -275,6 +357,7 @@
          public function setViewingUser(UserObject $user){
          	if($this->checkRight('can_change_viewing_user')){
          		$this->viewingUser = $user;
+         		$_SESSION['User']['viewingUser'] = $user;
          	}
          }
          
@@ -287,28 +370,31 @@
          }
          
          private function setLoggedInUser(UserObject $user) {
-         	$this->loggedInUser = $user;
-         	$_SESSION['User']['loggedInUser'] = $user; 
+         	if($user != null){
+         		$this->loggedInUser = $user;
+         		$_SESSION['User']['loggedInUser'] = $user;
+         	} 
          }
          
          /**
           * returnes logged in User
           */
          public function getLoggedInUser() {
+         	if($this->loggedInUser == null){
+         		if(isset($_SESSION['User']) && isset($_SESSION['User']['loggedInUser'])) $this->loggedInUser = $_SESSION['User']['loggedInUser'];
+         	}
          	return $this->loggedInUser;
          }
          /**
           * updates data for viewing and loggedin User
           */
          public function updateActiveUsers() {
-         	$this->loggedInUser = $this->dataHelper->getUser($this->loggedInUser->getId());
-         	$this->viewingUser = $this->dataHelper->getUser($this->viewingUser->getId());
-         	
-         	$_SESSION['User']['loggedInUser'] = $this->loggedInUser;
-         	$_SESSION['User']['viewingUser'] = $this->viewingUser;
+         	$this->setLoggedInUser($this->dataHelper->getUser($this->loggedInUser->getId()));
+         	$this->setViewingUser($this->dataHelper->getUser($this->viewingUser->getId()));
          }
          
          public function isLoggedIn() {
+         	//$this->debugVar($this->getLoggedInUser());
          	return $this->getLoggedInUser() != null;
          }
          
@@ -318,23 +404,25 @@
           * Additionally ID regeneration will be triggered
           */
      	 public function checkSessionExpiration() {
-        	// create session creation time
-			if(!isset($_SESSION['User']['created_time'])) $_SESSION['User']['created_time'] = time();
+     	 	if($this->isLoggedIn()){
+	        	// create session creation time
+				if(!isset($_SESSION['User']['created_time'])) $_SESSION['User']['created_time'] = -1;
+				
+				// regenerate session id after specified time	
+	        	if($this->_setting('session.regenerate_after') > -1 && time() - $_SESSION['User']['created_time'] > $this->_setting('session.regenerate_after')){
+	        		session_regenerate_id(true);    // change session ID for the current session an invalidate old session ID
+	    			$_SESSION['User']['created_time'] = time();  // update creation time
+	        	}
+	        	        	
+	        	if($this->loggedInUser != null && isset($_SESSION['User']['last_activity']) && isset($_SESSION['User']['last_activity']) && (time() - $_SESSION['User']['last_activity']) > $this->_setting('session.idle_time')){
 	
-			// regenerate session id after specified time	
-        	if($this->_setting('session.regenerate_after') > -1 && time() - $_SESSION['User']['created_time'] > $this->_setting('session.regenerate_after')){
-        		session_regenerate_id(true);    // change session ID for the current session an invalidate old session ID
-    			$_SESSION['created_time'] = time();  // update creation time
-        	}
-        	        	
-        	if($this->loggedInUser != null && isset($_SESSION['User']['last_activity']) && isset($_SESSION['User']['last_activity']) && (time() - $_SESSION['User']['last_activity']) > $this->_setting('session.idle_time')){
-
-        		$this->logout();
-        		$this->_msg($this->_('_session_expired'), Messages::ERROR);
-        		$GLOBALS['session_expired'] = true;
-        	}
-        	
-        	$_SESSION['User']['last_activity'] = time();
+	        		$this->logout();
+	        		$this->_msg($this->_('_session_expired'), Messages::ERROR);
+	        		$GLOBALS['session_expired'] = true;
+	        	}
+	        	
+	        	$_SESSION['User']['last_activity'] = time();
+     	 	}
         } 
    	 	
         /**

@@ -21,6 +21,7 @@
         	
         	parent::__construct();
             $this->messages = array();
+            
             //$this->loadConfig($GLOBALS['config']['root'].'/_core/Messages/Messages.config.php'); //-> geht nicht weil 
             //$this->config['loc_file'] = $GLOBALS['config']['root'].'/_localization/core.messages.loc.php';
            // $this->sp->run('Localization', array('load'=>$this->config['loc_file']));

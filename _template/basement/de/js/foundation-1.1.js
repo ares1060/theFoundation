@@ -55,6 +55,7 @@ var tf = {
 						if(json_return) handle(json.content);
 						else handle(json.content.toString());
 					}
+
 					if(json.msg != undefined && json.msg != ''){
 						$('#tf_msg').html(json.msg);
 						tf.showMessages();
@@ -322,4 +323,6 @@ $(document).ready(function() {
 	}
 	
 	tfaddress.checkHandler();
+	
+	if($('#tf_msg').html() != '') tf.showMessages();
 });

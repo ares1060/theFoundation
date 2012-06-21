@@ -22,6 +22,7 @@
 			if($u != array()) return false;
 			else return true;
 		}
+		/* ========== USERS ========= */
 		/**
 		 * returnes Users 
 		 * @param unknown_type $page
@@ -29,13 +30,28 @@
 		 */
 		public function getUsers($page=-1, $perPage=-1) {
 			$return = array();
-			$limit = '';
+        	
+			$all = $this->getAllUserCount(-1, -1);
+        	
+			$from = ($page-1)*($this->_setting('perpage.user'));
+			if($from > $all) $from = 0;
+			
+			$limit = ($page == -1) ? '' : 'LIMIT '.mysql_real_escape_string($from).', '.mysql_real_escape_string($this->_setting('perpage.user')).';';
+			
 			$u1 = $this->mysqlArray('SELECT * FROM '.$GLOBALS['db']['db_prefix'].'user '.$limit);
 			if($u1 != array()){
 				foreach($u1 as $u) 
 					$return[] = new UserObject($u['nick'], $u['id'], $u['email'], $this->getUserGroup($u['group']), $u['status']);
 			}
 			return $return;
+		}
+		/**
+		 * returnes count of all users
+		 */
+		public function getAllUserCount(){
+			$u = $this->mysqlRow('SELECT COUNT(*) count FROM '.$GLOBALS['db']['db_prefix'].'user');
+			if($u) return $u['count'];
+			else return -1;
 		}
 		/**
 		 * returnes User by Id
@@ -78,6 +94,7 @@
 	       	} else return '';
 		}
 		
+		/* ========== GROUPS ========= */
 		/**
 		 * returnes userGroup by Id
 		 * @param unknown_type $id
@@ -90,6 +107,18 @@
 				}
 			}
 			return $this->groups[$id];
+		}
+		/**
+		 * returnes array of all Usergroups
+		 */
+		public function getGroups() {
+			$this->groups = array();
+			$g = $this->mysqlArray('SELECT * FROM '.$GLOBALS['db']['db_prefix'].'usergroup');
+			if($g != array()){
+				foreach($g as $group) 
+					$this->groups[] = new UserGroup($group['id'], $group['name']);
+				}
+			return $this->groups;
 		}
 		
 		/** ---  SETTER --- */
@@ -154,7 +183,7 @@
     	public function editUser($id=-1, $nick='', $pwd='', $email='', $status=-1, $group=-1, $userData=array()){
     		if($id == -1) $id = $this->sp->ref('User')->getLoggedInUser()->getId();
 
-    		if($id == $this->sp->ref('User')->getLoggedInUser()->getId() || $this->checkRight('administer_user')){
+    		if($id == $this->sp->ref('User')->getLoggedInUser()->getId() || $this->checkRight('administer_user', $id)){
     			
     			$query = array();
     			$err = false;
@@ -162,14 +191,14 @@
     			// nick just can be changed by authorized uer and if available
     			if($nick != '' && $this->checkRight('administer_user')) {
     				if($this->checkNickAvailability($nick)){
-    					$query[] = 'nick="'.mysql_real_escape_string($nick).'"';
+    					$query[] = '`nick`="'.mysql_real_escape_string($nick).'"';
     				} else $this->_msg($this->_('Nick not available'), Messages::ERROR);
     			} else $nick = '';
     			
     			// accept email just if it is an email
     			if($email != '') {
     				if($this->sp->ref('TextFunctions')->isEmail($email)){
-    					$query[] = 'email="'.mysql_real_escape_string($email).'"';
+    					$query[] = '`email`="'.mysql_real_escape_string($email).'"';
     				} else {
     					$this->_msg($this->_('Please enter a valid email'), Messages::ERROR);
     					$err = true;
@@ -179,7 +208,7 @@
     			// create new password hash
     			if($pwd != '') {
     				if($this->sp->ref('TextFunctions')->getPasswordStrength($pwd) >= $this->_setting('pwd.min_strength')){
-    					$query[] = 'hash="'.$this->sp->ref('User')->hashPassword($pwd, $this->sp->ref('TextFunctions')->generatePassword(51, 13, 7, 7)).'"';
+    					$query[] = '`hash`="'.$this->sp->ref('User')->hashPassword($pwd, $this->sp->ref('TextFunctions')->generatePassword(51, 13, 7, 7)).'"';
     				} else {
     					$this->_msg($this->_('New Password is too weak'), Messages::ERROR);
     					$err = true;
@@ -187,11 +216,11 @@
        			}
        			
        			if($status != -1 && $this->checkRight('administer_user')){
-       				$query[] = 'status="'.mysql_real_escape_string($status).'"';
+       				$query[] = '`status`="'.mysql_real_escape_string($status).'"';
        			}
        			
        			if($group != -1 && $this->checkRight('administer_user')){
-       				$query[] = 'group="'.mysql_real_escape_string($group).'"';
+       				$query[] = '`group`="'.mysql_real_escape_string($group).'"';
        			}
        			
        			//TODO: userData

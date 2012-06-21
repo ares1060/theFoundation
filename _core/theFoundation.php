@@ -1,6 +1,8 @@
 <?php
 	session_start();
-
+	
+	//if(isset($_SESSION['User'])) error_log('USER');
+	
 	if(empty($_SERVER['REQUEST_URI'])) {
 	    $_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
 	}
@@ -59,8 +61,8 @@
 	//print_r($_SESSION);
 	/* check authorization */
 	if(isset($authorized) && is_array($authorized) && $authorized != array()) {
-		$gr = (isset($_SESSION['User']['group'])) ? $_SESSION['User']['group'] : -1;
+		$gr = ($sp->ref('User')->isLoggedIn()) ? $sp->ref('User')->getLoggedInUser()->getGroup()->getId() : -1;
+		error_log('sdf');
 		if(!in_array(strtolower(User::getUserGroupNameFromId($gr)), $authorized) && !in_array($gr, $authorized)) {header('Location: '.$GLOBALS['config']['login']); exit(0);}
 	}
-	
 ?>

@@ -105,14 +105,13 @@
 		    $GLOBALS['extra_css'] = array_unique($GLOBALS['extra_css']);
 		    $GLOBALS['extra_js'] = array_unique($GLOBALS['extra_js']);
 		    //get the template
-			$this->baseReplaces['extra_css'] = $this->renderCss($GLOBALS['extra_css']);
+		    $this->baseReplaces['extra_css'] = $this->renderCss($GLOBALS['extra_css']);
             $this->baseReplaces['extra_js'] = $this->renderJs($GLOBALS['extra_js']);
 			$values = array_merge($values, $this->baseReplaces);
 			
 			//do the parsing
-			
-			if($this->fh == null) $this->fh = $this->sp->ref('Filehandler');
-			
+			if(!isset($this->fb)) $this->fh = $this->sp->ref('Filehandler');;
+
 			if($this->_setting('render.cache_level') == 1){
 				if(!isset($this->phpTemplateCache[$tID])) {
 					$cacheName = str_replace('/', '_', $tID);

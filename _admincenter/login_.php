@@ -28,7 +28,7 @@
     
     /* start with Template */
     $main = new ViewDescriptor('login');    
-               
-	/* Standard Replaces */
+
+    /* Standard Replaces */
     echo $main->render();
 ?>
