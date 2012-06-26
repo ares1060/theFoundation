@@ -7,6 +7,7 @@
 	require_once 'view/ShopFrontendView.php';
 	require_once 'view/ShopCartView.php';
 	//require_once 'view/ShopFrontView.php';
+	
 	/**
      * Shop service
      * small shop system
