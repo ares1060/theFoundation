@@ -90,7 +90,7 @@
             		return $this->viewAdmin->tplUserEdit($id);
                		break;
             	case 'new_user':
-            		return 'new_user';
+            		return $this->viewAdmin->tplUserNew($id);
             		break;
             	case 'usergroup':
             		return 'usergroup';
@@ -206,10 +206,30 @@
          		case 'register':
          			$nick = isset($args['nick']) ? $args['nick'] : '';
          			$pwd = isset($args['pwd']) ? $args['pwd'] : '';
+         			$pwd2 = isset($args['pwd2']) ? $args['pwd2'] : '';
          			$email = isset($args['email']) ? $args['email'] : '';
          			$group = isset($args['group']) ? $args['group'] : '';
          			
-         			return $this->register($nick, $pwd, $email, $group);
+         			return $this->register($nick, $email, $group, $pwd, $pwd2);
+         			break;
+         		case 'newUser':
+         			$nick = isset($args['nick']) ? $args['nick'] : '';
+         			$pwd = isset($args['pwd']) ? $args['pwd'] : '';
+         			$pwd2 = isset($args['pwd2']) ? $args['pwd2'] : '';
+         			$email = isset($args['email']) ? $args['email'] : '';
+         			$group = isset($args['group']) ? $args['group'] : '';
+         			$status = isset($args['status']) ? $args['status'] : '';
+         			
+    				if($this->checkRight('administer_user') && $this->checkRight('administer_group', $_POST['eu_group'])){
+    					
+    					$nId = $this->register($nick, $mail, $group, $pwd, $pwd2, $status);
+    					if($nId !== false){
+    						return $nId;
+    					} else return false;
+    				} else {
+    					$this->_msg($this->_('You are not authorized', 'core'), Messages::ERROR);
+    					return false;
+    				}
          			break;
          	}
          }
@@ -248,10 +268,20 @@
 		    			break;
 		    		/*case 'upload':
 		    			$this->executeNewProfileImage();
-		    			break;
-		    		case 'newUser':
-		    			$this->executeNewUser();
 		    			break;*/
+		    		case 'newUser':
+		    			//TODO: save data if error 
+		    			if(isset($_POST['eu_nick']) && isset($_POST['eu_mail']) && isset($_POST['eu_status']) && isset($_POST['eu_group']) && isset($_POST['eu_pwd_new']) && isset($_POST['eu_pwd_new2'])){
+		    				if($this->checkRight('administer_user') && $this->checkRight('administer_group', $_POST['eu_group'])){
+		    					
+		    					$nId = $this->register($_POST['eu_nick'], $_POST['eu_mail'], $_POST['eu_group'], $_POST['eu_pwd_new'], $_POST['eu_pwd_new2'], $_POST['eu_status']);
+		    					if($nId !== false){
+		    						if(isset($_POST['back_link'])) header('Location: '.$_SERVER["HTTP_REFERER"].$_POST['back_link'].$nId.'/');
+		    						else return true;
+		    					}
+		    				} else $this->_msg($this->_('You are not authorized', 'core'), Messages::ERROR);
+		    			}
+		    			break;
 		    		default:
 		    			break;
 		    	}
@@ -338,8 +368,8 @@
         	return true;
          }
          
-    	public function register($nick, $pwd, $email, $group, $status=User::STATUS_HAS_TO_ACTIVATE){
-        	return $this->dataHelper->register($nick, $pwd, $email, $group, $status);
+    	public function register($nick, $email, $group, $pwd, $pwd2, $status=User::STATUS_HAS_TO_ACTIVATE){
+        	return $this->dataHelper->register($nick, $email, $group, $pwd, $pwd2, $status);
         }
          
         /**

@@ -19,6 +19,7 @@
 			$dropdown = $this->sp->ref('UIWidgets')->getWidget('Select');
 
         	$dropdown->setName('eu_group');
+        	$dropdown->setId('eu_group');
         	
         	$groups = $this->dataHelper->getGroups();
 
@@ -36,6 +37,7 @@
            	$dropdown = $this->sp->ref('UIWidgets')->getWidget('Select');
 
         	$dropdown->setName('eu_status');
+        	$dropdown->setId('eu_status');
         	
         	$dropdown->addOption($this->_('_Status: Active', 'core'), User::STATUS_ACTIVE, $status==User::STATUS_ACTIVE);
         	$dropdown->addOption($this->_('_Status: Blocked', 'core'), User::STATUS_BLOCKED, $status==User::STATUS_BLOCKED);
@@ -156,6 +158,21 @@
         		$s->addValue('status', $this->tplGetStatusDropdown($user->getStatus()));
         		$view->addSubView($s);
         		unset($s);
+        		//TODO: Userdata
+        		
+				return $view->render();
+			} else {
+				$this->_msg($this->_('You are not authorized', 'core'), Messages::ERROR);
+        		return '';
+			}
+		}
+		public function tplUserNew() {
+			if($this->sp->ref('User')->isLoggedIn() && $this->checkRight('usercenter') &&  ($this->checkRight('administer_user'))){
+				$view = new ViewDescriptor($this->_setting('usercenter.new_user'));
+				
+        		$view->addValue('group', $this->tplGetGroupDropdown(-1));
+        		$view->addValue('status', $this->tplGetStatusDropdown(-1));
+				
         		//TODO: Userdata
         		
 				return $view->render();

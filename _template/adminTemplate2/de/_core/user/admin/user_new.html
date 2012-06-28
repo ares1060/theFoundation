@@ -1,0 +1,90 @@
+<div id="user_data">
+	<form action="" method="post" class="tf_form" id="edit_user_form">
+		<h2>Grunddaten</h2>
+		<input type="hidden" name="action" value="newUser" />
+		<input type="hidden" name="eu_id" value="{@pp:id}" />
+		<input type="hidden" name="back_link" id="back_link_field" />
+		<div class="tf_form_block">
+			<p>
+				<label for="eu_nick" class="tf_label">Id:</label>
+				<span style="padding-top: 5px; display: inline-block;">wird generiert</span>
+			</p>
+			<p>
+				<label for="eu_nick" class="tf_label">Nickname:</label>
+				<input type="text" id="eu_nick" name="eu_nick" value="" class="tf_input small"/>
+			</p>
+			<p>
+				<label for="eu_group" class="tf_label">Benutzergruppe:</label><!-- id:eu_group -->
+				{@pp:group}
+			</p>
+			<p>
+				<label for="eu_mail" class="tf_label">E-Mail:</label>
+				<input type="text" id="eu_mail" name="eu_mail" value="" class="tf_input small"/>
+			</p>
+			<p>
+				<label for="eu_status" class="tf_label">Status:</label><!-- id:eu_status -->
+				{@pp:status}
+			</p>
+			<p>
+				<label for="eu_pwd_new" class="tf_label">Passwort:</label>
+				<input type="text" id="eu_pwd_new" name="eu_pwd_new" value="" class="tf_input" style="width: 200px;"/>
+			</p>
+			<p>
+				<label for="eu_pwd_new2" class="tf_label">Passwort nochmal:</label>
+				<input type="text" id="eu_pwd_new2" name="eu_pwd_new2" value="" class="tf_input" style="width: 200px;"/>
+				&nbsp;&nbsp;<button class="button small" type="button" onclick="generatePassword(); return false;"><span>Passwort generieren</span></button>
+			</p>
+			<p>
+				<span class="tf_label">&nbsp;</span>
+				<button class="button small" type="submit"><span>Speichern</span></button>
+				<button class="button small" type="reset" onclick="history.back(); return false;"><span>Abbrechen</span></button>
+			</p>
+		</div>
+	</form>	
+</div>
+<script type="text/javascript">
+	tf.createPasswordChecker('eu_pwd_new');
+	$('#back_link_field').attr('value', '#!/chapter/user/page/'+active_page+'/action/edit/id/');
+
+	function generatePassword() {
+		tf.showAdminLoading();
+		tf.getService({
+			service: 'TextFunctions',
+			method: 'data', 
+			args: {
+				action: 'generatePassword'
+			},
+			handle: function (msg) {
+				tf.hideAdminLoading();
+				$('#eu_pwd_new').val(msg);
+				$('#eu_pwd_new2').val(msg);
+				$('#eu_pwd_new').keyup();
+			}
+		});
+	}
+/*
+	function createUser() {
+		tf.showAdminLoading();
+		tf.getService({
+			service: 'TextFunctions',
+			method: 'run', 
+			args: {
+				action: 'newUser',
+				nick: $('#eu_nick').val(),
+				pwd: $('#eu_pwd_new').val(),
+				pwd2: $('#eu_pwd_new2').val(),
+				email: $('#eu_mail').val(),
+				group: $('#eu_group').val(),
+				status: $('#eu_status').val()
+			},
+			handle: function (msg) {
+				alert(msg);
+				console.log(msg);
+				tf.hideAdminLoading();
+				if(msg != false) {
+					
+				}
+			}
+		});
+	}*/
+</script>

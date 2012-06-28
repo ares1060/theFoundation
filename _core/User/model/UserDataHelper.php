@@ -130,23 +130,41 @@
 		 * @param int $group
 		 * @param int $status
 		 */
-    	public function register($nick, $pwd, $email, $group, $status=User::STATUS_HAS_TO_ACTIVATE){
-    		if($this->checkNickAvailibility($nick)){
-    			if(strpos($this->_setting('register.groups'), ':'.$group.':') !== false || $this->checkRight('administer_group', $group)){
-    				if($this->mysqlInsert('INSERT INTO '.$GLOBALS['db']['db_prefix'].'user 
-    									(`nick`, `hash`, `group`, `email`, `status`) VALUES 
-    									(\''.mysql_real_escape_string($nick).'\', 
-    										\''.$this->sp->ref('User')->hashPassword($pwd, $this->sp->ref('TextFunctions')->generatePassword(51, 13, 7, 7)).'\', 
-    										\''.mysql_real_escape_string($group).'\', 
-    										\''.mysql_real_escape_string($email).'\',
-    										\''.mysql_real_escape_string($status).'\');')) {
-    				
-    					$this->_msg($this->_('New user created successfully', 'core'), Messages::INFO);
-    					return true;
-    				} else {
-    					$this->_msg($this->_('New user could not be created', 'core'), Messages::ERROR);
+    	public function register($nick, $email, $group, $pwd, $pwd2, $status=User::STATUS_HAS_TO_ACTIVATE){
+    		if($this->checkNickAvailability($nick)){
+    			if(strpos($this->_setting('register.groups'), ':'.$group.':') !== false || $this->checkRight('administer_group', $group) &&
+    			   ($status==User::STATUS_HAS_TO_ACTIVATE || $this->checkRight('administer_user'))){
+    			   	$this->debugVar($pwd);
+    			   	$this->debugVar($pwd2);
+    			   	if($pwd == $pwd2){
+    			   		if($this->sp->ref('TextFunctions')->getPasswordStrength($pwd) >= $this->_setting('pwd.min_strength')){
+    			   			if($email != '' && $this->sp->ref('TextFunctions')->isEmail($email)){
+		    			   		$id = $this->mysqlInsert('INSERT INTO '.$GLOBALS['db']['db_prefix'].'user 
+		    									(`nick`, `hash`, `group`, `email`, `status`) VALUES 
+		    									(\''.mysql_real_escape_string($nick).'\', 
+		    										\''.$this->sp->ref('User')->hashPassword($pwd, $this->sp->ref('TextFunctions')->generatePassword(51, 13, 7, 7)).'\', 
+		    										\''.mysql_real_escape_string($group).'\', 
+		    										\''.mysql_real_escape_string($email).'\',
+		    										\''.mysql_real_escape_string($status).'\');');
+		    			   		if($id !== false) {
+		    						$this->_msg($this->_('New user created successfully', 'core'), Messages::INFO);
+		    						return $id;
+		    					} else {
+		    						$this->_msg($this->_('New user could not be created', 'core'), Messages::ERROR);
+		    						return false;
+		    					}
+    			   			} else {
+    			   				$this->_msg($this->_('Please enter a valid email'), Messages::ERROR);
+    							return false;
+    			   			}
+    			   		} else {
+    			   			$this->_msg($this->_('New Password is too weak', 'core'), Messages::ERROR);
+    						return false;
+    			   		}
+    			   	} else {
+    			   		$this->_msg($this->_('Different Passwords', 'core'), Messages::ERROR);
     					return false;
-    				}
+    			   	}
     			} else {
     				$this->_msg($this->_('You are not authorized', 'core'), Messages::ERROR);
         			return false;
