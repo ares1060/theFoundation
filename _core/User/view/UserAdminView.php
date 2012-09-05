@@ -10,7 +10,7 @@
 			$this->name = 'User';
 			$this->dataHelper = $datahelper;
 		}
-		/* ======   INTERFACE ======= */
+		/* ======   INTERFACE ADMINCENTER ======= */
 		/**
 		 * returnes renderes Dropdown of all Visible User groups
 		 * @param unknown_type $id
@@ -104,6 +104,7 @@
         		return $this->_('You are not authorized', 'core');
 			}
 		}
+		/* ======   User ======= */
 		public function tplUser($page=1) {
 			if($this->sp->ref('User')->isLoggedIn() && $this->checkRight('usercenter')){
 				if($page < -1) $page = 0;
@@ -181,5 +182,62 @@
         		return '';
 			}
 		}
+		/* ======   Userdata ======= */
+		public function tplUserData($page=1){
+			if($this->sp->ref('User')->isLoggedIn() && $this->checkRight('usercenter')){
+				if($page < -1) $page = 0;
+        		
+				$view = new ViewDescriptor($this->_setting('usercenter.userdata'));
+				
+        		$view->addValue('pagina_active', $page);
+        		$view->addValue('pagina_count', ceil($this->dataHelper->getAllUserDataCount(-1, -1)/$this->_setting('perpage.user_data')));
+        			
+        		$user = $this->dataHelper->getUserData($page);
+        		$usergroups = $this->dataHelper->getGroups();
+
+        		foreach($usergroups as $ug){
+        			$t = new SubViewDescriptor('usergroups_header');
+        			$t->addValue('id', $ug->getId());
+        			$t->addValue('name', $ug->getName());
+        			
+        			$view->addSubView($t);
+        			unset($t);
+        		}
+        		
+        		foreach($user as $u){
+        			$stpl = new SubViewDescriptor('userdata');
+        			
+        			$stpl->addValue('id', $u->getId());
+        			$stpl->addValue('name', $u->getName());
+        			$stpl->addValue('group', $u->getGroup()->getName());
+        			$stpl->addValue('group_id', $u->getGroup()->getId());
+        			$stpl->addValue('type', $u->getType());
+        			$stpl->addValue('info', $u->getInfo());
+        			$stpl->addValue('vis_register', ($u->getVisibleAtRegister()) ? 'yes' : 'no');
+        			$stpl->addValue('vis_edit', ($u->getVisibleAtEdit()) ? 'yes' : 'no');
+        			$stpl->addValue('vis_login', ($u->getVisibleAtLogin()) ? 'yes' : 'no');
+        			
+        			$stpl->addValue('group_id', $u->getGroup()->getId());
+        			
+        			foreach($usergroups as $ug){
+        				$t = new SubViewDescriptor('userdata_group');
+        				$t->addValue('enabled', ($u->usedByGroup($ug->getId())) ? 'ja' : 'nein');
+        				
+        				$stpl->addSubView($t);
+        				unset($t);
+        			}
+        			
+        			$view->addSubView($stpl);
+        			unset($stpl);
+        		}
+				
+				return $view->render();
+			} else {
+				$this->_msg($this->_('You are not authorized', 'core'), Messages::ERROR);
+        		return '';
+			}	
+			return 'userdata_new';
+		}
+		
 	}
 ?>

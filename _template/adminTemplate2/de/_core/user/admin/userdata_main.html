@@ -1,0 +1,53 @@
+<div id="products_actions" class="admincenter_actions">
+	<button class="button small" onclick="tfaddress.editPath({set:{action:'new'}}); return false;"><span>Neue Benutzerdaten</span></button>
+</div>
+{pp:Pagina("count":"{@pp:pagina_count}", "active":"{@pp:pagina_active}", "url":"JavaScript:tfaddress.editPath({set:{page:'{page}'}});", "template":"pagina_modern")}<br />
+<div class="tf_table">
+	<table>
+<!--	private $name;-->
+<!--                private $group;-->
+<!--                private $type;-->
+<!--                private $info;-->
+<!--                private $visibility;-->
+<!--                private $userGroups;-->
+<!--                $stpl->addValue('vis_register', ($u->getVisibleAtRegister()) ? 'yes' : 'no');-->
+<!--        			$stpl->addValue('vis_edit', ($u->getVisibleAtEdit()) ? 'yes' : 'no');-->
+<!--        			$stpl->addValue('vis_login', ($u->getVisibleAtLogin()) ? 'yes' : 'no');-->
+<!--        			<img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/status/{@pp:status}.png" />-->
+		<tr>
+			<th style="width: 90px;">Datagruppe</th>
+			<th style="width: 30px;">ID</th>
+			<th style="width: 100px;">Name</th>
+			<th>Typ</th>
+			<th>Info</th>
+			<th>reg</th>
+			<th>login</th>
+			<th>edit</th>
+			<pp:dynamic name="usergroups_header">
+				<th><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/status/{@pp:name}.png" /></th>
+			</pp:dynamic>
+<!--			<th style="width: 50px;">&nbsp;</th>-->
+		</tr>
+		<pp:dynamic name="userdata">
+			<tr>
+				<td style="border-right: 1px solid #ccc;" >{@pp:group}</td>
+				<td class="number">{@pp:id}</td>
+				<td class="center">{@pp:name}</td>
+				<td>{@pp:type}</td>
+				<td>{@pp:info}</td>
+				<td class="center"style="border-left: 1px solid #ccc;">{@pp:vis_register}</td>
+				<td class="center">{@pp:vis_login}</td>
+				<td class="center" style="border-right: 1px solid #ccc;">{@pp:vis_edit}</td>
+				<pp:dynamic name="userdata_group">
+					<td class="center"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/status/{@pp:enabled}.png" /></td>
+				</pp:dynamic>
+<!--				<td class="center border-left special">&nbsp;-->
+<!--					<pp:dynamic name="edit">-->
+<!--						<a href="javascript:void(0);" onclick="tfaddress.editPath({set:{action:'edit', id:'{@pp:id}'}});" alt="Bearbeiten" title="Bearbeiten"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/action/edit.png"/></a>&nbsp;-->
+<!--						<a href="javascript:void(0);" onclick="tfaddress.editPath({set:{action:'delete', id:'{@pp:id}'}});" alt="L&ouml;schen" title="L&ouml;schen"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/action/delete.gif"/></a>-->
+<!--					</pp:dynamic>-->
+<!--				</td>-->
+			</tr>
+		</pp:dynamic>
+	</table>
+</div>

@@ -5,6 +5,8 @@
 		private $users;
 		private $groups;
 		
+		private $userDataForGroup; // stores user Data by Group (cache)
+		
 		function __construct($settings){
 			parent::__construct();
 			$this->settings = $settings;
@@ -73,7 +75,7 @@
 		 */
 		public function getUserByNick($nick){
 			foreach($this->users as $u){
-				if($u->getNick == $nick) return $nick;
+				if($u->getNick() == $nick) return $nick;
 			}
 			$u = $this->mysqlRow('SELECT * FROM '.$GLOBALS['db']['db_prefix'].'user WHERE nick="'.mysql_real_escape_string($nick).'"');
 			if($u != array()){
@@ -81,6 +83,31 @@
 				return $this->users[$u['id']];
 			}
 			return null;
+		}
+		/**
+		 * returnes User by EMail
+		 * @param unknown_type $mail
+		 */
+		public function getUserByEMail($mail){
+			foreach($this->users as $u){
+				if($u->getEMail() == $nick) return $nick;
+			}
+			$u = $this->mysqlRow('SELECT * FROM '.$GLOBALS['db']['db_prefix'].'user WHERE email="'.mysql_real_escape_string($mail).'"');
+			if($u != array()){
+				$this->users[$u['id']] = new UserObject($u['nick'], $u['id'], $u['email'], $this->getUserGroup($u['group']), $u['status']);
+				return $this->users[$u['id']];
+			}
+			return null;
+		}
+		/**
+		 * returnes users Hash for Login routine
+		 * @param unknown_type $mail
+		 */
+		public function getUserHashByEMail($mail){
+			$u = $this->mysqlRow('SELECT * FROM '.$GLOBALS['db']['db_prefix'].'user WHERE email="'.mysql_real_escape_string($mail).'"');
+	       	if($u != '' && $u != array() && isset($u['hash'])){
+	       		return $u['hash'];
+	       	} else return '';
 		}
 		
 		/**
@@ -115,10 +142,80 @@
 			$this->groups = array();
 			$g = $this->mysqlArray('SELECT * FROM '.$GLOBALS['db']['db_prefix'].'usergroup');
 			if($g != array()){
-				foreach($g as $group) 
+				foreach($g as $group) {
 					$this->groups[] = new UserGroup($group['id'], $group['name']);
 				}
+			}
 			return $this->groups;
+		}
+		/* ========== USERDATA ========= */
+		public function getUserData($page=-1, $perPage=-1){
+			$return = array();
+        	
+			$all = $this->getAllUserDataCount(-1, -1);
+
+			$from = ($page-1)*($this->_setting('perpage.user_data'));
+			if($from > $all) $from = 0;
+			
+			$limit = ($page == -1) ? '' : 'LIMIT '.mysql_real_escape_string($from).', '.mysql_real_escape_string($this->_setting('perpage.user_data')).';';
+			
+			$u1 = $this->mysqlArray('SELECT ud.id d_id, ud.name d_name, ud.group d_group,
+											udg.name d_group_name, ud.type d_type,
+											ud.info d_info, ud.vis_reg d_vis_reg,
+											ud.vis_login d_vis_login, ud.vis_edit d_vis_edit FROM '.$GLOBALS['db']['db_prefix'].'userdata ud 
+											LEFT JOIN '.$GLOBALS['db']['db_prefix'].'userdata_datagroup udg ON ud.group = udg.id ORDER BY ud.group '.$limit.'');
+			if($u1 != array()){
+				foreach($u1 as $u) {
+					$tmp = new UserData($u['d_id'], $u['d_name'], new UserDataGroup($u['d_group'], $u['d_group_name']), $u['d_type'], $u['d_info'], $u['d_vis_reg'], $u['d_vis_login'], $u['d_vis_edit']);
+					$u2 = $this->mysqlArray('SELECT * FROM '.$GLOBALS['db']['db_prefix'].'userdata_usergroup WHERE ud_id="'.mysql_real_escape_string($u['d_id']).'"');
+					if($u2 != array()){
+						foreach($u2 as $u3){
+							$tmp->addUserGroup($u3['ug_id']);
+						}
+					}
+					$return[] = $tmp;
+					unset($tmp);
+				}
+			}
+			return $return;
+		}
+		/**
+		 * returnes count of all userdata
+		 */
+		public function getAllUserDataCount(){
+			$u = $this->mysqlRow('SELECT COUNT(*) count FROM '.$GLOBALS['db']['db_prefix'].'userdata');
+			if($u) return $u['count'];
+			else return -1;
+		}
+		
+		/**
+		 * returnes User data for given group
+		 * @param unknown_type $group
+		 */
+		public function getUserDataForGroup($group){
+			if(get_class($group) != 'UserGroup'){
+				$group = $this->getUserGroup($group);
+			}
+			
+			
+			if($group != null){
+				if(!isset($this->userDataForGroup[$group->getId()])){
+					$u1 = $this->mysqlArray('SELECT ud.id d_id, ud.name d_name, ud.group d_group,
+											udg.name d_group_name, ud.type d_type,
+											ud.info d_info, ud.vis_reg d_vis_reg,
+											ud.vis_login d_vis_login, ud.vis_edit d_vis_edit FROM '.$GLOBALS['db']['db_prefix'].'userdata ud 
+											LEFT JOIN '.$GLOBALS['db']['db_prefix'].'userdata_datagroup udg ON ud.group = udg.id 
+											RIGHT JOIN '.$GLOBALS['db']['db_prefix'].'userdata_usergroup udug ON ud.id = udug.ud_id WHERE udug.ug_id="'.mysql_real_escape_string($group->getId()).'"');
+					if($u1 != array()){
+						foreach($u1 as $u) {
+							if(!isset($this->userDataForGroup[$group->getId()])) $this->userDataForGroup[$group->getId()] = array(); 
+							$this->userDataForGroup[$group->getId()][] = new UserData($u['d_id'], $u['d_name'], new UserDataGroup($u['d_group'], $u['d_group_name']), $u['d_type'], $u['d_info'], $u['d_vis_reg'], $u['d_vis_login'], $u['d_vis_edit']);
+						}
+					}
+				}
+				return $this->userDataForGroup[$group->getId()];
+			} else return false;
+			
 		}
 		
 		/** ---  SETTER --- */
@@ -131,23 +228,41 @@
 		 * @param int $status
 		 */
     	public function register($nick, $email, $group, $pwd, $pwd2, $status=User::STATUS_HAS_TO_ACTIVATE){
-    		if($this->checkNickAvailability($nick)){
+    		if($this->checkNickAvailability($nick) || ($nick == '' && $this->_setting('no_nick_needed'))){
     			if(strpos($this->_setting('register.groups'), ':'.$group.':') !== false || $this->checkRight('administer_group', $group) &&
     			   ($status==User::STATUS_HAS_TO_ACTIVATE || $this->checkRight('administer_user'))){
-    			   	$this->debugVar($pwd);
-    			   	$this->debugVar($pwd2);
     			   	if($pwd == $pwd2){
     			   		if($this->sp->ref('TextFunctions')->getPasswordStrength($pwd) >= $this->_setting('pwd.min_strength')){
     			   			if($email != '' && $this->sp->ref('TextFunctions')->isEmail($email)){
+    			   				$activate_code = ($status == User::STATUS_HAS_TO_ACTIVATE) ? md5(time().$this->sp->ref('TextFunctions')->generatePassword(20, 10, 0, 0)): ''; 
 		    			   		$id = $this->mysqlInsert('INSERT INTO '.$GLOBALS['db']['db_prefix'].'user 
-		    									(`nick`, `hash`, `group`, `email`, `status`) VALUES 
+		    									(`nick`, `hash`, `group`, `email`, `status`, `created`, `last_login`, `activate`) VALUES 
 		    									(\''.mysql_real_escape_string($nick).'\', 
 		    										\''.$this->sp->ref('User')->hashPassword($pwd, $this->sp->ref('TextFunctions')->generatePassword(51, 13, 7, 7)).'\', 
 		    										\''.mysql_real_escape_string($group).'\', 
 		    										\''.mysql_real_escape_string($email).'\',
-		    										\''.mysql_real_escape_string($status).'\');');
+		    										\''.mysql_real_escape_string($status).'\',
+		    										\''.mysql_real_escape_string(time()) .'\',
+		    										\'-1\',
+		    										\''.$activate_code.'\');');
 		    			   		if($id !== false) {
-		    						$this->_msg($this->_('New user created successfully', 'core'), Messages::INFO);
+		    			   			if($status == User::STATUS_HAS_TO_ACTIVATE){
+		    			   				$mail = new ViewDescriptor($this->_setting('tpl.activation_mail'));
+		    			   				
+		    			   				$mail->addValue('nick', $nick);
+		    			   				$mail->addValue('id', $id);
+		    			   				$mail->addValue('email', $email);
+		    			   				$mail->addValue('group', $group);
+		    			   				$mail->addValue('pwd', $pwd);
+		    			   				$mail->addValue('code', $activate_code);
+		    			   				
+		    			   				if($this->sp->ref('Mail')->send($email, $this->_msg('_Registered EMail'), $mail->render())){
+		    			   					$this->_msg($this->_('New user created successfully', 'core'), Messages::INFO);
+		    			   				} else {
+		    			   					$this->_msg($this->_('Activation mal vould not be sent', 'core'), Messages::ERROR);
+		    			   				}
+		    			   			} else $this->_msg($this->_('New user created successfully', 'core'), Messages::INFO);
+		    						
 		    						return $id;
 		    					} else {
 		    						$this->_msg($this->_('New user could not be created', 'core'), Messages::ERROR);
@@ -173,6 +288,57 @@
     			$this->_msg($this->_('_Nick not available', 'core'), Messages::ERROR);
         		return false;
     		}
+    	}
+    	
+    	public function activateRegistration($code){
+    		if($code!= '' && strlen($code) == 32){
+    		echo 'asdf';
+    			$g = $this->mysqlRow('SELECT * FROM '.$GLOBALS['db']['db_prefix'].'user WHERE activate="'.mysql_real_escape_string($code).'"');
+				if($g !== false){
+					$q = $this->mysqlUpdate('UPDATE '.$GLOBALS['db']['db_prefix'].'user SET activate="", status="'.User::STATUS_ACTIVE.'" WHERE activate="'.mysql_real_escape_string($code).'"');
+					if($q !== false){
+						$this->_msg($this->_('_Activation success', 'core'), Messages::INFO);
+	        			return true;
+					} else {
+						$this->_msg($this->_('_Activation error', 'core'), Messages::ERROR);
+	        			return false;
+					}
+				} else {
+					$this->_msg($this->_('_Activation error', 'core'), Messages::ERROR);
+        			return false;
+				}
+    		} else {
+    			$this->_msg($this->_('_Activation error', 'core'), Messages::ERROR);
+        		return false;
+    		}
+    	}
+    	
+    	public function rejectActivation($code){
+    		if($code!= '' && strlen($code) == 32){
+    			$g = $this->mysqlRow('SELECT * FROM '.$GLOBALS['db']['db_prefix'].'user WHERE activate="'.mysql_real_escape_string($code).'"');
+				if($g !== false){
+					if($this->mysqlDelete('DELETE FROM '.$GLOBALS['db']['db_prefix'].'user WHERE activate="'.mysql_real_escape_string($code).'"')) {
+						$this->_msg($this->_('_Rejection success', 'core'), Messages::INFO);
+	        			return true;
+					} else {
+						$this->_msg($this->_('_Rejection error', 'core'), Messages::ERROR);
+	        			return false;
+					}
+				} else {
+					$this->_msg($this->_('_Rejection error', 'core'), Messages::ERROR);
+        			return false;
+				}
+    		} else {
+    			$this->_msg($this->_('_Rejection error', 'core'), Messages::ERROR);
+        		return false;
+    		}
+    	}
+    	
+    	public function setLastLogin(){
+    		if($this->sp->ref('User')->isLoggedIn()){
+    			$u = $this->sp->ref('User')->getLoggedInUser();
+    			return $this->mysqlUpdate('UPDATE '.$GLOBALS['db']['db_prefix'].'user SET `last_login` = \''.mysql_real_escape_string(time()).'\' WHERE `id`=\''.mysql_real_escape_string($u->getId()).'\';');
+    		} else return false;
     	}
     	
     	/**

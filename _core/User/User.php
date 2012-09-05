@@ -2,6 +2,8 @@
 	require_once('model/UserObject.php');
 	require_once('model/UserGroup.php');
 	require_once('model/UserDataHelper.php');
+	require_once('model/UserData.php');
+	require_once('model/UserDataGroup.php');
 	
 	require_once('view/UserAdminView.php');
 	require_once('view/UserFrontView.php');
@@ -23,6 +25,18 @@
         const STATUS_HAS_TO_ACTIVATE = 2;
         const STATUS_BLOCKED = 3;
         const STATUS_DELETED = 4;
+        
+        const DATA_TYPE_INT = 0;
+        const DATA_TYPE_STRING = 1;
+        const DATA_TYPE_CHECKBOX = 2;
+        const DATA_TYPE_DROPDWN = 3;
+        const DATA_TYPE_IMAGE = 4;
+        const DATA_TYPE_EMAIL = 5;
+        const DATA_TYPE_TEXT = 6;
+        
+        const VISIBILITY_VISIBLE = 0;
+        const VISIBILITY_HIDDEN = 1;
+        const VISIBILITY_FORCED = 2;
         
          function __construct(){
         	$this->name = 'User';
@@ -66,6 +80,16 @@
 					$target = isset($args['target']) ? $args['target'] : '';
 					return $this->viewFront->tplLogin($target);
 					break;
+          		case 'user_menu':
+          			return $this->viewFront->tplUserMenu();
+          			break;
+          		case 'register_form':
+          			$group = (isset($args['group'])) ? $args['group'] : '';
+          			return $this->viewFront->tplRegister($group);
+          			break;
+          		case 'confirm_form':
+          			return '--confirm--';
+          			break;
           		default:
           			return 'idk';
           			break;
@@ -102,7 +126,7 @@
             		return 'new_usergroup';
             		break;
             	case 'userdata':
-            		return 'userdata';
+            		return $this->viewAdmin->tplUserData($page);
             		break;
             	/* --- profile --- */
             	case 'profile':
@@ -231,6 +255,14 @@
     					return false;
     				}
          			break;
+         		case 'activateRegistration':
+         			$code = isset($args['code']) ? $args['code'] : '';
+         			return $this->dataHelper->activateRegistration($code);
+         			break;
+         		case 'rejectRegistration':
+         			$code = isset($args['code']) ? $args['code'] : '';
+         			return $this->dataHelper->rejectRegistration($code);
+         			break;
          	}
          }
          
@@ -295,7 +327,7 @@
          * @param unknown_type $pwd
          */
         private function rightPwd($nick, $pwd){
-        	$hash = $this->dataHelper->getUserHashByNick($nick);
+        	$hash = ($this->_setting('no_nick_needed')) ? $this->dataHelper->getUserHashByEMail($nick) : $this->dataHelper->getUserHashByNick($nick);
         	if($hash != ''){
         		$salt = substr($hash, strpos($hash, '#')+1);
 
@@ -312,7 +344,7 @@
          */
         public function login($nick, $pwd){
         	if($this->rightPwd($nick, $pwd)){        			
-        		$u = $this->dataHelper->getUserByNick($nick);
+        		$u = ($this->_setting('no_nick_needed')) ? $this->dataHelper->getUserByEMail($nick) : $this->dataHelper->getUserByNick($nick);
         		switch($u->getStatus()){
         			case self::STATUS_ACTIVE:
         				$this->setLoggedInUser($u);
@@ -330,6 +362,10 @@
 		        		if($this->getLoggedInUser()->getGroup()->getName() == 'root' && $pwd=='root'){
 		        			$_SESSION['User']['defaultPwd'] = 'true';
 		        		}
+		        		
+		        		$this->dataHelper->setLastLogin();
+		        		
+		        		$this->_msg($this->_('_login success', 'core'), Messages::INFO);
 		        		return true;
         				break;
         			case self::STATUS_BLOCKED:

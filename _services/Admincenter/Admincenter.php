@@ -144,6 +144,7 @@
 	        				$tmp = new SubViewDescriptor('view_as_user');
 	        				$tmp->addValue('id', $u1->getId());
 	        				$tmp->addValue('u_nick', $u1->getNick());
+	        				$tmp->addValue('u_email', $u1->getEMail());
 	        				$user->addSubView($tmp);
 	        				unset($tmp);
         				}
