@@ -29,6 +29,9 @@
                 public function getVisibleAtLogin() { return $this->visibility['login']; }
                 public function getVisibleAtEdit() { return $this->visibility['edit']; }
                 
-               	public function usedByGroup($id) { return isset($this->userGroups[$id]); }
+                public function isForcedAtRegister() { return $this->visibility['register'] == User::VISIBILITY_FORCED; }
+                public function isVisibleAtRegister() { return  ($this->visibility['register'] == User::VISIBILITY_FORCED) || ($this->visibility['register'] == User::VISIBILITY_VISIBLE); }
+                
+                public function usedByGroup($id) { return isset($this->userGroups[$id]); }
         }
 ?>

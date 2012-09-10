@@ -34,8 +34,8 @@
         const DATA_TYPE_EMAIL = 5;
         const DATA_TYPE_TEXT = 6;
         
-        const VISIBILITY_VISIBLE = 0;
-        const VISIBILITY_HIDDEN = 1;
+        const VISIBILITY_HIDDEN = 0;
+        const VISIBILITY_VISIBLE = 1;
         const VISIBILITY_FORCED = 2;
         
          function __construct(){
@@ -404,8 +404,16 @@
         	return true;
          }
          
-    	public function register($nick, $email, $group, $pwd, $pwd2, $status=User::STATUS_HAS_TO_ACTIVATE){
-        	return $this->dataHelper->register($nick, $email, $group, $pwd, $pwd2, $status);
+    	public function register($nick, $email, $group, $pwd, $pwd2, $status=User::STATUS_HAS_TO_ACTIVATE, $data=array()){
+        	return $this->dataHelper->register($nick, $email, $group, $pwd, $pwd2, $status, $data);
+        }
+        
+        /**
+         * checks POST data and returnes true if all Data is valid
+         * @param unknown_type $group
+         */
+        public function checkRegisterData($group){
+        	return $this->dataHelper->checkRegisterData($group);
         }
          
         /**

@@ -249,7 +249,11 @@ var tfaddress = {
 			if(array[key] != undefined) this.tf_string = this.tf_string + '/'+key+'/'+array[key];
 		}
 		
+		var update = ($.address.value() == this.tf_string+'/');
+		
 		$.address.path(this.tf_string+'/');
+		
+		$.address.update();
 		this.loadParams();
 	},
 	/**

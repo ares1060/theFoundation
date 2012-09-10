@@ -148,7 +148,26 @@
 			}
 			return $this->groups;
 		}
+		/* ========== USERDATA GROUP ========= */
+		public function getUserDataGroupById($id){
+		$q = $this->mysqlRow('SELECT * FROM '.$GLOBALS['db']['db_prefix'].'userdata_datagroup WHERE id = "'.mysql_real_escape_string($id).'"');
+			if($q != null){
+				return new UserDataGroup($q['id'], $q['name']);
+			}
+		}
 		/* ========== USERDATA ========= */
+		public function getUserDataById($id){
+			$q = $this->mysqlRow('SELECT * FROM '.$GLOBALS['db']['db_prefix'].'userdata WHERE id = "'.mysql_real_escape_string($id).'"');
+			if($q != null){
+				$t = new UserData($q['id'], $q['name'], $this->getUserDataGroupById($q['group']), $q['type'], $q['type'], $q['vis_reg'], $q['vis_login'], $q['vis_edit']);
+				$q = $this->mysqlArray('SELECT * FROM '.$GLOBALS['db']['db_prefix'].'userdata_usergroup WHERE ud_id = "'.mysql_real_escape_string($id).'"');
+				foreach($q as $row){
+					$t->addUserGroup($row['ug_id']);
+				}
+				return $t;
+			}
+			
+		}
 		public function getUserData($page=-1, $perPage=-1){
 			$return = array();
         	
@@ -227,7 +246,8 @@
 		 * @param int $group
 		 * @param int $status
 		 */
-    	public function register($nick, $email, $group, $pwd, $pwd2, $status=User::STATUS_HAS_TO_ACTIVATE){
+    	public function register($nick, $email, $group, $pwd, $pwd2, $status=User::STATUS_HAS_TO_ACTIVATE, $data=array()){
+		    if($status == -1) $status = User::STATUS_HAS_TO_ACTIVATE;			   			
     		if($this->checkNickAvailability($nick) || ($nick == '' && $this->_setting('no_nick_needed'))){
     			if(strpos($this->_setting('register.groups'), ':'.$group.':') !== false || $this->checkRight('administer_group', $group) &&
     			   ($status==User::STATUS_HAS_TO_ACTIVATE || $this->checkRight('administer_user'))){
@@ -245,25 +265,45 @@
 		    										\''.mysql_real_escape_string(time()) .'\',
 		    										\'-1\',
 		    										\''.$activate_code.'\');');
-		    			   		if($id !== false) {
-		    			   			if($status == User::STATUS_HAS_TO_ACTIVATE){
-		    			   				$mail = new ViewDescriptor($this->_setting('tpl.activation_mail'));
-		    			   				
-		    			   				$mail->addValue('nick', $nick);
-		    			   				$mail->addValue('id', $id);
-		    			   				$mail->addValue('email', $email);
-		    			   				$mail->addValue('group', $group);
-		    			   				$mail->addValue('pwd', $pwd);
-		    			   				$mail->addValue('code', $activate_code);
-		    			   				
-		    			   				if($this->sp->ref('Mail')->send($email, $this->_msg('_Registered EMail'), $mail->render())){
-		    			   					$this->_msg($this->_('New user created successfully', 'core'), Messages::INFO);
-		    			   				} else {
-		    			   					$this->_msg($this->_('Activation mal vould not be sent', 'core'), Messages::ERROR);
+		    			   		if($id !== false) {	
+		    			   			$ok = true;	 
+		    			   			foreach($data as $key=>$value) {
+		    			   				$obj = $this->getUserDataById($key);
+		    			   				// security check to not insert data for other groups
+		    			   				if($obj->usedByGroup($group)){
+		    			   					$x = ($this->mysqlInsert('INSERT INTO '.$GLOBALS['db']['db_prefix'].'userdata_user 
+		    			   										(`u_id`, `ud_id`, `value`, `last_change`) VALUES
+		    			   										(\''.mysql_real_escape_string($id).'\',
+		    			   										\''.mysql_real_escape_string($key).'\',
+		    			   										\''.mysql_real_escape_string($value).'\', NOW());') == 0);
+		    			   					$ok = $ok && $x;
 		    			   				}
-		    			   			} else $this->_msg($this->_('New user created successfully', 'core'), Messages::INFO);
-		    						
-		    						return $id;
+		    			   			}
+		    			   			if($ok) {
+			    			   			if($status == User::STATUS_HAS_TO_ACTIVATE){
+			    			   				$mail = new ViewDescriptor($this->_setting('tpl.activation_mail'));
+			    			   				
+			    			   				$mail->addValue('nick', $nick);
+			    			   				$mail->addValue('id', $id);
+			    			   				$mail->addValue('email', $email);
+			    			   				$mail->addValue('group', $group);
+			    			   				$mail->addValue('pwd', $pwd);
+			    			   				$mail->addValue('code', $activate_code);
+			    			   				
+			    			   				if($this->sp->ref('Mail')->send($email, $this->_msg('_Registered EMail'), $mail->render())){
+			    			   					$this->_msg($this->_('New user created successfully', 'core'), Messages::INFO);
+			    			   				} else {
+			    			   					$this->_msg($this->_('Activation mail vould not be sent', 'core'), Messages::ERROR);
+			    			   				}
+			    			   			} else $this->_msg($this->_('New user created successfully', 'core'), Messages::INFO);
+		    							return $id;
+		    			   			} else {
+		    			   				// delete every entered data
+		    			   				$this->mysqlDelete('DELETE FROM '.$GLOBALS['db']['db_prefix'].'userdata_user WHERE u_id = "'.mysql_real_escape_string($id).'"');
+		    			   				$this->mysqlDelete('DELETE FROM '.$GLOBALS['db']['db_prefix'].'user WHERE u_id = "'.mysql_real_escape_string($id).'"');
+		    			   				$this->_msg($this->_('New user could not be created__', 'core'), Messages::ERROR);
+		    							return false;
+		    			   			}
 		    					} else {
 		    						$this->_msg($this->_('New user could not be created', 'core'), Messages::ERROR);
 		    						return false;
@@ -287,6 +327,39 @@
     		} else { 
     			$this->_msg($this->_('_Nick not available', 'core'), Messages::ERROR);
         		return false;
+    		}
+    	}
+    	
+        /**
+         * checks POST data and returnes true if all Data is valid
+         * @param unknown_type $group
+         */
+    	public function checkRegisterData($group){
+    		if(isset($_POST['ru_mail'])){
+	    		$group = $this->getUserGroup($group);
+//	    		$this->debugVar($_POST);
+//	    		print_r($_POST);
+	    		// first check if basic data is available
+	    		if(isset($_POST['ru_mail']) && isset($_POST['ru_pwd_new']) && isset($_POST['ru_pwd_new2']) && $group != null) {
+	    			// nick availability will be checked later
+	    			
+	    			// check extra user data
+	    			$userData = $this->getUserDataForGroup($group);
+	    			
+	    			$ok = true;
+	    			
+	    			foreach($userData as $d){
+	    				$ok = $ok && (($d->isForcedAtRegister() && isset($_POST['ru_ud'][$d->getId()]) && $_POST['ru_ud'][$d->getId()] != '') || !$d->isForcedAtRegister());
+	    			}
+	    			
+	    			if(!$ok){
+	    				$this->_msg($this->_('_Enter all data', 'core'), Messages::ERROR);
+		        		return false;
+	    			} else return true;
+	    		} else {
+	    			$this->_msg($this->_('_Enter all data', 'core'), Messages::ERROR);
+		        	return false;
+	    		}
     		}
     	}
     	

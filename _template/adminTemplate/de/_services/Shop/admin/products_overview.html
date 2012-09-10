@@ -1,5 +1,5 @@
 <div id="products_actions">
-	<button class="button small" onclick="setAdressPathKey('action', 'new'); return false;"><span><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/Shop/actions/add.png" class="icon"/> Neues Produkt</span></button>
+	-<button class="button small" onclick="tfaddress.editPath({set:{action:'new'}, unset:['id']}); return false;"><span><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/Shop/actions/add.png" class="icon"/> Neues Produkt</span></button>
 </div>
 {pp:Pagina("count":"{@pp:pagina_count}", "active":"{@pp:pagina_active}", "url":"JavaScript:setAdressPathKey('page', '{page}');", "template":"pagina_modern")}<br />
 <div class="tf_table">
@@ -38,7 +38,7 @@
 				<td class="number"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/Shop/status/stock_{@pp:stock_img}.png" class="icon"/> {@pp:stock} St&uuml;ck</td>
 				<td class="center border-left special">
 					<pp:dynamic name="edit">
-						<a href="javascript:void(0);" onclick="setAdressPathKeysJSON({'action':'edit', 'id':'{@pp:id}'});" alt="Bearbeiten" title="Bearbeiten"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/action/edit.png"/></a>&nbsp;
+						<a href="javascript:void(0);" onclick="tfaddress.editPath({set:{action:'edit', id:'{@pp:id}'}});" alt="Bearbeiten" title="Bearbeiten"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/action/edit.png"/></a>&nbsp;
 						<a href="javascript:void(0);" onclick="deleteProduct({@pp:id});" alt="L&ouml;schen" title="L&ouml;schen"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/action/delete.gif"/></a>
 					</pp:dynamic>
 				</td>

@@ -124,6 +124,7 @@
 
         		$tpl = new ViewDescriptor($this->_setting('tpl.admincenter.main'));
         		
+        		// hardcoded - just root can change identity
         		if($this->sp->ref('User')->getLoggedInUser()->getGroup()->getName() == 'root'){
         			$vu = $this->sp->ref('User')->getViewingUser();
         			$u = $this->sp->ref('User')->getLoggedInUser();
@@ -132,7 +133,7 @@
         			
         			if($vu->getId() != $u->getId()){
         				$tmp = new SubViewDescriptor('view_as_enabled');
-        				$tmp->addValue('nick', $vu->getNick());
+        				$tmp->addValue('nick', ($vu->getNick() == '') ? '--' : $vu->getNick());
         				$user->addSubView($tmp);
         			} else {
         				$user->showSubView('view_as_disabled');
@@ -143,7 +144,7 @@
         				if($u1->getId() != $u->getId()){
 	        				$tmp = new SubViewDescriptor('view_as_user');
 	        				$tmp->addValue('id', $u1->getId());
-	        				$tmp->addValue('u_nick', $u1->getNick());
+	        				$tmp->addValue('u_nick', ($u1->getNick() == '') ? '--' : $u1->getNick());
 	        				$tmp->addValue('u_email', $u1->getEMail());
 	        				$user->addSubView($tmp);
 	        				unset($tmp);

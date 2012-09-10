@@ -106,7 +106,7 @@
          *  @param $args['param_name_2'] type_of_param_name_2 | description of param_name_2
          * @see _core/IService::admin()
          */
-        public function admin($args){        	
+        public function admin($args){     
         	$chapter = isset($args['chapter']) ? $args['chapter'] : '';
         	$page = isset($args['page']) ? $args['page'] : -1;
         	$id = isset($args['id']) ? $args['id'] : -1;
@@ -250,7 +250,6 @@
         public function handleAdminPost(){
         	/* -- Category posts -- */
         	$this->sp->ref('Category')->handleAdminPost($this->name);
-        	
         	// edit product
         	if(isset($_POST['pr_id']) && 
         		isset($_POST['pr_status']) && 
@@ -307,12 +306,12 @@
              				$_POST['pr_dimensions_width'].'x'.$_POST['pr_dimensions_height'].'x'.$_POST['pr_dimensions_depth']);
              		if($n_id !== false){
 
-             			$this->_msg($this->_('product update success'), Messages::INFO);
+             			$this->_msg($this->_('product add success'), Messages::INFO);
              			
              			header('Location: '.$_SERVER["HTTP_REFERER"].$_POST['pr_link'].'action/edit/id/'.$n_id.'/');
              			exit(0);
              		} else {
-             			$this->_msg($this->_('product update error'), Messages::ERROR);
+             			$this->_msg($this->_('product add error'), Messages::ERROR);
              			return false;
              		}
             }

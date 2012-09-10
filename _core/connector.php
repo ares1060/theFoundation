@@ -51,7 +51,7 @@
 	    							'msg'=>$sp->view('Messages', array('action'=>'viewType', 'type'=>'error/info')),
 	    							'debug'=>$sp->view('Messages', array('action'=>'viewType', 'type'=>'debug'))));	
 	    } else {
-	  		echo json_encode(array('content'=>gettype($sp->exe($service_name, $service_method, $args))));
+	  		echo json_encode(array('content'=>$sp->exe($service_name, $service_method, $args)));
 	    }
 	}
 ?>

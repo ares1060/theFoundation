@@ -740,7 +740,7 @@
         		return ($this->mysqlInsert('INSERT INTO '.$GLOBALS['db']['db_prefix'].'gallery_folder 
         								(`name`,`u_id`, `datum`, `status`, `a_id`, `desc`)
         								VALUES ("'.$this->sp->ref('TextFunctions')->renderUmlaute(mysql_real_escape_string($name)).'", 
-        								"'.$_SESSION['User']['id'].'", NOW(), 
+        								"'.$this->sp->ref('User')->getViewingUser()->getId().'", NOW(), 
         								"'.$status.'", 
         								"'.mysql_real_escape_string($album_id).'", 
         								"'.$this->sp->ref('TextFunctions')->renderUmlaute(mysql_real_escape_string($desc)).'")') !== false);
