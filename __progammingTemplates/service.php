@@ -18,7 +18,8 @@
         function __construct(){
         	$this->name = 'ServiceName';
         	$this->config_file = ''; // $GLOBALS['config']['root'].'_services/Gallery/config.Gallery.php';
-            parent::__construct();
+ 			$this->ini_file = '';//$GLOBALS['to_root'].'_services/Admincenter/Admincenter.ini';           
+ 			parent::__construct();
            // if(isset($this->config['loc_file'])) $this->sp->run('Localization', array('load'=>$this->config['loc_file'])); -> will be executed by Service::__construct()
         }
         /**
@@ -66,7 +67,7 @@
          * Function for Service Setup
          * @see _core/_model/IService::setup()
          */
-        public static function setup(){
+        public function setup(){
         	
         }
         
