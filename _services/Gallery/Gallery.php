@@ -1,4 +1,6 @@
 <?php
+	require_once 'model/GalleryFolder.php';
+	require_once 'model/GalleryImage.php';
 	require_once 'model/GalleryDataHelper.php';
 	require_once 'view/GalleryAdminView.php';
 	/**

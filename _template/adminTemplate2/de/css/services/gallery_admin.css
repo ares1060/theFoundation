@@ -4,6 +4,7 @@
 	left: 250px;
 	right: 0px;
 	top: 66px; /* height of menu */
+	top: 0px;
 	bottom: 3px;
 	
 	background: #222;
@@ -17,6 +18,7 @@
 	float: left;
 	height: auto;
 	max-height: 775px;
+	min-height: 400px;
 
 	width: 250px;
 	overflow-y: auto;
@@ -24,9 +26,62 @@
 	margin-bottom: 25px;
 }
 #admin_sidemenu {
-	padding: 5px;	
+	padding: 5px 0px 10px 0px;
 }
 #admin_sidemenu  ul { list-style: none; }
-#admin_sidemenu  ul li {
-	padding: 5px 10px;	
+#admin_sidemenu  ul li.menu_album {
+}
+#admin_sidemenu  ul li.menu_album a {
+	padding: 5px 10px 5px 25px;	
+	display: block;
+	color: #444;
+}
+#admin_sidemenu  ul li.menu_album a:hover {
+	background-color: rgba(119, 137, 165, .25);
+	text-decoration: none;
+	color: #3e4b5e; 
+}
+#admin_sidemenu ul li.more {
+	background-image: url(../../img/services/gallery/layout/moreArrow_rot.png);
+	background-repeat: no-repeat;
+}
+#admin_sidemenu  ul li.menu_album ul li a{ padding-left: 40px; }
+#admin_sidemenu  ul li.menu_album ul li ul li a{ padding-left: 55px; }
+#admin_sidemenu  ul li.menu_album ul li ul li ul li a{ padding-left: 70px; }
+#admin_sidemenu  ul li.menu_album ul li ul li ul li ul li a{ padding-left: 85px; }
+
+#admin_sidemenu  ul li.menu_album.more{ background-position: 6px 6px; }
+#admin_sidemenu  ul li.menu_album ul li.more{ background-position: 23px 6px; }
+#admin_sidemenu  ul li.menu_album ul li ul li.more{ background-position: 38px 6px; }
+#admin_sidemenu  ul li.menu_album ul li ul li ul li.more{ background-position: 53px 6px; }
+#admin_sidemenu  ul li.menu_album ul li ul li ul li ul li.more{ background-image: none; }
+
+#admin_bottom_menu {
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+	height: 22px;
+	width: 250px;
+	padding-bottom: 1px;
+/* 	background: url(../../img/services/gallery/layout/bottom_menu_background.png) repeat-x; */
+	border-top: 1px solid #bbb;
+/* 	box-shadow: 1px 0px 2px 2px rgba(0,0,0,.1); */
+	background-image: -moz-linear-gradient(center top , #fcfcfc 0px, #b1b1b1 100%);
+    border-bottom: 1px solid #CCCCCC;
+    border-radius: 3px 0 0 0;
+    box-shadow: 20px 10px 10px 10px rgba(255, 255, 255, 0.5) inset, 1px 0px 2px 2px rgba(0,0,0,.06);
+}
+#admin_bottom_menu ul { list-style: none; }
+#admin_bottom_menu ul li { float: left; }
+#admin_bottom_menu ul li.seperator {
+	background: none repeat scroll 0 0 #FFFFFF;
+    border-right: 1px solid #BBBBBB;
+    width: 1px;
+ 	height: 23px;
+}
+
+img.icon {
+	position: inline-block;
+	margin-bottom: -3px;
+	margin-right: 3px;
 }

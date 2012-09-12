@@ -23,60 +23,39 @@
 		</ul>
 	</div>
 </div>
-
-<div id="admin_sidemenu_block">
-	<div id="admin_sidemenu">
+<div class="messages" id="tf_msg">{pp:Messages(action:viewType, type:error/info/debug)}</div>
+<div style="position: relative;overflow: hidden;">
+	<div id="admin_sidemenu_block">
+		<div id="admin_sidemenu">
+			<ul>
+				<pp:dynamic name="side_menu">
+					<li class="menu_album {@pp:moreArrow}">
+						<a href="javascript:void(0);">
+							<pp:dynamic name="visible"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/album.png" class="icon"/></pp:dynamic>
+							<pp:dynamic name="hidden"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/album_hidden.png" class="icon"/></pp:dynamic> 
+							{@pp:name}
+						</a>
+						{@pp:subfolder}
+					</li>
+				</pp:dynamic>	
+			</ul>
+		</div>
+	</div>
+	
+	<div id="admin_image_block">
+	Image
+	</div>
+	
+	<div id="admin_bottom_menu">
 		<ul>
-			<li>Graz</li>
-			<li>Wien</li>
-			<li>S&uuml;dafrika</li>
-			<li>China</li>	
-			<li>Graz</li>
-			<li>Wien</li>
-			<li>S&uuml;dafrika</li>
-			<li>China</li>	
-			<li>Graz</li>
-			<li>Wien</li>
-			<li>S&uuml;dafrika</li>
-			<li>China</li>	
-			<li>Graz</li>
-			<li>Wien</li>
-			<li>S&uuml;dafrika</li>
-			<li>China</li>	
-			<li>Graz</li>
-			<li>Wien</li>
-			<li>S&uuml;dafrika</li>
-			<li>China</li>	
-			<li>Graz</li>
-			<li>Wien</li>
-			<li>S&uuml;dafrika</li>
-			<li>China</li>	
-			<li>Graz</li>
-			<li>Wien</li>
-			<li>S&uuml;dafrika</li>
-			<li>China</li>	
-			<li>Graz</li>
-			<li>Wien</li>
-			<li>S&uuml;dafrika</li>
-			<li>China</li>	
-			<li>Graz</li>
-			<li>Wien</li>
-			<li>S&uuml;dafrika</li>
-			<li>China</li>	
-			<li>Graz</li>
-			<li>Wien</li>
-			<li>S&uuml;dafrika</li>
-			<li>China</li>	
-			<li>Graz</li>
-			<li>Wien</li>
-			<li>S&uuml;dafrika</li>
-			<li>China</li>		
+			<li><a href="javascript:void(0);"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/new.png" class="menu_item"/></a></li>
+			<li class="seperator">&nbsp;</li>
+			<li><a href="javascript:void(0);"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/remove.png" class="menu_item"/></a></li>
+			<li class="seperator">&nbsp;</li>
+		</ul>
+		<ul style="float: right;">
+			<li class="seperator">&nbsp;</li>
+			<li><a href="javascript:void(0);"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/settings.png" class="menu_item"/></a></li>
 		</ul>
 	</div>
 </div>
-
-<div id="admin_image_block">
-Image
-</div>
-
-Admincenter

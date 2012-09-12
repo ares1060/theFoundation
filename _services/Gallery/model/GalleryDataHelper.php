@@ -1,4 +1,5 @@
 <?php
+	
 	class GalleryDataHelper extends TFCoreFunctions{
 		protected $name = 'Gallery';
 		
@@ -17,19 +18,44 @@
 		 * there is no pagination
 		 * @param unknown_type $status
 		 */
-		function getFolders($status=-1) {
+		function getFolders($status=array(), $parent=0, $sort='default') {
 
 			// create user, status and category string 
 			$user = 'WHERE `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"';
-			$status = ($status == -1) ? '' : ' AND `status`="'.mysql_real_escape_string($status).'"';
+			$album = ' AND `parent`="'.mysql_real_escape_string($parent).'"';
+			$statusAR = array();
+			foreach($status as $s){
+				$statusAR[] = '`status`="'.mysql_real_escape_string($s).'"';
+			}
+			if($statusAR != array()) $status = 'AND ('.implode(' OR ', $statusAR).')';
+			
+			// create sort string
+			switch($sort){
+				case 'date' || 'date ASC':
+					$sort = ' ORDER BY c_date ASC';
+					break;
+				case 'date DESC':
+					$sort = ' ORDER BY c_date DESC';
+					break;
+				case 'name' || 'name ASC';
+					$sort = ' ORDER BY name ASC';
+					break;
+				case 'name DESC':
+					$sort = ' ORDER BY name DESC';
+					break;
+				default:
+					$sort = ' ORDER BY f_id DESC';
+					break;
+			}
 
-        	$pp = $this->mysqlArray('SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'gallery_folder` '.$user.$status);
+        	$pp = $this->mysqlArray('SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'gallery_folder` '.$user.$album.$status.$sort);
 
         	if($pp != ''){
 				$return = array();
 				foreach($pp as $p){
-					$return[] = new GalleryFolder($p['f_id'], $p['parent'], $p['u_id'], $p['name'], $p['c_date'], $p['left'], $p['right']);
+					$return[] = new GalleryFolder($p['f_id'], $p['parent'], $p['u_id'], $p['name'], $p['c_date'], $p['root'], $p['status']);
 				}
+				
 				return $return;
 			} else return null;
 		}
@@ -44,7 +70,7 @@
 				$p = $this->mysqlRow('SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'gallery_folder` WHERE f_id="'.mysql_real_escape_string($id).'"');
 				
 				if($p != '') {
-					return new GalleryFolder($p['f_id'], $p['parent'], $p['u_id'], $p['name'], $p['c_date'], $p['left'], $p['right']);
+					return new GalleryFolder($p['f_id'], $p['parent'], $p['u_id'], $p['name'], $p['c_date'], $p['root'], $p['status']);
 				} else return null;
 			} else return null;
 		}
