@@ -49,23 +49,28 @@
          * @see _core/IService::admin()
          */
         public function admin($args){
-        	$chapter = isset($args['chapter']) ? $args['chapter'] : '';
+			$GLOBALS['extra_css'][] = 'services/gallery_admin.css'; 
+        	
+			$chapter = isset($args['chapter']) ? $args['chapter'] : '';
         	$action = isset($args['action']) ? $args['action'] : '';
             $ajax = isset($args['ajax']) ? $args['ajax'] : false;
            	$page = isset($args['page']) ? $args['page'] : -1;
+           	$id = isset($args['id']) ? $args['id'] : -1;
            	
            	switch($chapter){
-           		case 'album':
-           			break;
            		case 'folder':
+           			return $this->adminView->tplFolder($id);
            			break;
+        		case 'settings':
+        			return $this->tplSettings();
+        			break;
            		default:
            			switch($action) {
            				case 'upload':
+           					return 'upload';
            					break;
            				case 'edit':
-           					break;
-           				case 'delete':
+           					return 'edit';
            					break;
            				default:
            					return $this->adminView->tplAdmincenter();

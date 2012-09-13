@@ -19,6 +19,7 @@ var tf = {
 		this.template = params.template;
 		this.login_url = params.login_url;
 		this.tf_loading_counter = 0;
+		$(document).ready(tfcontextmenu.init);
 	},
 	/** 
 	 * Gets Data from a specific service and method via connector
@@ -64,6 +65,7 @@ var tf = {
 					if(json.debug != undefined && json.debug != ''){
 						console.log(json.debug);
 					}
+
 				} catch (e) {
 					console.log(e);
 				}
@@ -213,6 +215,7 @@ var tfaddress = {
 	 * @param param
 	 * 			set:{} - all keys to be set
 	 * 			unset:[] - all keys to be unset
+	 * @param optional: force update
 	 */
 	editPath: function(param){
 		tmp = this.getPathNames();
@@ -228,19 +231,20 @@ var tfaddress = {
 				tmp[key] = value;
 			});
 		}
-		
-		this.updatePathFromArray(tmp);
+		if(this.editPath.arguments[1] == true)  this.updatePathFromArray(tmp, true);
+		else this.updatePathFromArray(tmp);
 	},
 	/**
 	 * reloads Adresspath 
 	 */
 	reloadPath: function() {
-		this.updatePathFromArray(this.getPathNames());
+		this.updatePathFromArray(this.getPathNames(), true);
 		
 	},
 	/**
 	 * updates Adresspath to given array data
 	 * @param array |Êpath data [key:value, key2:value2,...] will be translated to /key/value/key2/value2/
+	 * @param optional: force update even if adress is the same
 	 */
 	updatePathFromArray: function(array) {
 		this.tf_string = '';
@@ -249,11 +253,13 @@ var tfaddress = {
 			if(array[key] != undefined) this.tf_string = this.tf_string + '/'+key+'/'+array[key];
 		}
 		
-		var update = ($.address.value() == this.tf_string+'/');
-		
+		var sameArray = tfutil.equals(array, this.getPathNames());
+	console.log(sameArray);
 		$.address.path(this.tf_string+'/');
 		
-		$.address.update();
+		// if optional update flag is set and array is the same
+		if(this.updatePathFromArray.arguments[1] == true && sameArray) {console.log('adf');$.address.update();}
+		
 		this.loadParams();
 	},
 	/**
@@ -309,6 +315,46 @@ var tfaddress = {
 	}
 }
 
+/**
+ * context menu class
+ */
+var tfcontextmenu = {
+		contextmenucount: 0,
+		active_contextmenu: null,
+		showMenu: function(item) {
+			$(item).show();
+			$('#contextmenu_background').show();
+			this.active_contextmenu = item;
+			$('#contextmenu_background').click(function() {
+				tfcontextmenu.hideActive();
+			});
+			$(document).keydown(function(e) {
+				if(e.keyCode == 27 /* esc */){
+					tfcontextmenu.hideActive();
+				}
+			})
+		},
+		init: function () {
+			$('body').prepend('<div id="contextmenu_background">&nbsp;</div>');
+			tfcontextmenu.update();
+		},
+		update: function () {
+			$('.tf_contextmenu_link').each(function () {
+				if(!$(this).parent().children('.tf_contextmenu').hasClass('generatedContextMenu')) {
+					tfcontextmenu.contextmenucount++;
+					$(this).parent().children('.tf_contextmenu').attr('id', 'tf_contextmenu_'+tfcontextmenu.contextmenucount);
+					$(this).parent().children('.tf_contextmenu').addClass('generatedContextMenu');
+					$(this).click(function() { tfcontextmenu.showMenu($(this).parent().children('.tf_contextmenu')); });
+					console.log($(this).parent().children('.tf_contextmenu').attr('id'));
+				}
+			});
+		},
+		hideActive: function() {
+			$(this.active_contextmenu).hide();
+			$('#contextmenu_background').hide();
+			$(document).unbind('keydown');
+		}
+	}
 
 /**
  * runs important functions on startup
@@ -330,3 +376,19 @@ $(document).ready(function() {
 	
 	if($('#tf_msg').html() != '') tf.showMessages();
 });
+
+var tfutil = {
+	equals: function(a, b) {
+		var alength = Object.keys(a).length;
+		var blength = Object.keys(b).length;
+		if(!a || !b || alength != blength) {
+			return false;
+		}
+		for(key in a) {
+			if(b[key] !== a[key]) {
+				return false;
+			}
+		}
+		return true;
+	}
+}

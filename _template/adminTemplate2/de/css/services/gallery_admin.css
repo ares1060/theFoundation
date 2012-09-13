@@ -28,33 +28,50 @@
 #admin_sidemenu {
 	padding: 5px 0px 10px 0px;
 }
+#admin_sidemenu .more_spacer {
+	display: inline-block;
+	width: 16px;
+	padding: 0px !Important;
+	margin-right: 0px;
+	float: left;
+}
 #admin_sidemenu  ul { list-style: none; }
-#admin_sidemenu  ul li.menu_album {
-}
-#admin_sidemenu  ul li.menu_album a {
-	padding: 5px 10px 5px 25px;	
-	display: block;
-	color: #444;
-}
-#admin_sidemenu  ul li.menu_album a:hover {
-	background-color: rgba(119, 137, 165, .25);
+#admin_sidemenu  ul li .link_line a.big_link:hover {
 	text-decoration: none;
 	color: #3e4b5e; 
 }
-#admin_sidemenu ul li.more {
-	background-image: url(../../img/services/gallery/layout/moreArrow_rot.png);
-	background-repeat: no-repeat;
+#admin_sidemenu  ul li .link_line a.big_link {
+	color: #444;
+	display: block;
 }
-#admin_sidemenu  ul li.menu_album ul li a{ padding-left: 40px; }
-#admin_sidemenu  ul li.menu_album ul li ul li a{ padding-left: 55px; }
-#admin_sidemenu  ul li.menu_album ul li ul li ul li a{ padding-left: 70px; }
-#admin_sidemenu  ul li.menu_album ul li ul li ul li ul li a{ padding-left: 85px; }
+#admin_sidemenu  ul li.menu_album span.link_line {
+	padding: 5px 10px 5px 7px;	
+	display: block;
+	color: #444;
+}
+#admin_sidemenu  ul li.menu_album span.link_line:hover, #admin_sidemenu ul li span.link_line.selected {
+	background-color: rgba(119, 137, 165, .25);
 
-#admin_sidemenu  ul li.menu_album.more{ background-position: 6px 6px; }
-#admin_sidemenu  ul li.menu_album ul li.more{ background-position: 23px 6px; }
-#admin_sidemenu  ul li.menu_album ul li ul li.more{ background-position: 38px 6px; }
-#admin_sidemenu  ul li.menu_album ul li ul li ul li.more{ background-position: 53px 6px; }
-#admin_sidemenu  ul li.menu_album ul li ul li ul li ul li.more{ background-image: none; }
+}
+/* #admin_sidemenu ul li.more { */
+/* 	background-image: url(../../img/services/gallery/layout/moreArrow.png); */
+/* 	background-repeat: no-repeat; */
+/* } */
+/* #admin_sidemenu ul li.more.open { */
+/* 	background-image: url(../../img/services/gallery/layout/moreArrow_rot.png); */
+/* } */
+#admin_sidemenu  ul li.menu_album ul { display: none; }
+
+#admin_sidemenu  ul li.menu_album ul li span.link_line{ padding-left: 20px; }
+#admin_sidemenu  ul li.menu_album ul li ul li span.link_line{ padding-left: 35px; }
+#admin_sidemenu  ul li.menu_album ul li ul li ul li span.link_line{ padding-left: 50px; }
+#admin_sidemenu  ul li.menu_album ul li ul li ul li ul li span.link_line{ padding-left: 65px; }
+
+/* #admin_sidemenu  ul li.menu_album.more{ background-position: 6px 6px; } */
+/* #admin_sidemenu  ul li.menu_album ul li.more{ background-position: 23px 6px; } */
+/* #admin_sidemenu  ul li.menu_album ul li ul li.more{ background-position: 38px 6px; } */
+/* #admin_sidemenu  ul li.menu_album ul li ul li ul li.more{ background-position: 53px 6px; } */
+/* #admin_sidemenu  ul li.menu_album ul li ul li ul li ul li.more{ background-image: none; } */
 
 #admin_bottom_menu {
 	position: absolute;
@@ -72,7 +89,7 @@
     box-shadow: 20px 10px 10px 10px rgba(255, 255, 255, 0.5) inset, 1px 0px 2px 2px rgba(0,0,0,.06);
 }
 #admin_bottom_menu ul { list-style: none; }
-#admin_bottom_menu ul li { float: left; }
+#admin_bottom_menu ul li { float: left; position: relative;}
 #admin_bottom_menu ul li.seperator {
 	background: none repeat scroll 0 0 #FFFFFF;
     border-right: 1px solid #BBBBBB;

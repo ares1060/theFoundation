@@ -35,7 +35,14 @@
 				$s = $this->recSubFolderCreation($album->getId());
 				$menu->addValue('subfolder', $s);
 					
-				if($s != '') $menu->addValue('moreArrow', 'more');
+				if($s != '') {
+					$tt = new SubViewDescriptor('more');
+					$tt->addValue('id', $album->getId());
+					$menu->addSubView($tt);
+					unset($tt);
+					
+					$menu->addValue('moreClass', 'more');
+				} else $menu->showSubView('not_more');
 				
 				$t->addSubView($menu);
 				
@@ -46,6 +53,37 @@
 			$t->addValue('firstAlbum', $firstAlbum);
 			
 			return $t->render();
+		}
+		
+		public function tplFolder($id){
+			$folder = $this->dataHelper->getFolderById($id, array(GalleryDataHelper::STATUS_HIDDEN, GalleryDataHelper::STATUS_ONLINE));
+
+			if($folder->getUserId() == $this->sp->ref('User')->getViewingUser()->getId()) {
+				$images = $this->dataHelper->getImagesByFolderId($id);
+				
+				$tpl = new ViewDescriptor($this->_setting('tpl.admin/view_folder'));
+				
+				$tpl->addValue('count', count($images));
+				
+				foreach($images as $i){
+					$t = new SubViewDescriptor('image');
+					$t->addValue('name', $i->getName());
+					$t->addValue('id', $i->getId());
+					$t->addValue('path', $i->getPath());
+					
+					$tpl->addSubView($t);
+					
+					unset($t);
+				}
+				
+// 				print_r($images);
+				return $tpl->render();
+			} else {
+				$this->_msg($this->_('You are not authorized', 'rights'), Messages::ERROR);
+        		return '';
+			}
+			
+// 			return 'Folder: '.$id;
 		}
 		
 		/* Recursive functions for subfolder */
@@ -70,7 +108,14 @@
 					$s = $this->recSubFolderCreation($folder->getId());
 					$tmp->addValue('subfolder', $s);
 					
-					if($s != '') $tmp->addValue('moreArrow', 'class="more"');
+					if($s != '') {
+						$tmp->addValue('moreClass', 'more');
+						
+						$tt = new SubViewDescriptor('more');
+						$tt->addValue('id', $folder->getId());
+						$tmp->addSubView($tt);
+						unset($tt);
+					} else $tmp->showSubView('not_more');
 
 					$return .= $tmp->render();
 				}

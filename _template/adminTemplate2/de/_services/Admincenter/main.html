@@ -79,9 +79,11 @@
 								},
 								handle: function (msg) {
 									if(msg == 'true') {
-										tfaddress.reloadPath();
-<!--									$('#topbar-view_as-icon').html(name);-->
-<!--									$('#topbar-view_as-icon').addClass('active');-->
+// 										tfaddress.reloadPath();
+										// reload whole page
+										location.reload();
+										$('#topbar-view_as-icon').html(name);	
+										$('#topbar-view_as-icon').removeClass('active');
 									}
 									tf.hideAdminLoading();
 								}
@@ -98,9 +100,11 @@
 								handle: function (msg) {
 									
 									if(msg == 'true') {
-										tfaddress.reloadPath();
-<!--									$('#topbar-view_as-icon').html(name);-->
-<!--									$('#topbar-view_as-icon').addClass('active');-->
+// 										tfaddress.reloadPath();
+										// reload whole page
+										location.reload();
+										$('#topbar-view_as-icon').html(name);
+										$('#topbar-view_as-icon').addClass('active');
 									}
 									tf.hideAdminLoading();
 								}

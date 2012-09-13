@@ -18,7 +18,7 @@
 		 * there is no pagination
 		 * @param unknown_type $status
 		 */
-		function getFolders($status=array(), $parent=0, $sort='default') {
+		public function getFolders($status=array(), $parent=0, $sort='default') {
 
 			// create user, status and category string 
 			$user = 'WHERE `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"';
@@ -65,7 +65,7 @@
 		 * @param unknown_type $id
 		 * @return NULL
 		 */
-		function getFolderById($id) {
+		public function getFolderById($id) {
 			if($id > -1) {
 				$p = $this->mysqlRow('SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'gallery_folder` WHERE f_id="'.mysql_real_escape_string($id).'"');
 				
@@ -76,7 +76,7 @@
 		}
 		
 		/* images */
-		function getImagesByFolderId($folderId, $page=-1, $status=-1){
+		public function getImagesByFolderId($folderId, $page=-1, $status=array()){
 			// get count of images
 			$count = $this->getImageCountByFolderId($folderId, $status);
 			
@@ -85,10 +85,19 @@
 			$limit = ($page == -1) ? '' : ' LIMIT '.(mysql_real_escape_string($page-1)*mysql_real_escape_string($per_page)).', '.mysql_real_escape_string($per_page).';';
 			
 			// create user, status and category string
-			$user = 'WHERE `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"';
-			$status = ($status == -1) ? '' : ' AND `status`="'.mysql_real_escape_string($status).'"';
-
-			$pp = $this->mysqlArray('SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'gallery_image` '.$user.$status.$limit);
+			$user = 'AND `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"';
+			
+			//create status string
+			$statusAR = array();
+			foreach($status as $s){
+				$statusAR[] = 'gif.status="'.mysql_real_escape_string($s).'"';
+			}
+			if($statusAR != array()) $status = 'AND ('.implode(' OR ', $statusAR).')';
+			else $status = '';
+			
+			$pp = $this->mysqlArray('SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'gallery_image_folder` gif LEFT JOIN
+					`'.$GLOBALS['db']['db_prefix'].'gallery_image` gi ON gi.i_id = gif.i_id WHERE
+					gif.f_id = "'.mysql_real_escape_string($folderId).'" '.$user.$status.$limit);
 			
 			if($pp != ''){
 				$return = array();
@@ -97,6 +106,27 @@
 				}
 				return $return;
 			} else return null;
+		}
+		
+		public function getImageCountByFolderId($folderId, $status) {
+			//create status string
+			$statusAR = array();
+			foreach($status as $s){
+				$statusAR[] = 'gif.status="'.mysql_real_escape_string($s).'"';
+			}
+			if($statusAR != array()) $status = 'AND ('.implode(' OR ', $statusAR).')';
+			else $status = '';
+			
+			// create user, status and category string
+			$user = ' AND `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"';
+
+			$pp = $this->mysqlRow('SELECT COUNT(*) count FROM `'.$GLOBALS['db']['db_prefix'].'gallery_image_folder` gif LEFT JOIN
+														`'.$GLOBALS['db']['db_prefix'].'gallery_image` gi ON gi.i_id = gif.i_id WHERE 
+														gif.f_id = "'.mysql_real_escape_string($folderId).'" '.$user.$status);
+			
+			if($pp != array()){
+				return $pp['count'];
+			} else return 0;
 		}
 	}
 ?>

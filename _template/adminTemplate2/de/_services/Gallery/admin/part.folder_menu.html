@@ -1,10 +1,15 @@
-<ul id="folder_{@pp:id}" class="menu_folder">								
-		<li {@pp:moreArrow}>
-			<a href="javascript:void(0);">
+<ul>								
+	<li class="menu_folder {@pp:moreClass}" id="menu_subfolder_{@pp:id}" >
+		<span class="link_line">
+			<pp:dynamic name="more"><a class="more_spacer" href="javascript:void(0);" onclick="toggleFolderStart({@pp:id});"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/moreArrow.png" class="icon"/></a></pp:dynamic>
+			<pp:dynamic name="not_more"><span class="more_spacer">&nbsp;</span></pp:dynamic>
+			<a href="javascript:void(0);" onclick="tfaddress.editPath({set:{'folder':'{@pp:id}', 'chapter':'main'}}, true);" class="big_link">
+								
 				<pp:dynamic name="visible"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/folder.png" class="icon"/></pp:dynamic>
 				<pp:dynamic name="hidden"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/folder_hidden.png" class="icon"/></pp:dynamic>
 				{@pp:name}
 			</a>
-			{@pp:subfolder}
-		</li>
+		</span>
+		{@pp:subfolder}
+	</li>
 </ul>
