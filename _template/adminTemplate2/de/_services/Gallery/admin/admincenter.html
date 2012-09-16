@@ -19,7 +19,11 @@
 				<pp:dynamic name="side_menu">
 					<li class="menu_album {@pp:moreClass}" id="menu_folder_{@pp:id}">
 						<span class="link_line">
-							<pp:dynamic name="more"><a class="more_spacer" href="javascript:void(0);" onclick="toggleFolderStart({@pp:id});"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/moreArrow.png" class="icon"/></a></pp:dynamic>
+							<pp:dynamic name="more">
+								<a class="more_spacer" href="javascript:void(0);" onclick="toggleFolder({@pp:id});">
+									<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/moreArrow.png" class="icon"/>
+								</a>
+							</pp:dynamic>
 							<pp:dynamic name="not_more"><span class="more_spacer">&nbsp;</span></pp:dynamic>
 							
 							<a href="javascript:void(0);" onclick="tfaddress.editPath({set:{'folder':'{@pp:id}', 'chapter':'main'}}, true);" class="big_link">
@@ -45,7 +49,7 @@
 		<ul>
 			<li>
 				<a href="javascript:void(0);" class="tf_contextmenu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/new.png" class="menu_item"/></a>
-				<span class="tf_contextmenu" style="position: absolute; left: -4px; top: -80px;">
+				<span class="tf_contextmenu up" style="position: absolute; left: -4px; top: -80px;">
 					<span class="tf_contextmenu_arrow" style="left: 8px;">&nbsp;</span>
 					<ul>
 						<li class="option"><a href="javascript:void(0);" onclick="alert('new album');">Neues Album</a></li>
@@ -62,8 +66,10 @@
 		<ul style="float: right;">
 			<li class="seperator">&nbsp;</li>
 			<li>
-				<a href="javascript:void(0);" class="tf_contextmenu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/settings.png" class="menu_item"/></a>
-				<span class="tf_contextmenu" style="position: absolute; right: -4px; top: -50px;">
+				<a href="javascript:void(0);" class="tf_contextmenu_link">
+					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/settings.png" class="menu_item"/>
+				</a>
+				<span class="tf_contextmenu up" style="position: absolute; right: -4px; top: -50px;">
 					<span class="tf_contextmenu_arrow" style="right: 8px;">&nbsp;</span>
 					<ul>
 						<li class="option"><a href="javascript:void(0);" onclick="alert('hide folder');">Ordner verstecken</a></li>
@@ -85,15 +91,21 @@
 
 		/* --- deep link --- */
 		$.address.change(function(event) { updateDeeplink(); });  
-		//$.address.init(function(event) {  updateDeepLink(); });
+		$.address.init(function(event) { 
+			params = tfaddress.getPathNames();
+			
+			toggleFolder((params['folder'] == undefined) ? "{@pp:firstAlbum}": params['folder']); 
+		});
 
 		function updateDeeplink() {
 			params = tfaddress.getPathNames();
 			
-			if(params['chapter'] == undefined) { $.address.path('/chapter/main/folder/'+active_folder+'/page/1/'); params = tfaddress.getPathNames();}
-			if(params['folder'] == undefined) { setAdressPathKey('folder', {@pp:firstAlbum}); params = tfaddress.getPathNames(); }
-			if(params['page'] == undefined) { setAdressPathKey('page', active_page); params = tfaddress.getPathNames(); }
-
+			if(params['chapter'] == undefined && '{@pp:firstAlbum}' != '-1') { $.address.path('/chapter/main/folder/'+active_folder+'/page/1/'); params = tfaddress.getPathNames();}
+			if(params['folder'] == undefined && '{@pp:firstAlbum}' != '-1') { $.address.path('folder', '{@pp:firstAlbum}'); params = tfaddress.getPathNames(); }
+			if(params['page'] == undefined && '{@pp:firstAlbum}' != '-1') { $.address.path('page', active_page); params = tfaddress.getPathNames(); }
+			
+			if(params['chapter'] == undefined && '{@pp:firstAlbum}' == '-1') { $.address.path('/chapter/main/'); params = tfaddress.getPathNames();}
+					
 			active_page = params['page'];
 			active_chapter = params['chapter'];
 			active_action= params['action'];
@@ -105,7 +117,9 @@
 			
 			if(active_chapter == 'main') {
 
-				loadFolder();  
+				if(active_folder != undefined && active_folder != -1){
+					loadFolder();
+				}
 				
 			} else if(active_chapter == 'upload') { 
 				
@@ -127,7 +141,9 @@
 			
 			var folder = ($('#menu_folder_'+active_folder).size() == 0) ? $('#menu_subfolder_'+active_folder) : $('#menu_folder_'+active_folder);
 			
-			toggleFolder(folder)
+			//toggleFolder(folder)
+			
+			// TODO: handle action buttons text change (hide / show)
 			
 			folder.children('.link_line').addClass('selected');
 			
@@ -138,28 +154,34 @@
 				method: 'admin', 
 				args: { 
 					chapter:'folder',
+					page: active_page,
 					id: active_folder
 				}, 
 				handle: function (msg) {
 					tf.hideAdminLoading();
 					$('#admin_image_block').html(msg);
+					tfcontextmenu.update();
 				}
 			});
 		}
 		
-		function toggleFolderStart(id) {			
+		function toggleFolder(id) {			
 			var folder = ($('#menu_folder_'+id).size() == 0) ? $('#menu_subfolder_'+id) : $('#menu_folder_'+id);
-			
-			toggleFolder(folder);
+
+			if(folder != undefined) {
+				toggleFolderRec(folder);
+			}
 		}
 		
-		function toggleFolder(item) {
+		var old_folder;
+		
+		function toggleFolderRec(item) {
 			
 			if((item.parent().parent().hasClass('menu_folder') && !item.parent().parent().hasClass('open')) ||
 				(item.parent().parent().hasClass('menu_album') && !item.parent().parent().hasClass('open'))) {
 				
 				// recursive folder opening
-				toggleFolder(item.parent().parent());
+				toggleFolderRec(item.parent().parent());
 			}
 			
 			if(item.hasClass('more') && item.hasClass('open')) {

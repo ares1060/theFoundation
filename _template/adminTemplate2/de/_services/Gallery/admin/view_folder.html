@@ -1,0 +1,40 @@
+<div id="folder_content" style="color: white;">
+	<div class="header">
+		<div class="left">
+			<span class="gallery_images_menu_entry">
+				<a class="tf_contextmenu_link " href="javascript:void(0);" id="gallery_folder_sort" style="padding: 5px 10px; display: inline-block;">
+					Sortierung: Name <img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/sortUp.png" style="margin-bottom:-4px;"/>
+				</a>
+				<span class="tf_contextmenu down" style="position: absolute; left: 0px; bottom: -150px;">
+					<span class="tf_contextmenu_arrow" style="left: 15px;">&nbsp;</span>
+					<ul>
+						<li class="option"><a href="javascript:void(0);" onclick="setSort('date', active_sortDA);">Datum</a></li>
+						<li class="option"><a href="javascript:void(0);" onclick="setSort('date', active_sortDA);">Name</a></li>
+						<li class="seperator">&nbsp;</li>
+						<li class="option"><a href="javascript:void(0);" onclick="setSort(active_sort, 'asc');">Aufsteigend</a></li>
+						<li class="option"><a href="javascript:void(0);" onclick="setSort(active_sort, 'asc');">Absteigend</a></li>
+					</ul>						
+				</span>
+			</span>
+			<span class="gallery_images_menu_seperator">&nbsp;</span>
+<!-- 			<ul class="button_dropdown_option" id="gallery_dropdown_sort"> -->
+<!-- 				<li id="gallery_dropdown_sort_date"><a href="javascript:void(0);" onclick="setSort('date', active_sortDA);"><span class="front">&nbsp;</span>Datum</a></li> -->
+<!-- 				<li id="gallery_dropdown_sort_name"><a href="javascript:void(0);" onclick="setSort('name', active_sortDA);"><span class="front">&nbsp;</span>Name</a></li> -->
+<!-- 				<li class="seperator">&nbsp;</li> -->
+<!-- 				<li id="gallery_dropdown_sort_asc"><a href="javascript:void(0);" onclick="setSort(active_sort, 'asc');"><span class="front">&nbsp;</span>Aufsteigend</a></li> -->
+<!-- 				<li id="gallery_dropdown_sort_desc"><a href="javascript:void(0);" onclick="setSort(active_sort, 'desc');"><span class="front">&nbsp;</span>Absteigend</a></li> -->
+<!-- 			</ul> -->
+		</div>
+		<div class="right">
+			{pp:Pagina("count":"{@pp:pagina_count}", "active":"{@pp:pagina_active}", "url":"JavaScript:tfaddress.editPath({set:{'page':'{page}'}});", "template":"pagina_normal")}
+		</div>
+		<div class="center">
+			{@pp:count} Bilder
+		</div>
+	</div>
+	
+	<pp:dynamic name="image">
+		{@pp:name} - {@pp:id}
+		<img src="{@pp:root}_core/getImage.php?path={@pp:path}&height=140&width=140" class="img"/>
+	</pp:dynamic>
+</div>

@@ -420,10 +420,13 @@ button.button.small, input.button.small {
     padding: 8px 44px 8px 16px;
     text-decoration: none;
     white-space: nowrap;
-    color: #444;	
+    color: #444 !important;
+	text-shadow: none !important;
 }
 .tf_dropdown ul li.option a:hover, .tf_contextmenu ul li.option a:hover {
 	background: #eee;
+	background-color: rgba(119, 137, 165, .25);
+	
 	color: #222;
 	text-decoration: none;	
 }
@@ -433,7 +436,7 @@ button.button.small, input.button.small {
     margin-top: 5px;	
     height: 1px;
 }
-.tf_dropdown_arrow {
+.tf_dropdown_arrow, .tf_contextmenu.down .tf_contextmenu_arrow  {
 	position: absolute;
 	top: -11px;
 	height: 11px;
@@ -441,7 +444,7 @@ button.button.small, input.button.small {
 	background: red;	
 	background: url(../img/interface/tf_dropdown_arrow.png) top left no-repeat;
 }
-.tf_contextmenu_arrow {
+.tf_contextmenu.up .tf_contextmenu_arrow {
 	position: absolute;
 	bottom: -11px;
 	height: 11px;

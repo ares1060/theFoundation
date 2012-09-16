@@ -59,7 +59,7 @@
            	
            	switch($chapter){
            		case 'folder':
-           			return $this->adminView->tplFolder($id);
+           			return $this->adminView->tplFolder($id, $page);
            			break;
         		case 'settings':
         			return $this->tplSettings();

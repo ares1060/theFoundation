@@ -49,7 +49,6 @@ var tf = {
 			success: function (answer) {
 //					(answer);
 				try {
-					console.log(answer);
 					json = answer; //jQuery.parseJSON(answer);
 					if(json.content != undefined){
 						if(json.content == 'session_expired') document.location = this.login_url;
@@ -151,7 +150,7 @@ var tf = {
 					pwd: $(this).val()
 				}, 
 				handle: function (msg) {
-					console.log(msg);
+					//console.log(msg);
 					$('#password_strength_text-'+id).html(msg.averageScoreInfo);
 					$('#password_strength-'+id).attr('class', msg.averageScoreInfo.split(' ').join('').toLowerCase()+' tf_password_strength');
 				},
@@ -254,11 +253,11 @@ var tfaddress = {
 		}
 		
 		var sameArray = tfutil.equals(array, this.getPathNames());
-	console.log(sameArray);
+		//(sameArray);
 		$.address.path(this.tf_string+'/');
 		
 		// if optional update flag is set and array is the same
-		if(this.updatePathFromArray.arguments[1] == true && sameArray) {console.log('adf');$.address.update();}
+		if(this.updatePathFromArray.arguments[1] == true && sameArray) { $.address.update();}
 		
 		this.loadParams();
 	},
@@ -345,7 +344,7 @@ var tfcontextmenu = {
 					$(this).parent().children('.tf_contextmenu').attr('id', 'tf_contextmenu_'+tfcontextmenu.contextmenucount);
 					$(this).parent().children('.tf_contextmenu').addClass('generatedContextMenu');
 					$(this).click(function() { tfcontextmenu.showMenu($(this).parent().children('.tf_contextmenu')); });
-					console.log($(this).parent().children('.tf_contextmenu').attr('id'));
+					//console.log($(this).parent().children('.tf_contextmenu').attr('id'));
 				}
 			});
 		},

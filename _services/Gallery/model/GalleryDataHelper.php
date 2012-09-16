@@ -83,7 +83,6 @@
 			// create limit string
 			$per_page = $this->_setting('admin.per_page.images');
 			$limit = ($page == -1) ? '' : ' LIMIT '.(mysql_real_escape_string($page-1)*mysql_real_escape_string($per_page)).', '.mysql_real_escape_string($per_page).';';
-			
 			// create user, status and category string
 			$user = 'AND `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"';
 			

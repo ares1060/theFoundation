@@ -15,7 +15,7 @@
 			$t = new ViewDescriptor($this->_setting('tpl.admin/admincenter'));
 			
 			// get all album folders by active user sorted by default(id)
-			$albums = $this->dataHelper->getFolders(array(GalleryDataHelper::STATUS_OFFLINE, GalleryDataHelper::STATUS_ONLINE), 0, 'default');
+			$albums = $this->dataHelper->getFolders(array(GalleryDataHelper::STATUS_HIDDEN, GalleryDataHelper::STATUS_ONLINE), 0, 'default');
 			
 			$firstAlbum = -1;
 			
@@ -26,7 +26,7 @@
 				$menu->addValue('id', $album->getId());
 				$menu->addValue('date', $album->getCreationDate());
 				
-				if($album->getStatus() == GalleryDataHelper::STATUS_OFFLINE) $menu->showSubView('hidden');
+				if($album->getStatus() == GalleryDataHelper::STATUS_HIDDEN) $menu->showSubView('hidden');
 				if($album->getStatus() == GalleryDataHelper::STATUS_ONLINE) $menu->showSubView('visible');
 				
 				// get all subfolders and push them into subfolder var
@@ -55,15 +55,24 @@
 			return $t->render();
 		}
 		
-		public function tplFolder($id){
+		public function tplFolder($id, $page=-1){
 			$folder = $this->dataHelper->getFolderById($id, array(GalleryDataHelper::STATUS_HIDDEN, GalleryDataHelper::STATUS_ONLINE));
 
 			if($folder->getUserId() == $this->sp->ref('User')->getViewingUser()->getId()) {
-				$images = $this->dataHelper->getImagesByFolderId($id);
-				
 				$tpl = new ViewDescriptor($this->_setting('tpl.admin/view_folder'));
 				
-				$tpl->addValue('count', count($images));
+				// page calculation and pagina creation
+				$per_page = $this->_setting('admin.per_page.images');
+				$count = $this->dataHelper->getImageCountByFolderId($id, array(GalleryDataHelper::STATUS_HIDDEN, GalleryDataHelper::STATUS_ONLINE));
+				
+				$all_pages = ceil($count / $per_page);
+				$final_page = ($page > 0 && $page <= $all_pages) ? $page : 1;
+				
+				$tpl->addValue('pagina_count', $all_pages);
+				$tpl->addValue('pagina_active', ($page == -1) ? 1 : $page);
+				$tpl->addValue('count', $count);
+				
+				$images = $this->dataHelper->getImagesByFolderId($id, $final_page, array(GalleryDataHelper::STATUS_HIDDEN, GalleryDataHelper::STATUS_ONLINE));
 				
 				foreach($images as $i){
 					$t = new SubViewDescriptor('image');
