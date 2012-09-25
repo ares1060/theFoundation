@@ -3,13 +3,14 @@ $(document).ready(function() {tf_gallery.initKeyHandler(); });
 var tf_gallery = {
 	activeNewFolder: undefined,
 	initKeyHandler: function() {
-		$(document).keydown(function(e) {
-			if(e.keyCode == 27 /* esc */){
-				// do nothing
-			} else if(e.keyCode == 13 /* enter */ ){
-				tf_gallery.showEditFolder();
-			}
-		});
+		tf.registerKeyDown(13, tf_gallery.showEditFolder, 'gallery_enter');
+//		$(document).keydown(function(e) {
+//			if(e.keyCode == 27 /* esc */){
+//				// do nothing
+//			} else if(e.keyCode == 13 /* enter */ ){
+//				tf_gallery.showEditFolder();
+//			}
+//		});
 	},
 	/* ===========  selection of images ======= */
 	selectImg: function(id) {
@@ -28,28 +29,27 @@ var tf_gallery = {
 			tfcontextmenu.hideActive();
 			$('#new_folder_'+parent).show();
 			if(!$('#new_folder_'+parent).parent().is(':visible')) $('#new_folder_'+parent).parent().show();
-			$('#new_folder_input_'+parent).keydown(function(key) {
-				console.log(key.which);
-				if (key.which == 13) { /* enter */
-					// send new folder
-					tf.showAdminLoading();
-					tf.getService({
-						service: 'Gallery', 
-						method: 'admin', 
-						args: { 
-							action: 'new_folder',
-							name: $('#new_folder_input_'+parent).val(),
-							parent: parent,
-							noMsg: true
-						}, 
-						handle: function (msg) {
-							location.reload();
-						}
-					});
-				} else if(key.which == 27) { /* esc */
-					tf_gallery.hideNewFolder();
-				}
-			});
+			
+			// keycodes
+			tf.registerKeyDown(13, function() { 
+				tf.showAdminLoading();
+				tf.getService({
+					service: 'Gallery', 
+					method: 'admin', 
+					args: { 
+						action: 'new_folder',
+						name: $('#new_folder_input_'+parent).val(),
+						parent: parent,
+						noMsg: true
+					}, 
+					handle: function (msg) {
+						location.reload();
+					}
+				});
+			}, 'gallery_new_folder');
+			tf.registerKeyDown(27, function() { tf_gallery.hideNewFolder(); }, 'gallery_new_folder');
+			// ======= end keycodes
+
 			$('#new_folder_input_'+parent).blur(function() { tf_gallery.hideNewFolder(); });
 			$('#new_folder_input_'+parent).focus();
 		} else {
@@ -58,9 +58,10 @@ var tf_gallery = {
 	},
 	hideNewFolder: function() {
 		if(this.activeNewFolder != undefined) {
+			tf.removeKeyDown(13, 'gallery_new_folder');
+			tf.removeKeyDown(27, 'gallery_new_folder');
 			$('#new_folder_'+this.activeNewFolder).hide();
 			$('#new_folder_input_'+this.activeNewFolder).val('');
-			$('#new_folder_input_'+this.activeNewFolder).unbind('keydown');
 			$('#new_folder_input_'+this.activeNewFolder).unbind('blur');
 			this.activeNewFolder = undefined;
 		}
@@ -69,31 +70,32 @@ var tf_gallery = {
 	showNewAlbum: function() {
 		tfcontextmenu.hideActive();
 		$('#new_album').show();
-		$('#new_album_input').keydown(function(key) {
-			console.log(key.which);
-			if (key.which == 13) { /* enter */
-				// send new folder
-				tf.showAdminLoading();
-				tf.getService({
-					service: 'Gallery', 
-					method: 'admin', 
-					args: { 
-						action: 'new_album',
-						name: $('#new_album_input').val(),
-						noMsg: true
-					}, 
-					handle: function (msg) {
-						location.reload();
-					}
-				});
-			} else if(key.which == 27) { /* esc */
-				tf_gallery.hideNewAlbum();
-			}
-		});
+		
+		// ======= keycodes
+		tf.registerKeyDown(13, function() {
+			tf.showAdminLoading();
+			tf.getService({
+				service: 'Gallery', 
+				method: 'admin', 
+				args: { 
+					action: 'new_album',
+					name: $('#new_album_input').val(),
+					noMsg: true
+				}, 
+				handle: function (msg) {
+					location.reload();
+				}
+			});
+		}, 'gallery_new_album' );
+		tf.registerKeyDown(27, function() { tf_gallery.hideNewAlbum(); }, 'gallery_new_album');
+		// ======= end keycodes
+		
 		$('#new_album_input').blur(function() { tf_gallery.hideNewAlbum(); });
 		$('#new_album_input').focus();
 	},
 	hideNewAlbum: function() {
+		tf.removeKeyDown(13, 'gallery_new_album');
+		tf.removeKeyDown(27, 'gallery_new_album');
 		$('#new_album').hide();
 		$('#new_album_input').val('');
 		$('#new_album_input').unbind('keydown');
@@ -131,42 +133,47 @@ var tf_gallery = {
 		});
 	},
 	showEditFolder: function() {
+		
 		tfcontextmenu.hideActive();
-		this.editFolderOpen = true;
+		tf_gallery.editFolderOpen = true;
 		$('#menu_folder_text_'+active_folder).hide();
 		$('#menu_folder_input_'+active_folder).show();
 		$('#menu_folder_input_'+active_folder).children('input').val($('#menu_folder_text_'+active_folder).children('.text').text());
 		$('#menu_folder_input_'+active_folder).children('input').focus();
 		$('#menu_folder_input_'+active_folder).children('input').select(false);
-		$('#menu_folder_input_'+active_folder).children('input').keydown(function(key) {
-			if (key.which == 13) { /* enter */
-				// send new folder
-				if($('#menu_folder_input_'+active_folder).children('input').val() != $('#menu_folder_text_'+active_folder).children('.text').text()) {
-					tf.showAdminLoading();
-					tf.getService({
-						service: 'Gallery', 
-						method: 'admin', 
-						args: { 
-							action: 'rename_folder',
-							id: active_folder,
-							name: $('#menu_folder_input_'+active_folder).children('input').val(),
-							noMsg: true
-						}, 
-						handle: function (msg) {
-							location.reload();
-						}
-					});
-				} else {
-					tf_gallery.closeEditFolder();
-				}
-			} else if(key.which == 27) { /* esc */
+		
+		// ===== keycodes
+		tf.removeKeyDown(13, 'gallery_enter');
+		tf.registerKeyDown(13, function() {
+			if($('#menu_folder_input_'+active_folder).children('input').val() != $('#menu_folder_text_'+active_folder).children('.text').text()) {
+				tf.showAdminLoading();
+				tf.getService({
+					service: 'Gallery', 
+					method: 'admin', 
+					args: { 
+						action: 'rename_folder',
+						id: active_folder,
+						name: $('#menu_folder_input_'+active_folder).children('input').val(),
+						noMsg: true
+					}, 
+					handle: function (msg) {
+						location.reload();
+					}
+				});
+			} else {
 				tf_gallery.closeEditFolder();
 			}
-		});
+		}, 'gallery_edit_folder_enter');
+		tf.registerKeyDown(27, tf_gallery.closeEditFolder, 'gallery_edit_folder_close');
+		// ======= end keycodes
+
 		$('#menu_folder_input_'+active_folder).children('input').blur(function() { tf_gallery.closeEditFolder(); })
 	},
 	closeEditFolder: function() {
-		if(this.editFolderOpen){
+		if(tf_gallery.editFolderOpen){
+			tf.removeKeyDown(13, 'gallery_edit_folder_enter');
+			tf.removeKeyDown(27, 'gallery_edit_folder_close');
+			tf.registerKeyDown(13, tf_gallery.showEditFolder, 'gallery_enter');
 			this.editFolderOpen = false;
 			$('#menu_folder_text_'+active_folder).show();
 			$('#menu_folder_input_'+active_folder).hide();

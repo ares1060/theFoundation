@@ -24,6 +24,8 @@ var tf = {
 		$(document).ready(function() {
 			tfcontextmenu.init();
 			tfdialog.init();
+			
+			$(document).keydown(function(e) { tf.triggerKeyDown(e.keyCode); });
 		});
 	},
 	/** 
@@ -162,6 +164,31 @@ var tf = {
 				json: true
 			});
 		});
+	},
+	keydown: {},
+	tmp: undefined,
+	registerKeyDown: function(keycode, listener, id){
+		if(this.keydown.keycode == undefined) this.keydown['a'+keycode] = new Array();
+		this.keydown['a'+keycode].push({id: id, listener:listener});
+	},
+	removeKeyDown: function(keycode, id) {
+		if(this.keydown['a'+keycode] != undefined) {
+			for(var i=0; i< this.keydown['a'+keycode].length; i++){
+				if(this.keydown['a'+keycode][i] != undefined && this.keydown['a'+keycode][i].id == id) {
+					this.keydown['a'+keycode][i] = undefined;
+					if(this.keydown['a'+keycode].length == 0) this.keydown['a'+keycode] = undefined;
+				}
+			}
+		}
+	},
+	triggerKeyDown: function(keycode) {
+		if(this.keydown['a'+keycode] != undefined) {
+			while( this.tmp == undefined) this.tmp = this.keydown['a'+keycode].pop();
+			if(typeof this.tmp.listener == 'function') {
+				this.tmp.listener();
+			}
+			this.tmp = undefined;
+		}
 	}
 };
 
@@ -332,11 +359,8 @@ var tfcontextmenu = {
 		$('#contextmenu_background').click(function() {
 			tfcontextmenu.hideActive();
 		});
-		$(document).keydown(function(e) {
-			if(e.keyCode == 27 /* esc */){
-				tfcontextmenu.hideActive();
-			}
-		});
+		
+		tf.registerKeyDown(27, function() { tfcontextmenu.hideActive(); }, 'tf_context_menu');
 	},
 	init: function () {
 		$('body').prepend('<div id="contextmenu_background">&nbsp;</div>');
@@ -354,9 +378,10 @@ var tfcontextmenu = {
 		});
 	},
 	hideActive: function() {
+		tf.removeKeyDown(27, 'tf_context_menu');
 		$(this.active_contextmenu).hide();
 		$('#contextmenu_background').hide();
-		$(document).unbind('keydown');
+		//$(document).unbind('keydown');
 	}
 }
 
@@ -396,24 +421,19 @@ var tfdialog = {
 			$('#dialog_box_cancel').click(function() { tfdialog.close(); handler({type:'cancel'}); return false; });
 			$('#dialog_background').show();
 			
-//			$(document).keydown(function(e) {
-//				if(e.keyCode == 27 /* esc */){
-//					tfdialog.close();
-//					handler({type:'cancel'});
-//				} else if(e.keyCode == 13 /* enter */ ){
-//					tfdialog.close(); 
-//					handler({type:'ok'}); 
-//				}
-//			});
+			tf.registerKeyDown(27, function() { tfdialog.close(); handler({type:'cancel'}); }, 'tf_dialog');
+			tf.registerKeyDown(13, function() { tfdialog.close(); handler({type:'ok'}); }, 'tf_dialog');
 		}
 	},
 	close: function() {
+		tf.removeKeyDown(13, 'tf_dialog');
+		tf.removeKeyDown(27, 'tf_dialog');
+		
 		$('#dialog_background').hide();
 		$('#dialog_box_title').text('');
 		$('#dialog_box_text').text('');
 		$('#dialog_box_ok').unbind('click');
 		$('#dialog_box_cancel').unbind('click');
-//		$(document).unbind('keydown')
 //		$('#dialog_box_icon').attr('src', ''); 
 //		$('#dialog_box_icon').hide();
 	}
