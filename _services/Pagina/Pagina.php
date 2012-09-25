@@ -28,35 +28,37 @@
 
                 $sort = isset($args['sort']) ? $args['sort'] : 'desc';
                                 
-                $main = ($template != '') ? new ViewDescriptor('_services/Pagina/'.$template) : new ViewDescriptor($this->config['tpl_main']);
-                
-                $main->addValue('css_url', $this->sp->tpl->getCssPath($this->config['css_file']));
-                if($sort == 'desc'){
-                	
-                    for($i=$count;$i>=1;$i--){
-                        $item = new SubViewDescriptor('items');
-                        $activated = ($i==$active) ? ' class=\'active\'' : '';
-                        $item->addValue('active', $activated);
-                        $item->addValue('id', $i);
-                        $item->addValue('page_nr', $i);
-                        $item->addValue('link', str_replace(array('{page}', '{abs_root}'), array($i, $GLOBALS['abs_root'].$GLOBALS['working_dir']), $url));
-                        $main->addSubView($item);
-                        unset($item);
-                    }
-                } else {
-                    for($i=1;$i<=$count;$i++){
-                        $item = new SubViewDescriptor('items');
-                        $activated = ($i==$active) ? ' class=\'active\'' : '';
-                        $item->addValue('active', $activated);
-                        $item->addValue('id', $i);
-                        $item->addValue('page_nr', $i);
-                        $item->addValue('link', str_replace(array('{page}', '{abs_root}'), array($i, $GLOBALS['abs_root'].$GLOBALS['working_dir']), $url));
-                        $main->addSubView($item);
-                        unset($item);
-                    }
-                }
-                return $main->render();
-            }
+                if($count > 1 || !($this->config['hide_if_one']) || isset($args['show_if_one'])) {
+	                $main = ($template != '') ? new ViewDescriptor('_services/Pagina/'.$template) : new ViewDescriptor($this->config['tpl_main']);
+	                
+	                $main->addValue('css_url', $this->sp->tpl->getCssPath($this->config['css_file']));
+	                if($sort == 'desc'){
+	                	
+	                    for($i=$count;$i>=1;$i--){
+	                        $item = new SubViewDescriptor('items');
+	                        $activated = ($i==$active) ? ' class=\'active\'' : '';
+	                        $item->addValue('active', $activated);
+	                        $item->addValue('id', $i);
+	                        $item->addValue('page_nr', $i);
+	                        $item->addValue('link', str_replace(array('{page}', '{abs_root}'), array($i, $GLOBALS['abs_root'].$GLOBALS['working_dir']), $url));
+	                        $main->addSubView($item);
+	                        unset($item);
+	                    }
+	                } else {
+	                    for($i=1;$i<=$count;$i++){
+	                        $item = new SubViewDescriptor('items');
+	                        $activated = ($i==$active) ? ' class=\'active\'' : '';
+	                        $item->addValue('active', $activated);
+	                        $item->addValue('id', $i);
+	                        $item->addValue('page_nr', $i);
+	                        $item->addValue('link', str_replace(array('{page}', '{abs_root}'), array($i, $GLOBALS['abs_root'].$GLOBALS['working_dir']), $url));
+	                        $main->addSubView($item);
+	                        unset($item);
+	                    }
+	                }
+	                return $main->render();
+                } else return '';
+            } else return '';
         }
         public function admin($args){
             return '';

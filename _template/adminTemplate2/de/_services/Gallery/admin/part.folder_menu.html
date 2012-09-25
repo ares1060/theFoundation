@@ -1,19 +1,32 @@
-<ul>								
-	<li class="menu_folder {@pp:moreClass}" id="menu_subfolder_{@pp:id}" >
-		<span class="link_line">
-			<pp:dynamic name="more">
-				<a class="more_spacer" href="javascript:void(0);" onclick="toggleFolder({@pp:id});">
-					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/moreArrow.png" class="icon"/>
-				</a>
-			</pp:dynamic>
-			<pp:dynamic name="not_more"><span class="more_spacer">&nbsp;</span></pp:dynamic>
-			<a href="javascript:void(0);" onclick="tfaddress.editPath({set:{'folder':'{@pp:id}', 'chapter':'main'}}, true);" class="big_link">
-								
-				<pp:dynamic name="visible"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/folder.png" class="icon"/></pp:dynamic>
-				<pp:dynamic name="hidden"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/folder_hidden.png" class="icon"/></pp:dynamic>
-				{@pp:name}
+<li class="menu_folder {@pp:moreClass}" id="menu_subfolder_{@pp:id}" >
+	<span class="link_line">
+		<pp:dynamic name="more">
+			<a class="more_spacer" href="javascript:void(0);" onclick="toggleFolder({@pp:id});">
+				<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/moreArrow.png" class="icon"/>
 			</a>
+		</pp:dynamic>
+		<pp:dynamic name="not_more"><span class="more_spacer">&nbsp;</span></pp:dynamic>
+		<a href="javascript:void(0);" onclick="tfaddress.editPath({set:{'folder':'{@pp:id}'}}, true);" class="big_link"  id="menu_folder_text_{@pp:id}">
+							
+			<pp:dynamic name="visible"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/folder.png" class="icon"/></pp:dynamic>
+			<pp:dynamic name="hidden"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/folder_hidden.png" class="icon"/></pp:dynamic>
+			<span class="text">{@pp:name}</span>
+		</a>
+		<span id="menu_folder_input_{@pp:id}" style="display: block; display: none; ">
+			<pp:dynamic name="visible1"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/album.png" class="icon visible" /></pp:dynamic>
+			<pp:dynamic name="hidden1"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/album_hidden.png" class="icon hidden"/></pp:dynamic> 
+			
+			<input type="text" id="menu_folder_input_{@pp:id}" />
 		</span>
+	</span>
+	<ul>								
+		<li class="menu_folder" id="new_folder_{@pp:id}" style="display: none;">
+			<span class="link_line"><span class="more_spacer">&nbsp;</span></span>
+			<a href="javascript:void(0);">
+				<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/folder.png" class="icon"/>
+				<input type="text" class="small" id="new_folder_input_{@pp:id}"/>
+			</a>
+		</li>
 		{@pp:subfolder}
-	</li>
-</ul>
+	</ul>
+</li>

@@ -122,7 +122,8 @@
 				
 				$service = isset($_GET['service']) ? $_GET['service'] : 'overview';
 
-        		$tpl = new ViewDescriptor($this->_setting('tpl.admincenter.main'));
+//         		error_log('TF:Admincenter: start');
+				$tpl = new ViewDescriptor($this->_setting('tpl.admincenter.main'));
         		
         		// hardcoded - just root can change identity
         		if($this->sp->ref('User')->getLoggedInUser()->getGroup()->getName() == 'root'){
@@ -164,12 +165,12 @@
         		foreach($services as $se){
         			if($this->isActivated($se['name'])){
         				$s = new SubViewDescriptor('menu_big_services');
-        				$s1 = new SubViewDescriptor('menu_small_services');
+//         				$s1 = new SubViewDescriptor('menu_small_services');
         				
         				if($se['name'] == $service){
         					$selected_menu = $se;
         					$s->addValue('selected', 'sel');
-        					$s1->addValue('selected', 'sel');
+//         					$s1->addValue('selected', 'sel');
         				}
         				
         				$s->addValue('id', $se['id']);
@@ -177,15 +178,15 @@
         				$s->addValue('display', $se['display']);
         				$s->addValue('image', $se['image']);
         				
-        				$s1->addValue('id', $se['id']);
-        				$s1->addValue('name', $se['name']);
-        				$s1->addValue('display', $se['display']);
-        				$s1->addValue('image', $se['image']);
+//         				$s1->addValue('id', $se['id']);
+//         				$s1->addValue('name', $se['name']);
+//         				$s1->addValue('display', $se['display']);
+//         				$s1->addValue('image', $se['image']);
         				
         				$tpl->addSubView($s);
-        				$tpl->addSubView($s1);
+//         				$tpl->addSubView($s1);
         				unset($s);
-        				unset($s1);
+//         				unset($s1);
         			}
         		}
         		
@@ -210,7 +211,7 @@
         			
         			$tpl->addValue('content', $o->admin($_GET));
         		}
-        		
+//         		error_log('TF:Admincenter: end');
         		return $tpl->render();
         	} else {
         		$this->_msg($this->_('You are not authorized', 'rights'), Messages::ERROR);

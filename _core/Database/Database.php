@@ -88,7 +88,7 @@
          */
         public function DbGetRow($query){
        		$link = mysql_query($query);
-       		$id = mysql_insert_id();
+//        		$id = mysql_insert_id();
        		
        		$link ? $this->querycount['success']++ : $this->querycount['error']++;
        		
@@ -105,7 +105,7 @@
          */
         public function DbGetArray($query){
        		$link = mysql_query($query);
-       		$id = mysql_insert_id();
+//        		$id = mysql_insert_id();
        		
        		$link ? $this->querycount['success']++ : $this->querycount['error']++;
        		

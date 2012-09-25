@@ -42,6 +42,7 @@
 	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 	header('Content-type: application/json');
     
+// 	error_log('TF:Connector: start');
 	if(isset($GLOBALS['session_expired']) && $GLOBALS['session_expired'] === true) {
 		// handles session expiration for ajax requests
 		echo json_encode(array('content'=>'session_expired', 'msg'=>''));
@@ -54,4 +55,6 @@
 	  		echo json_encode(array('content'=>$sp->exe($service_name, $service_method, $args)));
 	    }
 	}
+// 	error_log('TF:Connector: end');
+	
 ?>

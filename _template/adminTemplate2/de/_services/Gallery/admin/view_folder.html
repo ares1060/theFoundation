@@ -32,9 +32,28 @@
 			{@pp:count} Bilder
 		</div>
 	</div>
-	
-	<pp:dynamic name="image">
-		{@pp:name} - {@pp:id}
-		<img src="{@pp:root}_core/getImage.php?path={@pp:path}&height=140&width=140" class="img"/>
-	</pp:dynamic>
+	<div class="images">
+		<pp:dynamic name="image">
+			<div class="image_container">
+				<div class="image_cell">
+					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/gallery_load.gif" id="imageLoad_{@pp:id}"/>
+					<div class="image_div" id="imageDiv_{@pp:id}">
+						<img src="{@pp:root}_core/getImage.php?path={@pp:path}&height=140&width=140" class="img"  id="imageImg_{@pp:id}"/>
+						<div class="image_text">
+							{@pp:name}
+						</div>
+						<script type="text/javascript">
+							$('#imageImg_{@pp:id}').load(function() {
+								console.log(this.width);
+								$('#imageLoad_{@pp:id}').fadeOut(20);
+								$('#imageDiv_{@pp:id}').width(this.width);
+								$('#imageDiv_{@pp:id}').delay(20).fadeIn();
+								$(this).click(function() { tf_gallery.selectImg({@pp:id}); });
+							});
+						</script>
+					</div>
+				</div>
+			</div>			
+		</pp:dynamic>
+	</div>
 </div>

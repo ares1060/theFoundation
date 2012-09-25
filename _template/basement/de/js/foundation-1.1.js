@@ -19,7 +19,12 @@ var tf = {
 		this.template = params.template;
 		this.login_url = params.login_url;
 		this.tf_loading_counter = 0;
-		$(document).ready(tfcontextmenu.init);
+		
+		// init interface objects
+		$(document).ready(function() {
+			tfcontextmenu.init();
+			tfdialog.init();
+		});
 	},
 	/** 
 	 * Gets Data from a specific service and method via connector
@@ -251,7 +256,7 @@ var tfaddress = {
 		for(key in array){
 			if(array[key] != undefined) this.tf_string = this.tf_string + '/'+key+'/'+array[key];
 		}
-		
+		console.log(this.tf_string);
 		var sameArray = tfutil.equals(array, this.getPathNames());
 		//(sameArray);
 		$.address.path(this.tf_string+'/');
@@ -318,42 +323,101 @@ var tfaddress = {
  * context menu class
  */
 var tfcontextmenu = {
-		contextmenucount: 0,
-		active_contextmenu: null,
-		showMenu: function(item) {
-			$(item).show();
-			$('#contextmenu_background').show();
-			this.active_contextmenu = item;
-			$('#contextmenu_background').click(function() {
+	contextmenucount: 0,
+	active_contextmenu: null,
+	showMenu: function(item) {
+		$(item).show();
+		$('#contextmenu_background').show();
+		this.active_contextmenu = item;
+		$('#contextmenu_background').click(function() {
+			tfcontextmenu.hideActive();
+		});
+		$(document).keydown(function(e) {
+			if(e.keyCode == 27 /* esc */){
 				tfcontextmenu.hideActive();
-			});
-			$(document).keydown(function(e) {
-				if(e.keyCode == 27 /* esc */){
-					tfcontextmenu.hideActive();
-				}
-			})
-		},
-		init: function () {
-			$('body').prepend('<div id="contextmenu_background">&nbsp;</div>');
-			tfcontextmenu.update();
-		},
-		update: function () {
-			$('.tf_contextmenu_link').each(function () {
-				if(!$(this).parent().children('.tf_contextmenu').hasClass('generatedContextMenu')) {
-					tfcontextmenu.contextmenucount++;
-					$(this).parent().children('.tf_contextmenu').attr('id', 'tf_contextmenu_'+tfcontextmenu.contextmenucount);
-					$(this).parent().children('.tf_contextmenu').addClass('generatedContextMenu');
-					$(this).click(function() { tfcontextmenu.showMenu($(this).parent().children('.tf_contextmenu')); });
-					//console.log($(this).parent().children('.tf_contextmenu').attr('id'));
-				}
-			});
-		},
-		hideActive: function() {
-			$(this.active_contextmenu).hide();
-			$('#contextmenu_background').hide();
-			$(document).unbind('keydown');
-		}
+			}
+		});
+	},
+	init: function () {
+		$('body').prepend('<div id="contextmenu_background">&nbsp;</div>');
+		tfcontextmenu.update();
+	},
+	update: function () {
+		$('.tf_contextmenu_link').each(function () {
+			if(!$(this).parent().children('.tf_contextmenu').hasClass('generatedContextMenu')) {
+				tfcontextmenu.contextmenucount++;
+				$(this).parent().children('.tf_contextmenu').attr('id', 'tf_contextmenu_'+tfcontextmenu.contextmenucount);
+				$(this).parent().children('.tf_contextmenu').addClass('generatedContextMenu');
+				$(this).click(function() { tfcontextmenu.showMenu($(this).parent().children('.tf_contextmenu')); });
+				//console.log($(this).parent().children('.tf_contextmenu').attr('id'));
+			}
+		});
+	},
+	hideActive: function() {
+		$(this.active_contextmenu).hide();
+		$('#contextmenu_background').hide();
+		$(document).unbind('keydown');
 	}
+}
+
+var tfdialog = {
+	init: function() {
+		$('body').prepend(
+			'<div id="dialog_background">'+
+			'	<div id="dialog_box">'+
+			'		<a id="dialog_box_close" href="javascript:void(0);"><img src="'+tf.tpl_root+'/img/services/gallery/layout/close_button.png" /></a>'+
+			'		<div id="dialog_box_content">'+
+			'			<div id="dialog_box_title">Title</div>'+
+			'			<div id="dialog_box_text">Content</div>'+
+			'		</div>'+
+			'		<div class="actions">'+
+			'			<button class="button" style="width: 100px;" id="dialog_box_ok"><span>OK</span></button>'+
+			'			<button class="button" style="width: 100px;" id="dialog_box_cancel"><span>Abbrechen</span></button>'+
+			'		</div>'+
+			'	</div>'+		
+			'</div>');
+		$('#dialog_background').click(function() { tfdialog.close(); });
+		$('#dialog_box_close').click(function() { tfdialog.close(); });
+	},
+	show: function(param) {
+		var title = param.title;
+		var text = param.text;
+		var handler = param.handler;
+//		var icon = param.icon;
+		
+		if(title != undefined && content != undefined && typeof(handler) == 'function' ){
+//			if(icon != undefined) {
+//				$('#dialog_box_icon').attr('src', icon);
+//				$('#dialog_box_icon').show();
+//			}
+			$('#dialog_box_title').html(title);
+			$('#dialog_box_text').html(text);
+			$('#dialog_box_ok').click(function() { tfdialog.close(); handler({type:'ok'}); return false; });
+			$('#dialog_box_cancel').click(function() { tfdialog.close(); handler({type:'cancel'}); return false; });
+			$('#dialog_background').show();
+			
+//			$(document).keydown(function(e) {
+//				if(e.keyCode == 27 /* esc */){
+//					tfdialog.close();
+//					handler({type:'cancel'});
+//				} else if(e.keyCode == 13 /* enter */ ){
+//					tfdialog.close(); 
+//					handler({type:'ok'}); 
+//				}
+//			});
+		}
+	},
+	close: function() {
+		$('#dialog_background').hide();
+		$('#dialog_box_title').text('');
+		$('#dialog_box_text').text('');
+		$('#dialog_box_ok').unbind('click');
+		$('#dialog_box_cancel').unbind('click');
+//		$(document).unbind('keydown')
+//		$('#dialog_box_icon').attr('src', ''); 
+//		$('#dialog_box_icon').hide();
+	}
+}
 
 /**
  * runs important functions on startup

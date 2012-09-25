@@ -1,0 +1,19 @@
+<div id="upload_folder_arrow">
+	<div id="upload_folder_spacer">
+		<div id="upload_folder_indicator">&nbsp;</div>
+	</div>
+</div>
+<div id="upload_window">
+	<div id="upload_close_button"><a href="javascript:void(0);" onclick="tfaddress.editPath({unset:['chapter']});" ><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/close_button.png" /></a></div>
+	<h2>Bilder upload</h2>
+	<form class="tf_form">
+		<p>
+			<label class="tf_label">Ordner:</label>
+			<span class="input small" id="upload_folder">&nbsp;</span>
+		</p>
+		<p>
+			<label class="tf_label">Bilder:</label>
+		</p>
+		{pp:UIWidgets(widget:Fileupload, name:files[], id:upload, max_file_size:{@pp:max_file_size}, max_uploads:{@pp:max_uploads}, type:{@pp:types})}
+	</form>
+</div>

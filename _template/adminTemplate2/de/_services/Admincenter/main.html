@@ -81,7 +81,9 @@
 									if(msg == 'true') {
 // 										tfaddress.reloadPath();
 										// reload whole page
-										location.reload();
+										location.href = $.address.baseURL()+'/';
+// 										tfaddress.emptyPath();
+// 										location.reload();
 										$('#topbar-view_as-icon').html(name);	
 										$('#topbar-view_as-icon').removeClass('active');
 									}
@@ -102,9 +104,12 @@
 									if(msg == 'true') {
 // 										tfaddress.reloadPath();
 										// reload whole page
-										location.reload();
+										location.href = $.address.baseURL()+'/';
+// 										tfaddress.emptyPath();
+// 										location.reload();
 										$('#topbar-view_as-icon').html(name);
 										$('#topbar-view_as-icon').addClass('active');
+										
 									}
 									tf.hideAdminLoading();
 								}

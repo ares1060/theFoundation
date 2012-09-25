@@ -1,3 +1,6 @@
+<style type="text/css" media="screen">
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/uiwidget.css);
+</style>
 <div id="admin_menu_main">
 	<div id="admin_menu_main_nav">
 		<ul id="right_action">
@@ -16,6 +19,15 @@
 	<div id="admin_sidemenu_block">
 		<div id="admin_sidemenu">
 			<ul>
+				<li class="menu_album" id="new_album" style="display: none;">
+					<form class="tf_form">
+						<span class="link_line"><span class="more_spacer">&nbsp;</span></span>
+						<a href="javascript:void(0);">
+							<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/album.png" class="icon"/>
+							<input type="text" class="small" id="new_album_input"/>
+						</a>
+					</form>
+				</li>
 				<pp:dynamic name="side_menu">
 					<li class="menu_album {@pp:moreClass}" id="menu_folder_{@pp:id}">
 						<span class="link_line">
@@ -26,15 +38,30 @@
 							</pp:dynamic>
 							<pp:dynamic name="not_more"><span class="more_spacer">&nbsp;</span></pp:dynamic>
 							
-							<a href="javascript:void(0);" onclick="tfaddress.editPath({set:{'folder':'{@pp:id}', 'chapter':'main'}}, true);" class="big_link">
+							<a href="javascript:void(0);" onclick="tfaddress.editPath({set:{'folder':'{@pp:id}'}}, true);" class="big_link" id="menu_folder_text_{@pp:id}">
 								
-								<pp:dynamic name="visible"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/album.png" class="icon"/></pp:dynamic>
-								<pp:dynamic name="hidden"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/album_hidden.png" class="icon"/></pp:dynamic> 
+								<pp:dynamic name="visible"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/album.png" class="icon visible" /></pp:dynamic>
+								<pp:dynamic name="hidden"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/album_hidden.png" class="icon hidden"/></pp:dynamic> 
 								
-								{@pp:name}
+								<span class="text">{@pp:name}</span>
 							</a>
+							<span id="menu_folder_input_{@pp:id}" style="display: block;display: none; ">
+								<pp:dynamic name="visible1"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/album.png" class="icon visible" /></pp:dynamic>
+								<pp:dynamic name="hidden1"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/album_hidden.png" class="icon hidden"/></pp:dynamic> 
+								
+								<input type="text" id="menu_folder_input_{@pp:id}" />
+							</span>
 						</span>
-						{@pp:subfolder}
+						<ul>								
+							<li class="menu_folder" id="new_folder_{@pp:id}" style="display: none;">
+								<span class="link_line"><span class="more_spacer">&nbsp;</span></span>
+								<a href="javascript:void(0);">
+									<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/folder.png" class="icon"/>
+									<input type="text" class="small" id="new_folder_input_{@pp:id}"/>
+								</a>
+							</li>
+							{@pp:subfolder}
+						</ul>
 					</li>
 				</pp:dynamic>	
 			</ul>
@@ -52,14 +79,14 @@
 				<span class="tf_contextmenu up" style="position: absolute; left: -4px; top: -80px;">
 					<span class="tf_contextmenu_arrow" style="left: 8px;">&nbsp;</span>
 					<ul>
-						<li class="option"><a href="javascript:void(0);" onclick="alert('new album');">Neues Album</a></li>
-						<li class="option"><a href="javascript:void(0);" onclick="alert('new folder');">Neuer Ordner</a></li>
+						<li class="option"><a href="javascript:void(0);" onclick="tf_gallery.showNewAlbum();">Neues Album</a></li>
+						<li class="option"><a href="javascript:void(0);" onclick="tf_gallery.showNewFolder();">Neuer Ordner</a></li>
 					</ul>						
 				</span>
 			</li>
 			<li class="seperator">&nbsp;</li>
 			<li>
-				<a href="javascript:void(0);"  onclick="alert('remove selection');"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/remove.png" class="menu_item"/></a>
+				<a href="javascript:void(0);"  onclick="tf_gallery.deleteFolder();"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/remove.png" class="menu_item"/></a>
 			</li>
 			<li class="seperator">&nbsp;</li>
 		</ul>
@@ -69,10 +96,12 @@
 				<a href="javascript:void(0);" class="tf_contextmenu_link">
 					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/settings.png" class="menu_item"/>
 				</a>
-				<span class="tf_contextmenu up" style="position: absolute; right: -4px; top: -50px;">
+				<span class="tf_contextmenu up" style="position: absolute; right: -4px; top: -80px;">
 					<span class="tf_contextmenu_arrow" style="right: 8px;">&nbsp;</span>
 					<ul>
-						<li class="option"><a href="javascript:void(0);" onclick="alert('hide folder');">Ordner verstecken</a></li>
+						<li class="option"><a href="javascript:void(0);" id="gallery_show_folder" onclick="tf_gallery.hideFolder();">Ordner verstecken</a></li>
+						<li class="option"><a href="javascript:void(0);" id="gallery_hide_folder" onclick="tf_gallery.showFolder();">Ordner anzeigen</a></li>
+						<li class="option"><a href="javascript:void(0);" id="gallery_edit_folder" onclick="tf_gallery.showEditFolder();">Ordner bearbeiten</a></li>
 					</ul>						
 				</span>
 			</li>
@@ -88,7 +117,7 @@
 		var active_action = '';
 		var active_folder = {@pp:firstAlbum};
 		var active_image = -1;
-
+		
 		/* --- deep link --- */
 		$.address.change(function(event) { updateDeeplink(); });  
 		$.address.init(function(event) { 
@@ -133,6 +162,7 @@
 		}
 		/* ---------------  Folder --------------*/
 		function loadFolder() {
+			
 			$('#gallery_main').show();
 			$('#gallery_settings').hide();
 			
@@ -141,9 +171,14 @@
 			
 			var folder = ($('#menu_folder_'+active_folder).size() == 0) ? $('#menu_subfolder_'+active_folder) : $('#menu_folder_'+active_folder);
 			
+			if(folder.find('img.icon').hasClass('visible')) {
+				$('#gallery_show_folder').show();
+				$('#gallery_hide_folder').hide();
+			} else {
+				$('#gallery_show_folder').hide();
+				$('#gallery_hide_folder').show();
+			}
 			//toggleFolder(folder)
-			
-			// TODO: handle action buttons text change (hide / show)
 			
 			folder.children('.link_line').addClass('selected');
 			
@@ -171,9 +206,10 @@
 			if(folder != undefined) {
 				toggleFolderRec(folder);
 			}
+			if(active_chapter == 'upload') tf_gallery.updateUploadFolderArrow();
+
 		}
 		
-		var old_folder;
 		
 		function toggleFolderRec(item) {
 			
@@ -196,22 +232,54 @@
 		}
 		/* ---------------  Upload --------------- */
 		function loadUpload() {
+			$('.menu_album > .link_line').removeClass('selected');
+			$('.menu_folder > .link_line').removeClass('selected');
+			
+			var folder = ($('#menu_folder_'+active_folder).size() == 0) ? $('#menu_subfolder_'+active_folder) : $('#menu_folder_'+active_folder);
+			
+			if(folder.find('img.icon').hasClass('visible')) {
+				$('#gallery_show_folder').show();
+				$('#gallery_hide_folder').hide();
+			} else {
+				$('#gallery_show_folder').hide();
+				$('#gallery_hide_folder').show();
+			}
+			//toggleFolder(folder)
+			
+			folder.children('.link_line').addClass('selected');
+			
+			
+			
 			$('#gallery_main').show();
 			$('#gallery_settings').hide();
 			$('#chapter_upload').addClass('selected');
-			tf.showAdminLoading();
-			tf.getService({
-				service: 'Gallery', 
-				method: 'admin', 
-				args: { 
-					action:'upload'
-				}, 
-				handle: function (msg) {
-						tf.hideAdminLoading();
-						alert(msg);
-						$('#admin_image_block').html(msg);
-					}
-			});
+
+			if($('#upload_folder_indicator').length > 0) {
+				tf_gallery.updateUploadFolderArrow();
+			}
+			
+			if($('#upload_folder_indicator').length == 0) {
+				tf.showAdminLoading();
+				tf.getService({
+					service: 'Gallery', 
+					method: 'admin', 
+					args: { 
+						action:'upload'
+					}, 
+					handle: function (msg) {
+							tf.hideAdminLoading();
+							$('#admin_image_block').html(msg);
+							
+							tf_gallery.updateUploadFolderArrow();
+// 							$("#upload_folder_arrow").scrollTop(0);
+							
+							$('#admin_sidemenu_block').scroll(function(){
+			                	$("#upload_folder_arrow").scrollTop($('#admin_sidemenu_block').scrollTop());
+			                });
+							
+						}
+				});
+			}
 		}
 		/* ---------------  settings --------------*/
 		function loadSettings() {
@@ -234,3 +302,4 @@
 
 	//-->
 </script>
+<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_folder}/js/gallery.admin.js"></script>

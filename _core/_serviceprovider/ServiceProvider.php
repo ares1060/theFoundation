@@ -69,9 +69,9 @@
             $this->rights = new Rights();
             $this->services['rights'] =& $this->rights;
             $this->templates = array();
-            $this->msg->run(array('message'=>$this->data('Localization', array('str'=>'INIT_COMPLETED', 'service'=>'core')), 'type'=>Messages::RUNTIME));
-            $this->msg->run(array('message'=>'history_prev = '.((isset($_SESSION['history'])) ? $_SESSION['history']['prev_page'] : ''), 'type'=>Messages::RUNTIME));
-            $this->msg->run(array('message'=>'history_act = '.((isset($_SESSION['history'])) ? $_SESSION['history']['active_page'] : ''), 'type'=>Messages::RUNTIME));
+//             $this->msg->run(array('message'=>$this->data('Localization', array('str'=>'INIT_COMPLETED', 'service'=>'core')), 'type'=>Messages::RUNTIME));
+//             $this->msg->run(array('message'=>'history_prev = '.((isset($_SESSION['history'])) ? $_SESSION['history']['prev_page'] : ''), 'type'=>Messages::RUNTIME));
+//             $this->msg->run(array('message'=>'history_act = '.((isset($_SESSION['history'])) ? $_SESSION['history']['active_page'] : ''), 'type'=>Messages::RUNTIME));
             
             $this->loc->loadPreloadedFiles();
             

@@ -87,6 +87,7 @@
 							'id'=>isset($_SESSION['messages']) ? count($_SESSION['messages']) : 0);
 				if(isset($_SESSION['messages'])) $_SESSION['messages'][] = $m;
 				else $_SESSION['messages'] = array($m);
+// 				error_log('TF:Messsage: new message in Session ['.$message.']');
 				unset($m);
 			} else {
 				$m = array('type'=>$type, 
@@ -140,6 +141,7 @@
              		unset($this->messages[$key]);
              	}
 			}
+			error_log('TF:Messsage: Render Me');
 			/* -- render $_SESSION Messages from previous Site --- */
 			if(isset($_SESSION['messages'])){
 				foreach($_SESSION['messages'] as $key=>$message) {
@@ -155,7 +157,7 @@
 	   					$sv->addValue('m_id',  $message['id']);
 	        			$replace->addSubView($sv);
 	        			
-        				unset($_SESSION['messages'][$key]);
+	        			unset($_SESSION['messages'][$key]);
 	      			}
 				}
 			}
@@ -197,8 +199,11 @@
 	        	}
 	        	/* -- render $_SESSION Messages from previous Site --- */
 				if(isset($_SESSION['messages'])){
+					$count=0;
+						
 					foreach($_SESSION['messages'] as $key=>$message) {
 						if((in_array($message['type'], $typear))) {
+							$count++;
 		            		$sv = new SubViewDescriptor('message');
 		            		$sv->addValue('type', $message['type']);
 		           			$sv->addValue('time', ($message['type'] == Messages::DEBUG || $message['type'] == Messages::DEBUG_ERROR) ? '('.round(($message['time']-$GLOBALS['stat']['start'])*1000,4).')' : '');
@@ -207,11 +212,14 @@
 		        			
 		   					$replace->addSubView($sv);
 
-		        			unset($sv);
+// 							error_log('TF:Messsage: deleted message from Session ['.$message['message'].']');
+		   					unset($sv);
 		        			unset($_SESSION['messages'][$key]);
 		            	}
 					}
 				}
+// 				error_log('TF:Messages: '.$count);
+// 				error_log('TF:Messages:'.$replace->render());
 				return $replace->render();
         	} else return 'asdf';
         }

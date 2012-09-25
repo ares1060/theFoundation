@@ -26,8 +26,8 @@
 				$menu->addValue('id', $album->getId());
 				$menu->addValue('date', $album->getCreationDate());
 				
-				if($album->getStatus() == GalleryDataHelper::STATUS_HIDDEN) $menu->showSubView('hidden');
-				if($album->getStatus() == GalleryDataHelper::STATUS_ONLINE) $menu->showSubView('visible');
+				if($album->getStatus() == GalleryDataHelper::STATUS_HIDDEN) { $menu->showSubView('hidden'); $menu->showSubView('hidden1'); }
+				if($album->getStatus() == GalleryDataHelper::STATUS_ONLINE) { $menu->showSubView('visible'); $menu->showSubView('visible1'); }
 				
 				// get all subfolders and push them into subfolder var
 				$this->depth = 1;
@@ -56,14 +56,14 @@
 		}
 		
 		public function tplFolder($id, $page=-1){
-			$folder = $this->dataHelper->getFolderById($id, array(GalleryDataHelper::STATUS_HIDDEN, GalleryDataHelper::STATUS_ONLINE));
+			$folder = $this->dataHelper->getFolderById($id);
 
-			if($folder->getUserId() == $this->sp->ref('User')->getViewingUser()->getId()) {
+			if($folder != null && $folder->getUserId() == $this->sp->ref('User')->getViewingUser()->getId()) {
 				$tpl = new ViewDescriptor($this->_setting('tpl.admin/view_folder'));
 				
 				// page calculation and pagina creation
 				$per_page = $this->_setting('admin.per_page.images');
-				$count = $this->dataHelper->getImageCountByFolderId($id, array(GalleryDataHelper::STATUS_HIDDEN, GalleryDataHelper::STATUS_ONLINE));
+				$count = $this->dataHelper->getImageCountByFolder($id, array(GalleryDataHelper::STATUS_HIDDEN, GalleryDataHelper::STATUS_ONLINE));
 				
 				$all_pages = ceil($count / $per_page);
 				$final_page = ($page > 0 && $page <= $all_pages) ? $page : 1;
@@ -72,7 +72,7 @@
 				$tpl->addValue('pagina_active', ($page == -1) ? 1 : $page);
 				$tpl->addValue('count', $count);
 				
-				$images = $this->dataHelper->getImagesByFolderId($id, $final_page, array(GalleryDataHelper::STATUS_HIDDEN, GalleryDataHelper::STATUS_ONLINE));
+				$images = $this->dataHelper->getImagesByFolder($id, $final_page, array(GalleryDataHelper::STATUS_HIDDEN, GalleryDataHelper::STATUS_ONLINE));
 				
 				foreach($images as $i){
 					$t = new SubViewDescriptor('image');
@@ -85,7 +85,6 @@
 					unset($t);
 				}
 				
-// 				print_r($images);
 				return $tpl->render();
 			} else {
 				$this->_msg($this->_('You are not authorized', 'rights'), Messages::ERROR);
@@ -98,7 +97,7 @@
 		/* Recursive functions for subfolder */
 		
 		private function recSubFolderCreation($id) {
-			$subfolders = $this->dataHelper->getFolders(array(GalleryDataHelper::STATUS_OFFLINE, GalleryDataHelper::STATUS_ONLINE), $id, 'default');
+			$subfolders = $this->dataHelper->getFolders(array(GalleryDataHelper::STATUS_HIDDEN, GalleryDataHelper::STATUS_ONLINE), $id, 'default');
 			if($this->depth <= $this->_setting('admin.subfolder.depth') && $subfolders != array()) {
 				$this->depth ++;
 				
@@ -107,8 +106,8 @@
 				foreach($subfolders as $folder) {
 					$tmp = new ViewDescriptor($this->_setting('tpl.admin/part.subfolder'));
 					
-					if($folder->getStatus() == GalleryDataHelper::STATUS_OFFLINE) $tmp->showSubView('hidden');
-					if($folder->getStatus() == GalleryDataHelper::STATUS_ONLINE) $tmp->showSubView('visible');
+					if($folder->getStatus() == GalleryDataHelper::STATUS_HIDDEN) { $tmp->showSubView('hidden'); $tmp->showSubView('hidden1'); }
+					if($folder->getStatus() == GalleryDataHelper::STATUS_ONLINE) { $tmp->showSubView('visible'); $tmp->showSubView('visible1'); }
 					
 					$tmp->addValue('name', $folder->getName());
 					$tmp->addValue('id', $folder->getId());
@@ -128,9 +127,18 @@
 
 					$return .= $tmp->render();
 				}
+				$this->depth --;
 				
 				return $return;
 			}
+		}
+		
+		public function tplUpload($selectedFolder) {
+			$folder = $this->dataHelper->getFolderById($selectedFolder);
+			
+			$tpl = new ViewDescriptor($this->_setting('tpl.admin/upload'));
+			
+			return $tpl->render();
 		}
 	}
 ?>

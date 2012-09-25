@@ -7,7 +7,7 @@
 	top: 0px;
 	bottom: 3px;
 	
-	background: #222;
+	background: #333;
 	
 /* 	border: 1px solid black;	 */
 	max-height: 800px;
@@ -22,8 +22,10 @@
 
 	width: 250px;
 	overflow-y: auto;
-	overflow-x:auto;
+	overflow-x: auto;
 	margin-bottom: 25px;
+	position: relative;
+	z-index: 1000;
 }
 #admin_sidemenu {
 	padding: 5px 0px 10px 0px;
@@ -48,10 +50,20 @@
 	padding: 5px 10px 5px 7px;	
 	display: block;
 	color: #444;
+	position: relative;
 }
 #admin_sidemenu  ul li.menu_album span.link_line:hover, #admin_sidemenu ul li span.link_line.selected {
 	background-color: rgba(119, 137, 165, .25);
 
+}
+#admin_sidemenu ul li .link_line .upload_selected_arrow {
+	display: block;
+	width: 20px;
+	height: 20px;
+	background: red;
+	position: absolute;
+	right: -40px;
+	top: 0px;
 }
 /* #admin_sidemenu ul li.more { */
 /* 	background-image: url(../../img/services/gallery/layout/moreArrow.png); */
@@ -88,7 +100,7 @@
     border-radius: 3px 0 0 0;
     box-shadow: 20px 10px 10px 10px rgba(255, 255, 255, 0.5) inset, 1px 0px 2px 2px rgba(0,0,0,.06);
 }
-#admin_bottom_menu ul { list-style: none; }
+#admin_bottom_menu ul { list-style: none;}
 #admin_bottom_menu ul li { float: left; position: relative;}
 #admin_bottom_menu ul li.seperator {
 	background: none repeat scroll 0 0 #FFFFFF;
@@ -116,8 +128,9 @@ img.icon {
 	background: linear-gradient(to bottom,  #434343 0%,#363636 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#434343', endColorstr='#363636',GradientType=0 ); /* IE6-9 */
 
-	border-bottom: 1px solid #111;
-	border-top: 1px solid #222;
+	border-bottom: 1px solid #222;
+	border-top: 1px solid #333;
+/* box-shadow: 0px 1px 0px 0px #111; */
 
 	position: relative;
 
@@ -125,12 +138,12 @@ img.icon {
 }
 #folder_content .header a:hover { text-decoration: none; }
 #folder_content .header .left, #folder_content .header .right, #folder_content .header .center {
-	color: #ccc;
- 	text-shadow: rgba(0,0,0,0.5) -1px 0, rgba(0,0,0,0.3) 0 -1px, rgba(255,255,255,0.5) 0 1px, rgba(0,0,0,0.5) -1px -1px;
+	color: #ddd;
+ 	text-shadow: rgba(0,0,0,0.5) -1px 0, rgba(0,0,0,0.3) 0 -1px, rgba(0,0,0,0.5) -1px -1px;
 }
 #folder_content .header a {
-	color: #ccc;
- 	text-shadow: rgba(0,0,0,0.5) -1px 0, rgba(0,0,0,0.3) 0 -1px, rgba(255,255,255,0.5) 0 1px, rgba(0,0,0,0.5) -1px -1px;
+	color: #ddd;
+ 	text-shadow: rgba(0,0,0,0.5) -1px 0, rgba(0,0,0,0.3) 0 -1px, rgba(0,0,0,0.5) -1px -1px;
 }
 #folder_content .header .left {
 	float: left;	
@@ -169,4 +182,88 @@ img.icon {
 }
 #folder_content .header .right .pagina_normal ul li.active a:hover {
 	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.3);
+}
+/* images */
+#folder_content .images {
+	overflow: hidden;
+}
+#folder_content .images .image_container {
+	height: 190px;
+	width: 160px;
+	float: left;
+	display: table;
+	text-align: center;
+}
+#folder_content .images .image_container .image_cell {
+	display: table-cell;
+	vertical-align:middle;
+	position: relative;
+/* border: 1px solid orange; */
+}
+#folder_content .images .image_container .image_cell .image_div {
+	margin: -4px auto;
+	height: auto;
+/* 	border: 1px solid green; */
+	display: none;
+	padding: 2px;
+	border-radius: 3px;
+}
+#folder_content .images .image_container .image_cell .image_div.selected {
+	box-shadow: 0px 0px 0px 2px #ddd;/*#ffd500;*/
+}
+#folder_content .images .image_container .image_cell .image_div .image_text {
+	padding: 5px 2px 2px 2px;
+	color: #ddd;
+	font-size: 8pt;
+	text-align: left;
+	width: auto;
+}
+#folder_content .images .image_container .image_cell .image_div img.img {
+	box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, .5);
+}
+/* ===========================  UPLOAD ======================= */
+#upload_folder_arrow {
+	height: auto;
+	max-height: 775px;
+	overflow: hidden;
+	width: 10px;
+	position: absolute;
+	left: 3px;
+	top: 0px;
+	background: transparent;
+}
+#upload_folder_spacer {
+	display: block;
+	position: relative;
+	background: transparent;
+/* 	padding: 5px 0px 10px 0px; */
+	min-height: 100px;
+}
+#upload_folder_indicator {
+	position: relative;
+	background: red;
+	top: 5px;
+	left: 0px;
+
+	height: 25px;
+	width: 100%;
+	z-index: 20;
+background: url(../../img/services/gallery/layout/upload_arrow.png) top left no-repeat;
+}
+#upload_window {
+	position: absolute;
+	left: 12px;
+	top: 15px;
+	bottom: 15px;
+	right: 15px;
+	background: #f9f9f9;
+	border-radius: 5px;
+	box-shadow: 0px 0px 2px 2px rgba(0,0,0,.5);
+	padding: 10px;
+	z-index: 10;
+}
+#upload_close_button {
+	position: absolute;
+	right: -15px;
+	top: -15px;
 }
