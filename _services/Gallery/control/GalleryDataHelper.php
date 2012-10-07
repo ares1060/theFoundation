@@ -234,7 +234,7 @@
 					i_id = "'.mysql_real_escape_string($id).'" ');
 			
 			if($p != null && $p != array()){
-				return new GalleryImage($p['i_id'], $p['name'], $p['path'], $p['hash'], $p['status'], $p['u_id'], $p['c_date'], $p['size'], $p['s_date']);
+				return new GalleryImage($p['i_id'], $p['name'], $p['path'], $p['hash'], $p['u_id'], $p['c_date'], $p['size'], $p['s_date']);
 			} else return null;
 		}
 		/** 
@@ -339,7 +339,7 @@
 				$hasRights = true;
 				
 				foreach($images as $img){
-					if($this->checkRights('administerImages', $img->getId()) && $hasRights) {
+					if($this->checkRight('administerImages', $img->getId()) && $hasRights) {
 						$count = $this->getFolderCountByImage($img);
 						
 						// if image is just in this folder you can delete file as well
@@ -364,6 +364,119 @@
 // 					$this->_msg($this->_('_Could not delete Folder', 'gallery'), Messages::ERROR);
 					return false;
 				}
+			}
+		}
+
+		/**
+		 * create Image in database
+		 * @param unknown_type $name
+		 * @param unknown_type $path
+		 * @param unknown_type $shot_date
+		 */
+		public function createImage($name, $path, $shot_date){
+			if(is_file($GLOBALS['config']['root'].$path)){
+				return ($this->mysqlInsert('INSERT INTO '.$GLOBALS['db']['db_prefix'].'gallery_image
+											(name, path, hash, u_id, c_date, s_date, size) VALUES
+											("'.$this->sp->ref('TextFunctions')->renderUmlaute(mysql_real_escape_string($name)).'",
+											 "'.mysql_real_escape_string($path).'",
+											 "'.md5_file($GLOBALS['config']['root'].$path).'",
+											 "'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'",
+											 NOW(),
+											 "'.mysql_real_escape_string($shot_date).'",
+											 "'.filesize($GLOBALS['config']['root'].$path).'")'));
+			} else return -1;
+		}
+		
+		/**
+		 * adds Image to given folder
+		 * Image and Folder have to exists in database
+		 * @param unknown_type $image
+		 * @param unknown_type $folder
+		 */
+		public function addImageToFolder($image, $folder) {
+			if(!is_object($folder) || get_class($folder) != 'GalleryFolder') $folder = $this->getFolderById($folder);
+			if(!is_object($image) || get_class($image) != 'GalleryImage') $image = $this->getImageById($image);
+				
+			if($folder != null && $image != null){
+				return $this->mysqlInsert('INSERT INTO '.$GLOBALS['db']['db_prefix'].'gallery_image_folder
+											(i_id, f_id, status) VALUES
+											("'.mysql_real_escape_string($image->getId()).'",
+											 "'.mysql_real_escape_string($folder->getId()).'",
+											 "'.self::STATUS_ONLINE.'");');
+			}
+		}
+		
+		/**
+		 * Uploads Images to Folder
+		 * moves Images to final destination and adds files database
+		 * @param unknown_type $images
+		 * @param unknown_type $folder
+		 */
+		public function uploadImages($images, $folder) {
+			if($folder+0 > -1 && $this->getFolderById($folder) != null){
+				if($images != array()) {
+					$return = array();
+					$success = 0;
+					foreach($images as $img){
+						if($img['size'] <= $this->_setting('upload.max_file_size')){ 										// check size again
+	        				if(preg_match("/\." . $this->_setting('upload.valid_file_types') . "$/i", $img['name'])){	// check types
+	        					if(is_dir($GLOBALS['to_root'].$this->_setting('upload.upload_dir'))){									// check if upload dir exists
+	        									
+	        						$exts = explode('.', strtolower($img['name']));
+	        									
+	        						$newfilepath = $this->_setting('upload.upload_dir').$this->_setting('upload.upload_prefix').str_replace(array('.', ' '), array('', ''), microtime()).'.'.$exts[count($exts)-1];
+	        									
+	        						if(copy($img['tmp_name'], $GLOBALS['to_root'].$newfilepath)){ // moving to final destinition (copy instead of move_uploaded_file)
+	        							unlink($img['tmp_name']);
+	        							
+	        							//exifdata
+	        							$exif = new phpExifReader($GLOBALS['to_root'].$newfilepath);
+	        							//print_r($exif->getImageInfo());
+	        							$exif = $exif->getImageInfo();
+	        										
+	        							$shot_date = (isset($exif['dateTimeDigitized'])) ?  $exif['dateTimeDigitized'] :'';
+	
+	        							$newid = $this->createImage($img['name'], $newfilepath, $shot_date);
+	
+	        							if($newid != -1 && $newid != false) {//save to database	
+	        								$return[] = $newid;
+	        											
+	        								if((isset($_POST['folder']) && $_POST['folder'] == -1) || !isset($_POST['folder'])){ 		// upload to album
+		        								if($this->addImageToFolder($newid, $folder) !== false){
+	
+		        									//TODO: save Image Meta data	
+	// 	        									if(isset($exif['FlashUsed'])) $this->updateMetaDataForImage($newid, $this->config['exif']['flash_id'], $exif['FlashUsed']);
+	// 	        									if(isset($exif['model'])) $this->updateMetaDataForImage($newid, $this->config['exif']['model'], $exif['model']);
+		        												
+		        								//	$this->_msg(str_replace('{@pp:file}', $img['name'], $this->_('UPLOAD_SUCCESS')), Messages::INFO);
+		        									$success++;
+		        								} else {
+		        									$this->deleteImageByPath($newfilepath);
+		        									$this->_msg($this->_('DATABASE_ERROR', 'database'));
+		        								}
+		        								//$this->debugVar($add.'-1');
+	        								} 
+	        							} else {
+	        								unlink($GLOBALS['to_root'].$newfilepath);
+	        								$this->_msg($this->_('DATABASE_ERROR', 'database'), Messages::ERROR);
+	        								array_pop($return);
+	        							}
+	        						} else {
+	        							$this->_msg($this->_('Uploaded file does not exist', 'database'), Messages::ERROR);
+	        						}
+	        					} else $this->_msg($this->_('ERROR_UPLOAD_DIR_NOT_EXISTS'), Messages::RUNTIME_ERROR);
+	        				} else $this->_msg(str_replace('{@pp:file}', $img['name'], $this->_('ERROR_WRONG_FORMAT')), Messages::RUNTIME_ERROR);
+	        			} else $this->_msg(str_replace('{@pp:file}', $img['name'], $this->_('ERROR_MAX_FILE_SIZE')), Messages::RUNTIME_ERROR);
+					}
+					$this->_msg(str_replace('{@pp:count}', $success, $this->_('{@pp:count} files uploaded successfully')), Messages::INFO);
+					return $return;
+				} else {
+					$this->_msg($this->_('_No Files selected', 'gallery'), Messages::ERROR);
+					return null;
+				}
+			} else {
+				$this->_msg($this->_('_Could not upload', 'gallery'), Messages::ERROR);
+				return null;
 			}
 		}
 		

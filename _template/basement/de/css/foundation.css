@@ -30,6 +30,10 @@ span.tf_logo_dark span, span.tf_logo_light span{
 	box-shadow: 0 1px 1px rgba(255,255,255,1);
 	width: 450px;
 }
+.tf_form span.tf_input {
+	padding-top: 5px;
+	display: inline-block;
+}
 .tf_form .uiwidget_checkbox {
 	height: 20px;
 	margin-right: 10px;
@@ -389,6 +393,25 @@ button.button:active {
 button.button.small, input.button.small {
 	padding: 5px 15px 6px 15px;	
 }
+
+/* colors */
+button.button.green {
+    background: none repeat scroll 0 0 #64bb0e;
+    box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, .5) inset;
+	border-color: #aaa;
+	color: white;
+	text-shadow: none;
+}
+button.button.green:hover {
+    background: none repeat scroll 0 0 #95f451;
+    box-shadow: 0 0 1px 1px #b2f781 inset;
+	color: #162804;
+}
+button.button.green:active {
+    background: none repeat scroll 0 0 #78f121;
+    box-shadow: 0 0 1px 1px #b2f781 inset;
+    color: #000000;	
+}
 /* ===== DIALOG ===== */
 #dialog_background {
 	position: fixed;
@@ -444,6 +467,11 @@ button.button.small, input.button.small {
 	diaplay: none;
 }
 /* ===== DROPDOWN ===== */
+.tf_contextmenu {
+	position: relative;
+	z-index: 2001;
+display: block;
+}
 #contextmenu_background {
 	position: fixed;
 	top: 0px;
@@ -453,7 +481,7 @@ button.button.small, input.button.small {
 	display: none;
 	z-index: 2000;
 }
-.tf_dropdown, .tf_contextmenu {
+.tf_dropdown, .tf_contextmenu_content {
 	background-color: white;
     box-shadow: 2px 2px 2px #777777;
     position: absolute;
@@ -468,8 +496,8 @@ button.button.small, input.button.small {
 	display: none;
 	z-index: 2001;
 }
-.tf_dropdown ul, .tf_contextmenu ul { list-style: none; width: 100%;}
-.tf_dropdown ul li.option a, .tf_contextmenu ul li.option a {
+.tf_dropdown ul, .tf_contextmenu_content ul { list-style: none; width: 100%;}
+.tf_dropdown ul li.option a, .tf_contextmenu_content ul li.option a {
 	display: block;
     padding: 8px 44px 8px 16px;
     text-decoration: none;
@@ -477,20 +505,20 @@ button.button.small, input.button.small {
     color: #444 !important;
 	text-shadow: none !important;
 }
-.tf_dropdown ul li.option a:hover, .tf_contextmenu ul li.option a:hover {
+.tf_dropdown ul li.option a:hover, .tf_contextmenu_content ul li.option a:hover {
 	background: #eee;
 	background-color: rgba(119, 137, 165, .25);
 	
 	color: #222;
 	text-decoration: none;	
 }
-.tf_dropdown ul li.seperator, .tf_contextmenu ul li.seperator {
+.tf_dropdown ul li.seperator, .tf_contextmenu_content ul li.seperator {
 	border-top: 1px solid #EBEBEB;
     margin-bottom: 5px;
     margin-top: 5px;	
     height: 1px;
 }
-.tf_dropdown_arrow, .tf_contextmenu.down .tf_contextmenu_arrow  {
+.tf_dropdown_arrow, .tf_contextmenu_content.down .tf_contextmenu_arrow  {
 	position: absolute;
 	top: -11px;
 	height: 11px;
@@ -498,7 +526,7 @@ button.button.small, input.button.small {
 	background: red;	
 	background: url(../img/interface/tf_dropdown_arrow.png) top left no-repeat;
 }
-.tf_contextmenu.up .tf_contextmenu_arrow {
+.tf_contextmenu_content.up .tf_contextmenu_arrow {
 	position: absolute;
 	bottom: -11px;
 	height: 11px;
@@ -528,4 +556,4 @@ button.button.small, input.button.small {
 .tf_password_strength.medium-good { border-bottom: 5px solid #f2f25f;}
 .tf_password_strength.good { border-bottom: 5px solid #c1e35a;}
 .tf_password_strength.verygood { border-bottom: 5px solid #54d454;}
-.tf_password_strength.excellent { border-bottom: 5px solid #54b4d4;}
+.tf_password_strength.excellent { border-bottom: 5px solid #54b4d4;} 

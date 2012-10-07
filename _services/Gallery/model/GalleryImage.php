@@ -9,7 +9,6 @@ class GalleryImage {
 	private $name;
 	private $path;
 	private $hash;
-	private $status;
 	private $uId;
 	private $creationDate;
 	private $shotDate;
@@ -17,7 +16,7 @@ class GalleryImage {
 	
 	private $folders;
 	
-	function GalleryImage($id, $name, $path, $hash, $status, $uId, $creationDate, $size, $shotDate) {
+	function GalleryImage($id, $name, $path, $hash, $uId, $creationDate, $size, $shotDate) {
 		$this->id = $id;
 		$this->name = $name;
 		$this->path = $path;
@@ -83,14 +82,6 @@ class GalleryImage {
 	
 	/**
 	 *
-	 * @return the $status
-	 */
-	public function getStatus() {
-		return $this->status;
-	}
-	
-	/**
-	 *
 	 * @return the $uId
 	 */
 	public function getUId() {
@@ -151,14 +142,6 @@ class GalleryImage {
 	 */
 	public function setHash($hash) {
 		$this->hash = $hash;
-	}
-	
-	/**
-	 *
-	 * @param $status field_type       	
-	 */
-	public function setStatus($status) {
-		$this->status = $status;
 	}
 	
 	/**

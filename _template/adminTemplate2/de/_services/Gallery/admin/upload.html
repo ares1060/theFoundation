@@ -3,17 +3,35 @@
 		<div id="upload_folder_indicator">&nbsp;</div>
 	</div>
 </div>
+<script type="text/javascript">
+	tf_gallery.updateUploadFolderArrow();
+	
+	$("#upload_folder_arrow").scrollTop(0);
+
+	$('#admin_sidemenu_block').scroll(function(){
+		console.log($("#admin_sidemenu_block").scrollTop());
+		$("#upload_folder_arrow").scrollTop($('#admin_sidemenu_block').scrollTop());
+	});
+</script>
 <div id="upload_window">
 	<div id="upload_close_button"><a href="javascript:void(0);" onclick="tfaddress.editPath({unset:['chapter']});" ><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/close_button.png" /></a></div>
 	<h2>Bilder upload</h2>
-	<form class="tf_form">
+	<form class="tf_form" enctype="multipart/form-data" method="post">
+		<input type="hidden" name="action" value="upload" />
+		<p>
+			<label class="tf_label">Album:</label>
+			<span class="tf_input small" id="upload_album">&nbsp;</span>
+			<input type="hidden" name="upload_folder" id="upload_folder_input" value="-1" />
+		</p>
 		<p>
 			<label class="tf_label">Ordner:</label>
-			<span class="input small" id="upload_folder">&nbsp;</span>
+			<span class="tf_input small" id="upload_folder">&nbsp;</span>
 		</p>
-		<p>
-			<label class="tf_label">Bilder:</label>
-		</p>
-		{pp:UIWidgets(widget:Fileupload, name:files[], id:upload, max_file_size:{@pp:max_file_size}, max_uploads:{@pp:max_uploads}, type:{@pp:types})}
+		<span class="gallery_seperator">&nbsp;</span>
+		{pp:UIWidgets(widget:Fileupload, name:files[], id:upload, type:{@pp:types}, max_file_size:{@pp:max_file_size}, max_uploads:{@pp:max_uploads})}
+		<div id="upload_buttons">
+			<button class="button green" type="submit"><span>Upload</span></button>
+			<button class="button" onclick="tfaddress.editPath({unset:['chapter']}); return false;"><span>Abbrechen</span></button>
+		</div>
 	</form>
 </div>

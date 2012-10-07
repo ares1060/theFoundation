@@ -210,15 +210,35 @@ var tf_gallery = {
 		}
 	},
 	/* ================ UPLOAD ====== */
+	upload_folder: undefined,
+	upload_album: undefined,
+	upload_top: undefined,
 	updateUploadFolderArrow: function() {
-		var folder = ($('#menu_folder_'+active_folder).size() == 0) ? $('#menu_subfolder_'+active_folder) : $('#menu_folder_'+active_folder);
-		
-		var top = $('#admin_sidemenu').height()+15;
-		
-		$('#upload_folder_spacer').css('height', top+'px');
+		if($('#menu_folder_'+active_folder).size() == 0) {
+			this.upload_folder =  $('#menu_subfolder_'+active_folder);
+			this.upload_album = this.upload_folder.closest('.menu_album');
+			
+			// update upload panel
+			$('#upload_album').html(this.upload_album.find('.big_link').first().children('.text').text());
+			$('#upload_folder').html(this.upload_folder.find('.big_link').first().children('.text').text());
+			$('#upload_folder_input').val(active_folder);
+		} else {
+			this.upload_folder = $('#menu_folder_'+active_folder);
+			this.upload_album = $('#menu_folder_'+active_folder);
 
-		if(folder.length > 0) {
-			$('#upload_folder_indicator').css('top', folder.children('.link_line').position().top+$('#admin_sidemenu_block').scrollTop());
+			// update upload panel
+			$('#upload_album').html(this.upload_album.find('.big_link').first().children('.text').text());
+			$('#upload_folder').html('kein Unterordner');
+			$('#upload_folder_input').val(active_folder);
+		}		
+		
+		// update upload folder arrow
+		this.upload_top = $('#admin_sidemenu').height()+15;
+		
+		$('#upload_folder_spacer').css('height', this.upload_top+'px');
+
+		if(this.upload_folder.length > 0) {
+			$('#upload_folder_indicator').css('top', this.upload_folder.children('.link_line').position().top+$('#admin_sidemenu_block').scrollTop());
 			$('#admin_sidemenu').trigger('scroll');
 		} else {
 			$('#upload_folder_spacer').css('height', '100px');

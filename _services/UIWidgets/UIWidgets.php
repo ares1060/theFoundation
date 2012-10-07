@@ -124,6 +124,7 @@
 						}
 						break;
 					case 'flash':
+						$this->debugVar('asdf');
 						if(is_dir($this->config['tmpFolder'])){
 							$count=0;
 							if ($handle = opendir($this->config['tmpFolder'])) {
@@ -196,6 +197,7 @@
 				        	if(preg_match("/\." . $types . "$/i", $file)){
 					        	$sv = new SubViewDescriptor('file');
 					        	$sv->addValue('name', $file);
+					        	$sv->addValue('size', $this->sp->ref('TextFunctions')->byte2String(filesize($this->config['ftpFolder'].$file)));
 					        	$tpl->addSubView($sv);
 					        	unset($sv);
 					            $count++;

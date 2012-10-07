@@ -2,6 +2,7 @@
 	require_once 'model/GalleryFolder.php';
 	require_once 'model/GalleryImage.php';
 	require_once 'control/GalleryDataHelper.php';
+	require_once 'control/exifReader.inc';
 	require_once 'view/GalleryAdminView.php';
 	/**
      * Description
@@ -150,7 +151,18 @@
          * handles Post Variables in Admincenter
          */
         public function handleAdminPost(){
-        	
+        	if($_POST != array() && isset($_POST['action'])){
+        		switch($_POST['action'])  {				// upload
+        			case 'upload':
+	        			if($_POST['upload_folder'] != -1){
+	        				$this->dataHelper->uploadImages($this->sp->ref('UIWidgets')->getUploads(), $_POST['upload_folder']);
+	        			}
+	        			break;
+        			default:
+        				$this->_msg($this->_('_Wrong parameters'), Messages::ERROR);
+        				break;
+        		}
+        	}
         }
     }
 ?>

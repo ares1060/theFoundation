@@ -138,6 +138,10 @@
 			
 			$tpl = new ViewDescriptor($this->_setting('tpl.admin/upload'));
 			
+			$tpl->addValue('max_file_size', $this->_setting('upload.max_file_size'));
+			$tpl->addValue('max_uploads', $this->_setting('upload.max_uploads'));
+			$tpl->addValue('types', $this->_setting('upload.valid_file_types'));
+				
 			return $tpl->render();
 		}
 	}

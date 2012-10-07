@@ -2,18 +2,20 @@
 	<div class="header">
 		<div class="left">
 			<span class="gallery_images_menu_entry">
-				<a class="tf_contextmenu_link " href="javascript:void(0);" id="gallery_folder_sort" style="padding: 5px 10px; display: inline-block;">
-					Sortierung: Name <img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/sortUp.png" style="margin-bottom:-4px;"/>
-				</a>
-				<span class="tf_contextmenu down" style="position: absolute; left: 0px; bottom: -150px;">
-					<span class="tf_contextmenu_arrow" style="left: 15px;">&nbsp;</span>
-					<ul>
-						<li class="option"><a href="javascript:void(0);" onclick="setSort('date', active_sortDA);">Datum</a></li>
-						<li class="option"><a href="javascript:void(0);" onclick="setSort('date', active_sortDA);">Name</a></li>
-						<li class="seperator">&nbsp;</li>
-						<li class="option"><a href="javascript:void(0);" onclick="setSort(active_sort, 'asc');">Aufsteigend</a></li>
-						<li class="option"><a href="javascript:void(0);" onclick="setSort(active_sort, 'asc');">Absteigend</a></li>
-					</ul>						
+				<span class="tf_contextmenu">
+					<a class="tf_contextmenu_link " href="javascript:void(0);" id="gallery_folder_sort" style="padding: 4px 10px; display: inline-block;">
+						Sortierung: Name <img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/sortUp.png" style="margin-bottom:-4px;"/>
+					</a>
+					<span class="tf_contextmenu_content down" style="position: absolute; left: 0px; bottom: -150px;">
+						<span class="tf_contextmenu_arrow" style="left: 15px;">&nbsp;</span>
+						<ul>
+							<li class="option"><a href="javascript:void(0);" onclick="setSort('date', active_sortDA);">Datum</a></li>
+							<li class="option"><a href="javascript:void(0);" onclick="setSort('date', active_sortDA);">Name</a></li>
+							<li class="seperator">&nbsp;</li>
+							<li class="option"><a href="javascript:void(0);" onclick="setSort(active_sort, 'asc');">Aufsteigend</a></li>
+							<li class="option"><a href="javascript:void(0);" onclick="setSort(active_sort, 'asc');">Absteigend</a></li>
+						</ul>						
+					</span>
 				</span>
 			</span>
 			<span class="gallery_images_menu_seperator">&nbsp;</span>
@@ -55,5 +57,6 @@
 				</div>
 			</div>			
 		</pp:dynamic>
+		<div class="clearer">&nbsp;</div>
 	</div>
 </div>

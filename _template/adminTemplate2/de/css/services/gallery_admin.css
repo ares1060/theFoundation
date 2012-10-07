@@ -10,25 +10,27 @@
 	background: #333;
 	
 /* 	border: 1px solid black;	 */
-	max-height: 800px;
+	height: 797px;
 	
 	box-shadow: 0px 0px 50px 50px rgba(0,0,0,.1) inset, 0px 0px 2px 2px rgba(0,0,0,.6) inset;
+
+	overflow: hidden;
 }
 #admin_sidemenu_block{
 	float: left;
 	height: auto;
-	max-height: 775px;
-	min-height: 400px;
+	height: 775px;
+/* 	min-height: 400px; */
 
 	width: 250px;
 	overflow-y: auto;
 	overflow-x: auto;
-	margin-bottom: 25px;
+/* 	margin-bottom: 25px; */
 	position: relative;
 	z-index: 1000;
 }
 #admin_sidemenu {
-	padding: 5px 0px 10px 0px;
+	padding: 0px 0px 10px 0px;
 }
 #admin_sidemenu .more_spacer {
 	display: inline-block;
@@ -114,10 +116,44 @@ img.icon {
 	margin-bottom: -3px;
 	margin-right: 3px;
 }
+/* ---- sidebar top-menu ---- */
+#admin_sidememu_actions {
+	position: relative;
+/* 	margin-bottom: 5px; */
+
+/* 	left: 0px; */
+/* 	top: 0px; */
+	height: 22px;
+	width: 250px;
+	padding-bottom: 1px;
+/* 	background: url(../../img/services/gallery/layout/bottom_menu_background.png) repeat-x; */
+/* 	border-top: 1px solid #bbb; */
+/* 	box-shadow: 1px 0px 2px 2px rgba(0,0,0,.1); */
+/* 	background-image: -moz-linear-gradient(center top , #fcfcfc 0px, #b1b1b1 100%); */
+	background: #dfdfdf;
+    border-bottom: 1px solid #ccc;
+    border-radius: 3px 0 0 0;
+    box-shadow: 20px 10px 10px 10px rgba(255, 255, 255, 0.5) inset, 1px 0px 2px 2px rgba(0,0,0,.06);
+	border-right: 1px solid #bbb;
+}
+#admin_sidememu_actions .left { float: left; }
+#admin_sidememu_actions .right { float: right; }
+#admin_sidememu_actions ul { list-style: none;}
+#admin_sidememu_actions ul li { float: left; position: relative;}
+#admin_sidememu_actions ul li.sort {
+	padding: 4px 0px 3px 7px;
+	color: #444;
+}
+#admin_sidememu_actions ul li.seperator {
+	background: none repeat scroll 0 0 #fafafa;
+    border-right: 1px solid #ccc;
+    width: 1px;
+ 	height: 23px;
+}
 /* ---- folder ---- */
 #folder_content .header {
 	display: block;
-	height: 25px;
+	height: 22px;
 
 	background: #434343; /* Old browsers */
 	background: -moz-linear-gradient(top,  #434343 0%, #363636 100%); /* FF3.6+ */
@@ -163,12 +199,12 @@ img.icon {
 	width: 1px;
 	background: #555;
 	border-right: 1px solid #111;
-	height: 24px;
+	height: 22px;
 	display: inline-block;
 }
 #folder_content .header .right .pagina_normal ul {list-style: none; }
 #folder_content .header .right .pagina_normal ul li {float: right;}
-#folder_content .header .right .pagina_normal ul li a, #folder_content .header .right .pagina_normal ul li span {display: block; padding: 6px 10px; }
+#folder_content .header .right .pagina_normal ul li a, #folder_content .header .right .pagina_normal ul li span {display: block; padding: 4px 10px; }
 #folder_content .header .right .pagina_normal ul li span { border-right: 1px solid #555;}
 #folder_content .header .right .pagina_normal ul li a { border-left: 1px solid #111; border-right: 1px solid #555;}
 #folder_content .header .right .pagina_normal ul li a:hover {
@@ -185,7 +221,8 @@ img.icon {
 }
 /* images */
 #folder_content .images {
-	overflow: hidden;
+	overflow: auto;
+	height: 775px;
 }
 #folder_content .images .image_container {
 	height: 190px;
@@ -231,6 +268,7 @@ img.icon {
 	left: 3px;
 	top: 0px;
 	background: transparent;
+/* 	margin-top: 22px; */
 }
 #upload_folder_spacer {
 	display: block;
@@ -238,6 +276,7 @@ img.icon {
 	background: transparent;
 /* 	padding: 5px 0px 10px 0px; */
 	min-height: 100px;
+	padding-top: 22px;
 }
 #upload_folder_indicator {
 	position: relative;
@@ -266,4 +305,68 @@ background: url(../../img/services/gallery/layout/upload_arrow.png) top left no-
 	position: absolute;
 	right: -15px;
 	top: -15px;
+}
+#upload_window .gallery_seperator {
+	width: 100%;
+	display: block;
+	border-bottom: 1px solid #ddd;
+	height: 1px;
+	overflow: hidden;
+}
+/* upload type */
+#upload_window #upload_form_dyn #switch_upload {
+	display: block;
+	overflow: hidden;
+	border-bottom: 1px solid #ddd;
+}
+#upload_window #upload_form_dyn #switch_upload ul{ list-type: none; }
+#upload_window #upload_form_dyn #switch_upload ul li { 
+	float: left;
+	display: block;
+	position: relative;
+	z-index: 100;
+}
+#upload_window #upload_form_dyn #switch_upload ul li a {
+	padding: 15px 10px 15px 10px;
+	display: block;
+	color: #444;
+	background: none;
+}
+#upload_window #upload_form_dyn #switch_upload ul li a.selected, #upload_window #upload_form_dyn #switch_upload ul li a:hover {
+	background: url(../../../../basement/de/img/interface/tf_dropdown_arrow.png) top left no-repeat;
+	background-position: bottom center;
+	color: #444;
+}
+#upload_window #upload_form_dyn .tab {
+	margin-top: -2px;
+	background-color: white;
+    box-shadow: 2px 2px 2px #777777;
+    width: auto;
+    border: 1px solid #CCCCCC !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) !important;
+    padding: 0 0 6px;
+    white-space: nowrap;
+    font-family: 'Helvetica Neue', Helvetica;
+    font-weight: normal;
+    font-size: 14px;
+	border-radius: 3px;
+	padding: 5px;
+	display: none;
+	overflow: hidden;
+}
+#upload_form_ftp_files {
+	height: 160px !important;
+}
+#upload_form_flash_wrapper {
+	top: 1px;
+	position: relative;
+	display: block;
+	margin: 0px !Important;
+}
+#upload_form_ftp_files {
+	border-radius: 0px 0px 4px 4px;
+}
+#upload_buttons {
+	margin-top: 10px;
+	float: right;
 }

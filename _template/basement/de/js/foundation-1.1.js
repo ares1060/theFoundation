@@ -73,7 +73,7 @@ var tf = {
 					}
 
 				} catch (e) {
-					console.log(e);
+//					console.log(e);
 				}
 			}
 		});
@@ -351,14 +351,21 @@ var tfaddress = {
  */
 var tfcontextmenu = {
 	contextmenucount: 0,
-	active_contextmenu: null,
-	showMenu: function(item) {
+	active_contextmenu: undefined,
+	showMenu: function(item, mouseover) {
+		if(this.active_contextmenu != undefined) this.hideActive();
 		$(item).show();
 		$('#contextmenu_background').show();
 		this.active_contextmenu = item;
-		$('#contextmenu_background').click(function() {
-			tfcontextmenu.hideActive();
-		});
+		if(mouseover) {
+			$('#contextmenu_background').mouseover(function() {
+				tfcontextmenu.hideActive();
+			});
+		} else {
+			$('#contextmenu_background').click(function() {
+				tfcontextmenu.hideActive();
+			});
+		}
 		
 		tf.registerKeyDown(27, function() { tfcontextmenu.hideActive(); }, 'tf_context_menu');
 	},
@@ -367,12 +374,16 @@ var tfcontextmenu = {
 		tfcontextmenu.update();
 	},
 	update: function () {
-		$('.tf_contextmenu_link').each(function () {
-			if(!$(this).parent().children('.tf_contextmenu').hasClass('generatedContextMenu')) {
+		$('.tf_contextmenu').each(function () {
+			if(!$(this).hasClass('generatedContextMenu')) {
 				tfcontextmenu.contextmenucount++;
-				$(this).parent().children('.tf_contextmenu').attr('id', 'tf_contextmenu_'+tfcontextmenu.contextmenucount);
-				$(this).parent().children('.tf_contextmenu').addClass('generatedContextMenu');
-				$(this).click(function() { tfcontextmenu.showMenu($(this).parent().children('.tf_contextmenu')); });
+				
+				$(this).attr('id', 'tf_contextmenu_'+tfcontextmenu.contextmenucount);
+				$(this).addClass('generatedContextMenu');
+				
+				if($(this).hasClass('mouseover')) {
+					$(this).mouseover(function() { tfcontextmenu.showMenu($(this).children('.tf_contextmenu_content'), true); });
+				} else $(this).click(function() { tfcontextmenu.showMenu($(this).children('.tf_contextmenu_content'), false); });
 				//console.log($(this).parent().children('.tf_contextmenu').attr('id'));
 			}
 		});
@@ -381,6 +392,7 @@ var tfcontextmenu = {
 		tf.removeKeyDown(27, 'tf_context_menu');
 		$(this.active_contextmenu).hide();
 		$('#contextmenu_background').hide();
+		this.active_contextmenu = undefined;
 		//$(document).unbind('keydown');
 	}
 }

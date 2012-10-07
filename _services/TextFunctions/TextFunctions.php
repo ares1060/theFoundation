@@ -611,5 +611,25 @@
 	        
 	        return implode('', $tmp);
 		}
+		
+		public function byte2String($byte){
+			if($byte < 1024) {
+				$ergebnis = round($byte, 2). ' B';
+			}elseif($byte < pow(1024, 2)) {
+				$ergebnis = round($byte/1024, 2).' KB';
+			}elseif($byte < pow(1024, 3)) {
+				$ergebnis = round($byte/pow(1024, 2), 2).' MB';
+			}elseif($byte < pow(1024, 4)) {
+				$ergebnis = round($byte/pow(1024, 3), 2).' GB';
+			}elseif($byte < pow(1024, 5)) {
+				$ergebnis = round($byte/pow(1024, 4), 2).' TB';
+			}elseif($byte < pow(1024, 6)) {
+				$ergebnis = round($byte/pow(1024, 5), 2).' PB';
+			}elseif($byte < pow(1024, 7)) {
+				$ergebnis = round($byte/pow(1024, 6), 2).' EB';
+			}
+			
+			return $ergebnis;
+		}
     }
 ?>
