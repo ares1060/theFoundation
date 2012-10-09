@@ -182,9 +182,11 @@ var tf = {
 		}
 	},
 	triggerKeyDown: function(keycode) {
-		if(this.keydown['a'+keycode] != undefined) {
-			while( this.tmp == undefined) this.tmp = this.keydown['a'+keycode].pop();
-			if(typeof this.tmp.listener == 'function') {
+		if(this.keydown['a'+keycode] != undefined && this.keydown['a'+keycode] != []) {
+			while( this.tmp == undefined && this.keydown['a'+keycode].length > 0) {
+				this.tmp = this.keydown['a'+keycode].pop();
+			}
+			if(this.tmp != undefined && typeof this.tmp.listener == 'function') {
 				this.tmp.listener();
 			}
 			this.tmp = undefined;

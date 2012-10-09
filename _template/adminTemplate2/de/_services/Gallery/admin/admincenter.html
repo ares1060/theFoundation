@@ -167,6 +167,10 @@
 
 				loadSettings();
 				
+			} else if(active_chapter == 'image') {
+				
+				loadImage();
+				
 			}
 		}
 		/* ---------------  Folder --------------*/
@@ -297,6 +301,25 @@
 				});
 			}
 		}
+		/* ---------------  image --------------*/
+		function loadImage() {
+			tf.showAdminLoading();
+			tf.getService({
+				service: 'Gallery', 
+				method: 'admin', 
+				args: { 
+					chapter:'image',
+					folder: active_folder,
+					id: active_image
+				}, 
+				handle: function (msg) {
+					tf.hideAdminLoading();
+					$('#admin_image_block').html(msg);
+					tfcontextmenu.update();
+			}
+			});
+		}
+		
 		/* ---------------  settings --------------*/
 		function loadSettings() {
 			$('#chapter_settings').addClass('selected');

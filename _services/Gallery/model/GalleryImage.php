@@ -27,8 +27,12 @@ class GalleryImage {
 		$this->size = $size;
 	}
 	
-	function addToFolder($folderId) {
+	public function addFolderId($folderId) {
 		$this->folders [] = $folderId;
+	}
+	
+	public function isInFolder($folderId) {
+		return in_array($folderId, $this->getFolders());
 	}
 	
 	// Getter + Setter

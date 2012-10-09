@@ -76,7 +76,7 @@
 				
 				foreach($images as $i){
 					$t = new SubViewDescriptor('image');
-					$t->addValue('name', $i->getName());
+					$t->addValue('name', $this->sp->ref('TextFunctions')->cropText($i->getName(), 18));
 					$t->addValue('id', $i->getId());
 					$t->addValue('path', $i->getPath());
 					
@@ -130,6 +130,27 @@
 				$this->depth --;
 				
 				return $return;
+			}
+		}
+		
+		public function tplImage($id, $folder){
+			$image = $this->dataHelper->getImageById($id, true); // get image object with all Folders
+			$folder = $this->dataHelper->getFolderById($folder);
+
+			if($image != null && $folder != null && $image->isInFolder($folder->getId()) && $folder->getUserId() == $this->sp->ref('User')->getViewingUser()->getId()) {
+				
+				$tpl = new ViewDescriptor($this->_setting('tpl.admin/view_image'));
+				
+				$tpl->addValue('name', $image->getName());
+				$tpl->addValue('id', $image->getId());
+				$tpl->addValue('path', $image->getPath());
+				
+				
+				return $tpl->render();
+				
+			} else {
+				$this->_msg($this->_('You are not authorized', 'rights'), Messages::ERROR);
+        		return '';
 			}
 		}
 		

@@ -248,6 +248,22 @@ img.icon {
 #folder_content .images .image_container .image_cell .image_div.selected {
 	box-shadow: 0px 0px 0px 2px #ddd;/*#ffd500;*/
 }
+#folder_content .images .image_container .image_cell .image_div img {
+	position: relative;
+	z-index: 100;
+}
+#folder_content .images .image_container .image_cell .image_div .image_actions {
+	width: auto;
+	color: white;
+	height: 30px;
+	margin-bottom: -36px;
+	position: relative;
+	z-index: 105;
+	text-align: right;
+	padding: 3px;
+	background: url(../../img/services/gallery/layout/image_actions_background.png) top left repeat-x;
+	display: none;
+}
 #folder_content .images .image_container .image_cell .image_div .image_text {
 	padding: 5px 2px 2px 2px;
 	color: #ddd;

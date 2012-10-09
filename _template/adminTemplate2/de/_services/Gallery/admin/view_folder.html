@@ -40,6 +40,10 @@
 				<div class="image_cell">
 					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/gallery_load.gif" id="imageLoad_{@pp:id}"/>
 					<div class="image_div" id="imageDiv_{@pp:id}">
+						<div class="image_actions" id="image_actions_{@pp:id}">
+							<a href="javascript:tf_gallery.deleteImage({@pp:id});" style="position: absolute; top: 3px; left: 3px;"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/delete_image.png" /></a>
+							<a href="javascript:tfaddress.editPath({set:{'chapter':'image', 'image':'{@pp:id}'}});;"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/fullscreen.png" /></a>
+						</div>
 						<img src="{@pp:root}_core/getImage.php?path={@pp:path}&height=140&width=140" class="img"  id="imageImg_{@pp:id}"/>
 						<div class="image_text">
 							{@pp:name}
@@ -51,6 +55,8 @@
 								$('#imageDiv_{@pp:id}').width(this.width);
 								$('#imageDiv_{@pp:id}').delay(20).fadeIn();
 								$(this).click(function() { tf_gallery.selectImg({@pp:id}); });
+								$(this).parent().mouseover(function() { $('#image_actions_{@pp:id}').show(); });
+								$(this).parent().mouseout(function() { $('#image_actions_{@pp:id}').hide(); });
 							});
 						</script>
 					</div>

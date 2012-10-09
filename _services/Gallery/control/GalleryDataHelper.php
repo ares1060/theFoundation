@@ -66,6 +66,29 @@
 		}
 		
 		/**
+		 * returnes array of folder ids given image is linked to
+		 * @param GalleryImage or int $image - could handle ImageObject or image id
+		 * @param unknown_type $justIds
+		 */
+		public function getFolderIdsByImage($image, $justIds=true) {
+			if(!is_object($image) || get_class($image) != 'GalleryImage') $image = $this->getFolderById($image);
+			
+			if($image != null) {
+				$p = $this->mysqlArray('SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'gallery_image_folder` WHERE i_id="'.mysql_real_escape_string($image->getId()).'"');
+				
+				$return = array();
+				
+				if($p != '') {
+					foreach($p as $folder){
+						$return[] = $folder['f_id']; 
+					}
+				} 
+				
+				return $return;
+			}
+		}
+		
+		/**
 		 * returnes folder by id
 		 * @param unknown_type $id
 		 * @return NULL
@@ -228,13 +251,21 @@
 		 * returnes image by id
 		 * @param unknown_type $id
 		 */
-		public function getImageById($id){
+		public function getImageById($id, $withFolders = false){
 			
 			$p = $this->mysqlRow('SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'gallery_image` WHERE
 					i_id = "'.mysql_real_escape_string($id).'" ');
 			
 			if($p != null && $p != array()){
-				return new GalleryImage($p['i_id'], $p['name'], $p['path'], $p['hash'], $p['u_id'], $p['c_date'], $p['size'], $p['s_date']);
+				$tmp = new GalleryImage($p['i_id'], $p['name'], $p['path'], $p['hash'], $p['u_id'], $p['c_date'], $p['size'], $p['s_date']);
+				
+				if($withFolders){
+					foreach($this->getFolderIdsByImage($tmp) as $folderId){
+						$tmp->addFolderId($folderId);
+					}
+				}
+				
+				return $tmp;
 			} else return null;
 		}
 		/** 
@@ -375,13 +406,14 @@
 		 */
 		public function createImage($name, $path, $shot_date){
 			if(is_file($GLOBALS['config']['root'].$path)){
+				$this->debugVar($shot_date);
 				return ($this->mysqlInsert('INSERT INTO '.$GLOBALS['db']['db_prefix'].'gallery_image
 											(name, path, hash, u_id, c_date, s_date, size) VALUES
 											("'.$this->sp->ref('TextFunctions')->renderUmlaute(mysql_real_escape_string($name)).'",
 											 "'.mysql_real_escape_string($path).'",
 											 "'.md5_file($GLOBALS['config']['root'].$path).'",
 											 "'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'",
-											 NOW(),
+											 "'.microtime().'",
 											 "'.mysql_real_escape_string($shot_date).'",
 											 "'.filesize($GLOBALS['config']['root'].$path).'")'));
 			} else return -1;

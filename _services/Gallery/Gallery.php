@@ -65,6 +65,11 @@
         		case 'settings':
         			return $this->tplSettings();
         			break;
+        		case 'image':
+        			if(isset($args['folder']) && $args['folder'] != ''){
+        				return $this->adminView->tplImage($id, $args['folder']);
+        			} else return false;
+        			break;
            		default:
            			switch($action) {
            				case 'upload':
