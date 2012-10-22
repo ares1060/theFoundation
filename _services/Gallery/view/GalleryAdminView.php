@@ -72,7 +72,7 @@
 				$tpl->addValue('pagina_active', ($page == -1) ? 1 : $page);
 				$tpl->addValue('count', $count);
 				
-				$images = $this->dataHelper->getImagesByFolder($id, $final_page, array(GalleryDataHelper::STATUS_HIDDEN, GalleryDataHelper::STATUS_ONLINE));
+				$images = $this->dataHelper->getImagesByFolder($id, $final_page, $this->_setting('admin.per_page.images'), array(GalleryDataHelper::STATUS_HIDDEN, GalleryDataHelper::STATUS_ONLINE));
 				
 				foreach($images as $i){
 					$t = new SubViewDescriptor('image');

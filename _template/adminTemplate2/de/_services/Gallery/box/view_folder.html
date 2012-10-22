@@ -1,0 +1,52 @@
+<div class="gallery_box_folder">
+	<div class="gallery_box_folder_header">
+		<div class="left">
+			<ul class="links">
+				<li><a href="javascript:void(0);">Upload</a>
+			</ul>
+		</div>
+		<div class="right">
+			{pp:Pagina("count":"{@pp:pagina_count}", "active":"{@pp:pagina_active}", "url":"JavaScript:tfaddress.editPath({set:{'page':'{page}'}});", "template":"pagina_normal")}
+		</div>
+		<div class="center">
+			{@pp:count} Bilder
+		</div>
+	</div>
+	<div class="gallery_box_folder_content">
+		<div class="images">
+		<pp:dynamic name="image">
+			<div class="image_container">
+				<div class="image_cell">
+					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/gallery_load.gif" id="imageLoad_{@pp:id}"/>
+					<div class="image_div" id="imageDiv_{@pp:id}">
+						<div class="image_actions" id="image_actions_{@pp:id}">
+							<a href="javascript:tf_gallery.deleteImage({@pp:id});" style="position: absolute; top: 3px; left: 3px;"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/delete_image.png" /></a>
+						</div>
+						<img src="{@pp:root}_core/getImage.php?path={@pp:path}&height=70&width=70" class="img"  id="imageImg_{@pp:id}"/>
+						<div class="image_text">
+							{@pp:name}
+						</div>
+						<script type="text/javascript">
+							$('#imageImg_{@pp:id}').load(function() {
+								console.log(this.width);
+								$('#imageLoad_{@pp:id}').fadeOut(20);
+								$('#imageDiv_{@pp:id}').width(this.width);
+								$('#imageDiv_{@pp:id}').delay(20).fadeIn();
+								$(this).click(function() { tf_gallery.selectImg({@pp:id}); });
+								$(this).parent().mouseover(function() { $('#image_actions_{@pp:id}').show(); });
+								$(this).parent().mouseout(function() { $('#image_actions_{@pp:id}').hide(); });
+							});
+						</script>
+					</div>
+				</div>
+			</div>			
+		</pp:dynamic>
+		</div>
+	</div>
+	<div class="gallery_box_folder_actions">
+		<ul class="links">
+			<li><a href="javascript:void(0);">Bild(er) verwenden</a></li>
+		</ul>
+	</div>
+</div>
+

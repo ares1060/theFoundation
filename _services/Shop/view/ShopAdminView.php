@@ -1,5 +1,6 @@
 <?php
-	class ShopAdminView extends TFCoreFunctions{
+
+class ShopAdminView extends TFCoreFunctions{
 		protected $name;
 		
 		private $dataHelper;

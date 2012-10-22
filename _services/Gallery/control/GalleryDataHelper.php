@@ -104,6 +104,27 @@
 		}
 		
 		/**
+		 * returnes sub Folder of album by given name
+		 * if more than one folders have the same name the first one will be returned
+		 * @param unknown_type $album
+		 * @param unknown_type $subfolder_name
+		 */
+		public function getSubFolderByName($album, $subfolder_name){
+			if(!is_object($album) || get_class($album) != 'GalleryFolder') $album = $this->getFolderById($album);
+			
+			if($album != null){
+				$p = $this->mysqlRow('SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'gallery_folder` 
+												WHERE `parent`="'.mysql_real_escape_string($album->getId()).'" 
+												AND `name`="'.mysql_real_escape_string($subfolder_name).'"
+												AND `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"');
+				
+				if($p != '') {
+					return new GalleryFolder($p['f_id'], $p['parent'], $p['u_id'], $p['name'], $p['c_date'], $p['root'], $p['status']);
+				} else return null;
+			} else return null;
+		}
+		
+		/**
 		 * creates Album
 		 * @param unknown_type $name
 		 * @param unknown_type $status
@@ -274,7 +295,7 @@
 		 * @param unknown_type $page
 		 * @param unknown_type $status
 		 */
-		public function getImagesByFolder($folder, $page=-1, $status=array()){
+		public function getImagesByFolder($folder, $page=-1, $per_page, $status=array()){
 			if(!is_object($folder) || get_class($folder) != 'GalleryFolder') $folder = $this->getFolderById($folder);
 			
 			if($folder != null) {
@@ -282,7 +303,7 @@
 				$count = $this->getImageCountByFolder($folder, $status);
 				
 				// create limit string
-				$per_page = $this->_setting('admin.per_page.images');
+// 				$per_page = $this->_setting('admin.per_page.images');
 				$limit = ($page == -1) ? '' : ' LIMIT '.(mysql_real_escape_string($page-1)*mysql_real_escape_string($per_page)).', '.mysql_real_escape_string($per_page).';';
 				// create user, status and category string
 				$user = 'AND `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"';

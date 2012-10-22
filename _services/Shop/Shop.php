@@ -1,4 +1,4 @@
-<?php
+<?php	
 	require_once 'model/ShopDataHelper.php';
 	require_once 'model/ShopProduct.php';
 	require_once 'model/ShopCart.php';
@@ -193,10 +193,11 @@
         					}
         					break;
         				case 'wysiwyg_image':
-        					return $this->sp->ref('Gallery')->addOnWysiwygFolder($this->_setting('gallery_album_id', 'main'), 'wysiwyg', $page, -1, -1, Gallery::ADDON_VIEW_MATRIX, $reloadFunction, $useFunction);
+        					return $this->sp->ref('Gallery')->addOnWysiwygFolder($this->_setting('gallery_album_id', 'main'), 'wysiwyg', $page, -1, -1, Gallery::BOX_VIEW_MATRIX, $reloadFunction, $useFunction);
         					break;
         				case 'loadProductImages':
-        					return $this->sp->ref('Gallery')->addOnFolder($this->_setting('gallery_album_id', 'main'), 'product_'.$id, $page, $click, -1, -1, Gallery::ADDON_VIEW_MATRIX, $reloadFunction, $useFunction);
+        					return $this->sp->ref('Gallery')->getBoxFolderTpl($this->_setting('gallery_album_id', 'main'), 'product_'.$id, $page, Gallery::BOX_VIEW_MATRIX, $reloadFunction, $useFunction);
+//         					return $this->sp->ref('Gallery')->getBoxFolderTpl($this->_setting('gallery_album_id', 'main'), 'product_'.$id, $page, $click, -1, -1, Gallery::BOX_VIEW_MATRIX, $reloadFunction, $useFunction);
         					break;
         				case 'loadProductImagesUpload':
         					$folder = ($id == 'new') ? 'new' : 'product_'.$id;

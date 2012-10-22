@@ -4,6 +4,7 @@
 	require_once 'control/GalleryDataHelper.php';
 	require_once 'control/exifReader.inc';
 	require_once 'view/GalleryAdminView.php';
+	require_once 'view/GalleryBoxView.php';
 	/**
      * Description
      * @author MisterE
@@ -19,11 +20,13 @@
          * protected $config;
          * protected $config_file;
          */
+    	const BOX_VIEW_MATRIX = 1;
     	
     	private $dataHelper;
     	private $frontView;
     	private $adminView;
-         
+        private $boxView;
+    	
         function __construct(){
         	$this->name = 'Gallery';
         	$this->ini_file = $GLOBALS['to_root'].'_services/Gallery/Gallery.ini';
@@ -31,6 +34,7 @@
            // if(isset($this->config['loc_file'])) $this->sp->run('Localization', array('load'=>$this->config['loc_file'])); -> will be executed by Service::__construct()
            $this->dataHelper = new GalleryDataHelper($this->settings);
            $this->adminView = new GalleryAdminView($this->settings, $this->dataHelper);
+           $this->boxView = new GalleryBoxView($this->settings, $this->dataHelper);
         }
         /**
          * 
@@ -168,6 +172,14 @@
         				break;
         		}
         	}
+        }
+        
+        public function getImage($id) {
+        	return $this->dataHelper->getImageById($id);
+        }
+        
+        public function getBoxFolderTpl($album, $subalbum_name, $page, $style=self::BOX_VIEW_MATRIX, $reloadFunctionName='', $useFunctionName=''){
+        	return $this->boxView->tplBox($album, $subalbum_name, $page, $style, $reloadFunctionName, $useFunctionName);
         }
     }
 ?>
