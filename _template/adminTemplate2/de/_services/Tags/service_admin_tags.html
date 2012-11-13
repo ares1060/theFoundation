@@ -17,6 +17,19 @@
 
 	function saveTags_{@pp:service}(){
 		showAdminLoadingDiv();
+		tf.getService({
+			service: '{@pp:service}',
+			method: 'admin', 
+			args: {
+				action: 'saveTags',
+				service:'{@pp:service}',
+				id: {@pp:param},
+				tag: $('#tags_'+service).val()
+			},
+			handle: function (msg) {					
+				hideAdminLoadingDiv();
+			}
+		});
 		getService('{@pp:service}', 'admin', 'args[action]=saveTags&args[service]={@pp:service}&args[id]={@pp:param}&args[tags]='+$('#tags_'+service).val(), 
 				function (msg) {
 					hideAdminLoadingDiv();
@@ -24,20 +37,48 @@
 	}
 
 	function addTag_{@pp:service}(tag) {
-		$('#tags_saved_text').show().html('<img src="{@pp:abs_root}{@pp:tpl_folder}/img/loading.gif"  style="margin: -2px;" />');
-		getService('{@pp:service}', 'admin', 'args[action]=saveTag&args[service]={@pp:service}&args[id]={@pp:param}&args[tag]='+tag, 
-				function (msg) {
-					$('#tags_saved_text').html('gespeichert');
-					$('#tags_saved_text').delay(1000).fadeOut(200);
-				});
+		$('#tags_saved_text').show().html('<img src="{@pp:abs_root}{@pp:tpl_root_folder}/img/loading.gif"  style="margin: -2px;" />');
+		tf.getService({
+			service: '{@pp:service}',
+			method: 'admin', 
+			args: {
+				action: 'saveTag',
+				service:'{@pp:service}',
+				id: {@pp:param},
+				tag: tag
+			},
+			handle: function (msg) {
+				$('#tags_saved_text').html('gespeichert');
+				$('#tags_saved_text').delay(1000).fadeOut(200);
+			}
+		});
+// 		getService('{@pp:service}', 'admin', 'args[action]=saveTag&args[service]={@pp:service}&args[id]={@pp:param}&args[tag]='+tag, 
+// 				function (msg) {
+// 					$('#tags_saved_text').html('gespeichert');
+// 					$('#tags_saved_text').delay(1000).fadeOut(200);
+// 				});
 	}
 
 	function removeTag_{@pp:service}(tag) {
 		$('#tags_saved_text').show().html('<img src="{@pp:abs_root}{@pp:tpl_folder}/img/loading.gif"  style="margin: -2px;"/>');
-		getService('{@pp:service}', 'admin', 'args[action]=deleteTag&args[service]={@pp:service}&args[id]={@pp:param}&args[tag]='+tag, 
-				function (msg) {
-					$('#tags_saved_text').html('gespeichert');
-					$('#tags_saved_text').delay(1000).fadeOut(200);
-				});
+		tf.getService({
+			service: '{@pp:service}',
+			method: 'admin', 
+			args: {
+				action: 'deleteTag',
+				service:'{@pp:service}',
+				id: {@pp:param},
+				tag: tag
+			},
+			handle: function (msg) {
+				$('#tags_saved_text').html('gespeichert');
+				$('#tags_saved_text').delay(1000).fadeOut(200);
+			}
+		});
+// 		getService('{@pp:service}', 'admin', 'args[action]=deleteTag&args[service]={@pp:service}&args[id]={@pp:param}&args[tag]='+tag, 
+// 				function (msg) {
+// 					$('#tags_saved_text').html('gespeichert');
+// 					$('#tags_saved_text').delay(1000).fadeOut(200);
+// 				});
 	}
 </script>

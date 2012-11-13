@@ -86,118 +86,118 @@
 	height: 300px;
 }
 /* edit gallery images*/
-#switch_upload #admin_top_hr {display: none !Important;}
-#switch_upload #admin_top_hr_d {margin: 0px 0px 0px 0px !important; }
-#switch_upload ul{
-	overflow: hidden;
-	display: block;
-	height: 25px;
-	margin-top: -5px;
-	list-style: none;
-}
-#upload_form_dyn .tab {
-	margin: 10px 5px -10px 5px;	
-}
-#switch_upload ul li{
-	float: left;
-	font-size: 12px;
-}
-#switch_upload ul li a{
-	padding: 7px 10px 4px 10px;
-    position: relative;
-    z-index: 10;
-    margin-bottom: -1px;
-    margin-top: 0px;
-    height: 25px;
-    display: inline-block;
-}
-#switch_upload ul li a.selected{
-	color: #eee;
-	background-color: #222;
-	background-image: -moz-linear-gradient(top,#444 0,#222 100%);
-	background-image: -ms-linear-gradient(top,#444 0,#222 100%);
-	background-image: -o-linear-gradient(top,#444 0,#222 100%);
-	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#444),color-stop(100%,#222));
-	background-image: -webkit-linear-gradient(top,#444 0,#222 100%);
-	background-image: linear-gradient(to bottom,#444 0,#222 100%);
-}
-#upload_form_ftp_files {
-	margin: 5px -5px -5px -5px;
-	padding: 3px 5px 3px 5px;
-	border-top: 1px solid #aaaaaa;	
-	height: 70px;
-	overflow-y: scroll;
-}
-#uiwidget_ftp_upload_no_files {
-	display: block;
-	width: 100%;
-	color: #aaaaaa;
-	text-align: center;
-	margin-top: 25px;
-	font-size: 14px;
-}
-#upload_form_flash_wrapper {
-	position:relative; 
-	min-height:30px;
-	height:auto; 
-	overflow:hidden;
-	margin:-5px;
-}
-#upload_form_flash_button {
-	position:absolute; 
-	top:0; 
-	left:5px; 
-	width:100px; 
-	z-index:99; 
-	text-align:center;
-	border: 1px solid #aaa;
-	padding: 5px;
-	display: block;
-	border-radius: 3px;
-	background-color: #f6f6f6;
-	background-image: -moz-linear-gradient(top,#fff 0,#e0e0e0 100%);
-	background-image: -ms-linear-gradient(top,#fff 0,#e0e0e0 100%);
-	background-image: -o-linear-gradient(top,#fff 0,#e0e0e0 100%);
-	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(100%,#e0e0e0));
-	background-image: -webkit-linear-gradient(top,#fff 0,#e0e0e0 100%);
-	background-image: linear-gradient(to bottom,#fff 0,#e0e0e0 100%);
-	box-shadow: 4px 4px 4px rgba(255,255,255,.4) inset, 1px 1px 1px 0px rgba(0,0,0,.1);	
+/* #switch_upload #admin_top_hr {display: none !Important;} */
+/* #switch_upload #admin_top_hr_d {margin: 0px 0px 0px 0px !important; } */
+/* #switch_upload ul{ */
+/* 	overflow: hidden; */
+/* 	display: block; */
+/* 	height: 25px; */
+/* 	margin-top: -5px; */
+/* 	list-style: none; */
+/* } */
+/* #upload_form_dyn .tab { */
+/* 	margin: 10px 5px -10px 5px;	 */
+/* } */
+/* #switch_upload ul li{ */
+/* 	float: left; */
+/* 	font-size: 12px; */
+/* } */
+/* #switch_upload ul li a{ */
+/* 	padding: 7px 10px 4px 10px; */
+/*     position: relative; */
+/*     z-index: 10; */
+/*     margin-bottom: -1px; */
+/*     margin-top: 0px; */
+/*     height: 25px; */
+/*     display: inline-block; */
+/* } */
+/* #switch_upload ul li a.selected{ */
+/* 	color: #eee; */
+/* 	background-color: #222; */
+/* 	background-image: -moz-linear-gradient(top,#444 0,#222 100%); */
+/* 	background-image: -ms-linear-gradient(top,#444 0,#222 100%); */
+/* 	background-image: -o-linear-gradient(top,#444 0,#222 100%); */
+/* 	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#444),color-stop(100%,#222)); */
+/* 	background-image: -webkit-linear-gradient(top,#444 0,#222 100%); */
+/* 	background-image: linear-gradient(to bottom,#444 0,#222 100%); */
+/* } */
+/* #upload_form_ftp_files { */
+/* 	margin: 5px -5px -5px -5px; */
+/* 	padding: 3px 5px 3px 5px; */
+/* 	border-top: 1px solid #aaaaaa;	 */
+/* 	height: 70px; */
+/* 	overflow-y: scroll; */
+/* } */
+/* #uiwidget_ftp_upload_no_files { */
+/* 	display: block; */
+/* 	width: 100%; */
+/* 	color: #aaaaaa; */
+/* 	text-align: center; */
+/* 	margin-top: 25px; */
+/* 	font-size: 14px; */
+/* } */
+/* #upload_form_flash_wrapper { */
+/* 	position:relative;  */
+/* 	min-height:30px; */
+/* 	height:auto;  */
+/* 	overflow:hidden; */
+/* 	margin:-5px; */
+/* } */
+/* #upload_form_flash_button { */
+/* 	position:absolute;  */
+/* 	top:0;  */
+/* 	left:5px;  */
+/* 	width:100px;  */
+/* 	z-index:99;  */
+/* 	text-align:center; */
+/* 	border: 1px solid #aaa; */
+/* 	padding: 5px; */
+/* 	display: block; */
+/* 	border-radius: 3px; */
+/* 	background-color: #f6f6f6; */
+/* 	background-image: -moz-linear-gradient(top,#fff 0,#e0e0e0 100%); */
+/* 	background-image: -ms-linear-gradient(top,#fff 0,#e0e0e0 100%); */
+/* 	background-image: -o-linear-gradient(top,#fff 0,#e0e0e0 100%); */
+/* 	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(100%,#e0e0e0)); */
+/* 	background-image: -webkit-linear-gradient(top,#fff 0,#e0e0e0 100%); */
+/* 	background-image: linear-gradient(to bottom,#fff 0,#e0e0e0 100%); */
+/* 	box-shadow: 4px 4px 4px rgba(255,255,255,.4) inset, 1px 1px 1px 0px rgba(0,0,0,.1);	 */
 	
-}
-#upload_form_flash_files {
-	margin: 30px 0 0 0;
-	border-top: 1px solid #aaaaaa;
+/* } */
+/* #upload_form_flash_files { */
+/* 	margin: 30px 0 0 0; */
+/* 	border-top: 1px solid #aaaaaa; */
 		
-	height: 70px;
-	overflow-y: scroll;
-	background: white;
-	margin: 30px 3px 0px 3px;
-	border: 1px solid #aaa;
-	border-radius: 3px;
-}
-.upload_form_flash_files_row{
-	height:30px;
-	line-height:30px;
-	border:1px solid #ccc;
-	border-left:0;
-	border-right:0;	
-	border-top:0;
-	position:relative;
-}
+/* 	height: 70px; */
+/* 	overflow-y: scroll; */
+/* 	background: white; */
+/* 	margin: 30px 3px 0px 3px; */
+/* 	border: 1px solid #aaa; */
+/* 	border-radius: 3px; */
+/* } */
+/* .upload_form_flash_files_row{ */
+/* 	height:30px; */
+/* 	line-height:30px; */
+/* 	border:1px solid #ccc; */
+/* 	border-left:0; */
+/* 	border-right:0;	 */
+/* 	border-top:0; */
+/* 	position:relative; */
+/* } */
 
-.upload_form_flash_files_row .bar {
-	background-color:rgba(0,0,0,0.05);
-	width:0;
-	height:30px;
-	position:absolute;
-	top:0;
-	left:0;
-}
+/* .upload_form_flash_files_row .bar { */
+/* 	background-color:rgba(0,0,0,0.05); */
+/* 	width:0; */
+/* 	height:30px; */
+/* 	position:absolute; */
+/* 	top:0; */
+/* 	left:0; */
+/* } */
 
-.upload_form_flash_files_row .name {
-	margin:0 5px 0 5px;
-	display:block;
-}
+/* .upload_form_flash_files_row .name { */
+/* 	margin:0 5px 0 5px; */
+/* 	display:block; */
+/* } */
 
 #box_content_images {
 	margin: 0px -7px -5px -7px;	

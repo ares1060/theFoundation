@@ -138,8 +138,18 @@ class ShopAdminView extends TFCoreFunctions{
 	        		$t->addValue('creator', $product->getCreatorId());
 					$t->addValue('stock_nr', $product->getStockNr());
 					$t->addValue('tax_id', $product->getTaxId());
+					
 					$image = $this->sp->ref('Gallery')->getImage($product->getImageId());
-					$t->addValue('img_path', $image == null ? $this->sp->ref('Gallery')->getNoImagePath() : $image->getPath());
+					
+// 					$t->addValue('img_path', $image == null ? $this->sp->ref('Gallery')->getNoImagePath() : $image->getPath());
+					if($image == null) {
+						$t->showSubView('noImage');
+						$t->hideSubView('Image');
+					} else {
+						$i = new SubViewDescriptor('Image');
+						$i->addValue('img_path', $image->getPath());
+						$t->addSubView($i);
+					}
 					
 	        		$cat = $product->getCategory();
 	        		

@@ -514,5 +514,23 @@
         public function getUsers() {
         	return $this->dataHelper->getUsers(-1);
         }
+        
+        /**
+         * returnes User by UserdataId and calue
+         * @param unknown_type $data_id
+         * @param unknown_type $value
+         */
+        public function getUserByData($data_id, $value){
+        	return $this->dataHelper->getUserByData($data_id, $value);
+        }
+        
+        /**
+         * returnes UserData object by given id
+         * is used by UserInfo->loadData(ServiceProvider $sp)
+         * @param $id
+         */
+        public function getUserDataByUserId($id){
+        	return $this->dataHelper->getUserDataByUserId($id);
+        }
     }
  ?>

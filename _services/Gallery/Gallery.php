@@ -7,8 +7,8 @@
 	require_once 'view/GalleryBoxView.php';
 	/**
      * Description
-     * @author MisterE
-     * @version: 0.1
+     * @author scrapy_ii@gmx.at
+     * @version: 0.2b
      * @name: Gallery2
      * 
      * @requires: Services required
@@ -20,8 +20,34 @@
          * protected $config;
          * protected $config_file;
          */
+    	
+    	/**
+    	 * box view viewing option constants
+    	 * matrix will make a matrix of images
+    	 */
     	const BOX_VIEW_MATRIX = 1;
     	
+    	/**
+    	 * front view viewing option constants
+    	 * matrix will create a matrix of images
+    	 * split will create one big image and multiple beneath
+    	 * single will create one big image and arrows for navigation
+    	 */
+    	const FRONT_VIEW_MATRIX = 1;
+    	const FRONT_VIEW_SPLIT = 2;
+    	const FRONT_VIEW_SINGLE = 3;
+    	
+    	/**
+    	 * status constants for albums, folder and images
+    	 */
+    	const STATUS_HIDDEN = 0;
+    	const STATUS_ONLINE = 1;
+    	const STATUS_OFFLINE = 2;
+    	const STATUS_SYSTEM = 3;
+    	 
+    	/**
+    	 * variable definition
+    	 */
     	private $dataHelper;
     	private $frontView;
     	private $adminView;
@@ -167,6 +193,13 @@
 	        				$this->dataHelper->uploadImages($this->sp->ref('UIWidgets')->getUploads(), $_POST['upload_folder']);
 	        			}
 	        			break;
+        			case 'box_upload':
+        				if(isset($_POST['subfolder_name']) && isset($_POST['album_id'])){
+        					$uploadFolder = $this->dataHelper->getSubFolderByName($_POST['album_id'], $_POST['subfolder_name']);
+//         					print_r($this->sp->ref('UIWidgets')->getUploads());
+        					return $this->dataHelper->uploadImages($this->sp->ref('UIWidgets')->getUploads(), $uploadFolder);
+        				}
+        				break;
         			default:
         				$this->_msg($this->_('_Wrong parameters'), Messages::ERROR);
         				break;
@@ -174,12 +207,21 @@
         	}
         }
         
+        /* ----- DAta functions ---- */
         public function getImage($id) {
         	return $this->dataHelper->getImageById($id);
         }
         
-        public function getBoxFolderTpl($album, $subalbum_name, $page, $style=self::BOX_VIEW_MATRIX, $reloadFunctionName='', $useFunctionName=''){
-        	return $this->boxView->tplBox($album, $subalbum_name, $page, $style, $reloadFunctionName, $useFunctionName);
+        public function getBoxFolderTpl($album, $subalbum_name, $page, $style=self::BOX_VIEW_MATRIX, $reloadFunctionName='', $useFunctionName='', $link=''){
+        	return $this->boxView->tplBox($album, $subalbum_name, $page, $style, $reloadFunctionName, $useFunctionName, $link);
+        }
+        
+        public function createFolder($parent_id, $name, $status=GalleryDataHelper::STATUS_ONLINE) {
+        	return $this->dataHelper->createFolder($parent_id, $name, $status);
+        }
+        
+        public function deleteFolderByNameAndParent($name, $parent_id){
+        	return $this->dataHelper->deleteFolderByNameAndParent($name, $parent_id);
         }
     }
 ?>

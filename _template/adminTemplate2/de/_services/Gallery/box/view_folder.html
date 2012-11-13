@@ -2,40 +2,59 @@
 	<div class="gallery_box_folder_header">
 		<div class="left">
 			<ul class="links">
-				<li><a href="javascript:void(0);">Upload</a>
+				<li><a href="javascript:void(0);" onclick="$('#gallery_box_upload').toggle();">Upload</a>
 			</ul>
 		</div>
 		<div class="right">
-			{pp:Pagina("count":"{@pp:pagina_count}", "active":"{@pp:pagina_active}", "url":"JavaScript:tfaddress.editPath({set:{'page':'{page}'}});", "template":"pagina_normal")}
+			{pp:Pagina("count":"{@pp:pagina_count}", "active":"{@pp:pagina_active}", "url":"JavaScript:tfaddress.editPath({set:{'ipage':'{page}'}});", "template":"pagina_normal")}
 		</div>
 		<div class="center">
 			{@pp:count} Bilder
 		</div>
+	</div>
+	<div id="gallery_box_upload">
+		<div id="upload_close_button"><a href="javascript:void(0);" onclick="$('#gallery_box_upload').hide();" ><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/close_button.png" /></a></div>
+		<h2>Bilder upload</h2>
+		<form class="tf_form" enctype="multipart/form-data" method="post" action="{@pp:link}">
+			<input type="hidden" name="action" value="box_upload" />
+			<input type="hidden" name="link" value="{@pp:link}" />
+			<input type="hidden" name="subfolder_name" value="{@pp:subfolder_name}" />
+			{pp:UIWidgets("widget":"Fileupload", "name":"files[]", "id":"upload", "type":"{@pp:types}", "max_file_size":"{@pp:max_file_size}", "max_uploads":"{@pp:max_uploads}")}
+			<div id="upload_buttons">
+				<button class="button green" type="submit"><span>Upload</span></button>
+				<button class="button" onclick="$('#gallery_box_upload').hide(); return false;"><span>Abbrechen</span></button>
+			</div>
+		</form>
 	</div>
 	<div class="gallery_box_folder_content">
 		<div class="images">
 		<pp:dynamic name="image">
 			<div class="image_container">
 				<div class="image_cell">
-					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/gallery_load.gif" id="imageLoad_{@pp:id}"/>
-					<div class="image_div" id="imageDiv_{@pp:id}">
-						<div class="image_actions" id="image_actions_{@pp:id}">
+					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/gallery_load.gif" id="imageLoad_{@pp:id}_{@pp:time}"/>
+					<div class="image_div" id="imageDiv_{@pp:id}_{@pp:time}">
+						<div class="image_actions" id="image_actions_{@pp:id}_{@pp:time}">
 							<a href="javascript:tf_gallery.deleteImage({@pp:id});" style="position: absolute; top: 3px; left: 3px;"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/delete_image.png" /></a>
 						</div>
-						<img src="{@pp:root}_core/getImage.php?path={@pp:path}&height=70&width=70" class="img"  id="imageImg_{@pp:id}"/>
+						<img src="{@pp:root}_core/getImage.php?path={@pp:path}&height=70&width=70" class="img"  id="imageImg_{@pp:id}_{@pp:time}"/>
 						<div class="image_text">
 							{@pp:name}
 						</div>
 						<script type="text/javascript">
-							$('#imageImg_{@pp:id}').load(function() {
-								console.log(this.width);
-								$('#imageLoad_{@pp:id}').fadeOut(20);
-								$('#imageDiv_{@pp:id}').width(this.width);
-								$('#imageDiv_{@pp:id}').delay(20).fadeIn();
-								$(this).click(function() { tf_gallery.selectImg({@pp:id}); });
-								$(this).parent().mouseover(function() { $('#image_actions_{@pp:id}').show(); });
-								$(this).parent().mouseout(function() { $('#image_actions_{@pp:id}').hide(); });
-							});
+// 						$('#imageImg_{@pp:id}_{@pp:time}').unbind('load');
+						$('#imageImg_{@pp:id}_{@pp:time}').load(function() {
+// 							console.log(this.width);
+							$('#imageDiv_{@pp:id}_{@pp:time}').width(this.width);
+						});
+						$('#imageImg_{@pp:id}_{@pp:time}').ready(function() {
+// 							console.log($('#imageImg_{@pp:id}_{@pp:time}').width);
+							$('#imageLoad_{@pp:id}_{@pp:time}').fadeOut(20);
+// 							$('#imageDiv_{@pp:id}_{@pp:time}').width(this.width);
+							$('#imageDiv_{@pp:id}_{@pp:time}').delay(20).fadeIn();
+							$('#imageImg_{@pp:id}_{@pp:time}').parent().click(function() { tf_gallery.selectImg('{@pp:id}_{@pp:time}'); });
+							$('#imageImg_{@pp:id}_{@pp:time}').parent().mouseover(function() { $('#image_actions_{@pp:id}_{@pp:time}').show(); });
+							$('#imageImg_{@pp:id}_{@pp:time}').parent().mouseout(function() { $('#image_actions_{@pp:id}_{@pp:time}').hide(); });
+						});
 						</script>
 					</div>
 				</div>
@@ -45,8 +64,18 @@
 	</div>
 	<div class="gallery_box_folder_actions">
 		<ul class="links">
-			<li><a href="javascript:void(0);">Bild(er) verwenden</a></li>
+			<li><a href="javascript:useImages();">Bild(er) verwenden</a></li>
 		</ul>
 	</div>
 </div>
+<script type="text/javascript">
+	tf_gallery.setSelectionLimit(1);
+	function useImages() {
+		var images = tf_gallery.getSelectedImgs();
+		$.each(images, function(key, value) {
+			{@pp:useFunctionName}(value);
+		});
+		
+	}
+</script>
 

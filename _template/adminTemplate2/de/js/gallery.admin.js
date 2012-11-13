@@ -13,12 +13,44 @@ var tf_gallery = {
 //		});
 	},
 	/* ===========  selection of images ======= */
+	selectedImgs: new Array(),
+	selectionLimit: -1,
 	selectImg: function(id) {
+//		alert('asdf');
 		if($('#imageDiv_'+id).hasClass('selected')){
 			$('#imageDiv_'+id).removeClass('selected');
+			delete tf_gallery.selectedImgs[tf_gallery.selectedImgs.indexOf(id)];
 		} else {
-			$('#imageDiv_'+id).addClass('selected');
+			console.log(tf_gallery.selectedImgs.indexOf(id));
+			if(tf_gallery.selectedImgs.indexOf(id) == -1){
+				$('#imageDiv_'+id).addClass('selected');
+				tf_gallery.selectedImgs.push(id);
+
+				//if selectionlimit is set and length is greater than limit -> trim selection from back
+				if(tf_gallery.selectionLimit != -1 && tf_gallery.selectedImgs.length > tf_gallery.selectionLimit){
+					
+					// copy selected Images
+					var selectedImgsTmp = tf_gallery.selectedImgs.slice(0);
+					
+					// trim selection					
+					Array.prototype.splice.call(selectedImgsTmp, 0, (selectedImgsTmp.length -  tf_gallery.selectionLimit) );
+					
+					// unselect interface
+					$.each(tf_gallery.selectedImgs, function(key, value){
+						if(selectedImgsTmp.indexOf(value) == -1) $('#imageDiv_'+value).removeClass('selected');
+					});
+					
+					// restore real selected images array
+					tf_gallery.selectedImgs = selectedImgsTmp.slice(0);
+				}
+			}
 		}
+	},
+	getSelectedImgs: function() {
+		return tf_gallery.selectedImgs;
+	},
+	setSelectionLimit: function(limit) {
+		if(limit >= -1 && limit != 0) tf_gallery.selectionLimit = limit;
 	},
 	/* =========  new Folder ======== */
 	showNewFolder: function() {

@@ -35,7 +35,7 @@
          
         function __construct(){
         	$this->name = 'Shop';
-        	$this->config_file = $GLOBALS['to_root'].'/_services/Shop/config.Shop.php';
+//         	$this->config_file = $GLOBALS['to_root'].'/_services/Shop/config.Shop.php';
         	$this->ini_file = $GLOBALS['to_root'].'/_services/Shop/Shop.ini';
             parent::__construct();
             $this->dataHelper = new ShopDataHelper($this->settings);
@@ -121,7 +121,7 @@
         	// Tags vars
         	$tags =  isset($args['tags']) ? $args['tags']: '';
         	$tag =  isset($args['tag']) ? $args['tag']: '';
-        	
+
         	// Image vars
         	$link = isset($args['link']) ? $args['link'] : '';
         	$click = isset($args['click']) ? $args['click'] : '';
@@ -196,7 +196,10 @@
         					return $this->sp->ref('Gallery')->addOnWysiwygFolder($this->_setting('gallery_album_id', 'main'), 'wysiwyg', $page, -1, -1, Gallery::BOX_VIEW_MATRIX, $reloadFunction, $useFunction);
         					break;
         				case 'loadProductImages':
-        					return $this->sp->ref('Gallery')->getBoxFolderTpl($this->_setting('gallery_album_id', 'main'), 'product_'.$id, $page, Gallery::BOX_VIEW_MATRIX, $reloadFunction, $useFunction);
+        					if(isset($args['link'])) {
+        						$link = $args['link'];
+        						return $this->sp->ref('Gallery')->getBoxFolderTpl($this->_setting('gallery_album_id', 'main'), $this->_setting('gallery_album_prefix', 'main').$id, $page, Gallery::BOX_VIEW_MATRIX, $reloadFunction, $useFunction, $link);
+        					}
 //         					return $this->sp->ref('Gallery')->getBoxFolderTpl($this->_setting('gallery_album_id', 'main'), 'product_'.$id, $page, $click, -1, -1, Gallery::BOX_VIEW_MATRIX, $reloadFunction, $useFunction);
         					break;
         				case 'loadProductImagesUpload':
@@ -318,17 +321,21 @@
             }
             
             // upload images to Product
-            if(isset($_POST['action']) && $_POST['action'] == 'upload' &&
-            	isset($_POST['album']) && 
-            	isset($_POST['folder']) &&
+            if(isset($_POST['action']) && $_POST['action'] == 'box_upload' &&
+//             	isset($_POST['folder_id']) &&
             	isset($_POST['MAX_FILE_SIZE']) && 
             	isset($_POST['selected_type']) &&
-            	isset($_POST['link'])){
+            	isset($_POST['link']) &&
+            	isset($_POST['subfolder_name'])){
 
             	// handle new Upload 
             	//if($_POST['album']
-            		
-            	if($this->dataHelper->uploadImages($_POST['folder'])){
+//             	print_r($_FILES);
+//             	print_r($_GET);
+//             	$this->_setting('gallery_album_id', 'main')
+            	
+//         		return $this->sp->ref('Gallery')->getBoxFolderTpl, , $page, Gallery::BOX_VIEW_MATRIX, $reloadFunction, $useFunction, $link);
+            	if($this->dataHelper->uploadImages($_POST['subfolder_name'])){
             		$this->_msg($this->_('product update success'), Messages::INFO);
             		header('Location: '.$_SERVER["HTTP_REFERER"].$_POST['link']);
             		exit(0);
@@ -362,6 +369,29 @@
         
         private function saveCartToSession() {
         	$_SESSION['shop']['cart'] = serialize($this->cart);
+        }
+        
+        /* ------- Wrapper Functions for use with service provider -------- */
+        /**
+         * wrapper function for dataHelper function 
+         * @see ShopDataHelper->getProductsByUserId
+         * @param unknown_type $user_id
+         * @param unknown_type $page
+         * @param unknown_type $status
+         * @param unknown_type $cat_id
+         */
+        public function getProductsByUserId($user_id, $page=-1, $status=-1, $cat_id=-1){
+        	return $this->dataHelper->getProductsByUserId($user_id, $page, $status, $cat_id);
+        }
+        
+        /**
+         * wrapper function for dataHelper function
+         * @see ShopDataHelper->getProduct
+         * @param unknown_type $product_id
+         * @return Ambigous <NULL, ShopProduct>
+         */
+        public function getProductById($product_id){
+        	return $this->dataHelper->getProduct($product_id);
         }
     }
 ?>

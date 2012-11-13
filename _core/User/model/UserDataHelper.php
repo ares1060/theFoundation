@@ -84,6 +84,28 @@
 			}
 			return null;
 		}
+		
+		/**
+		 * gets User Info Object by User Data id and data value
+		 * @param unknown_type $data_id
+		 * @param unknown_type $value
+		 */
+		public function getUserByData($data_id, $value){
+			if($data_id > 0 && $value != ''){
+				$array = $this->mysqlArray('SELECT * FROM
+						'.$GLOBALS['db']['db_prefix'].'userdata_user du
+						LEFT JOIN '.$GLOBALS['db']['db_prefix'].'user u ON du.u_id = u.id
+						WHERE du.value=\''.mysql_real_escape_string($value).'\' AND du.ud_id = \''.mysql_real_escape_string($data_id).'\';');
+				 
+				if($array != array()) {
+					$u = $array[0];
+					$this->users[$u['id']] = new UserObject($u['nick'], $u['id'], $u['email'], $this->getUserGroup($u['group']), $u['status']);
+		
+					return $this->getUser($array[0]['id']);
+				}
+				else return null;
+			} else return null;
+		}
 		/**
 		 * returnes User by EMail
 		 * @param unknown_type $mail
@@ -168,6 +190,59 @@
 			}
 			
 		}
+		
+		/**
+		 * returnes UserData object by given id
+		 * is used by UserInfo->loadData(ServiceProvider $sp)
+		 * @param $id
+		 */
+		public function getUserDataByUserId($id){
+			$user = $this->getUser($id);
+			
+// 			$data = $this->mysqlArray('SELECT *, udg.name as gName, ud.name as dName FROM `'.$GLOBALS['db']['db_prefix'].'userdata` ud
+// 					LEFT JOIN `'.$GLOBALS['db']['db_prefix'].'userdata_usergroup` udg ON ud.g_id = udg.g_id
+// 					LEFT JOIN 
+// 						(SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'userdata_user` WHERE 
+// 								u_id="'.mysql_real_escape_string($user->getId()).'") uud ON uud.d_id = ud.ud_id
+// 					LEFT JOIN `'.$GLOBALS['db']['db_prefix'].'userdata_datagroup` ud_g ON ud.ud_id = ud_g.d_id
+// 					WHERE ud_g.g_id = "'.mysql_real_escape_string($user->getGroupId()).'"');
+
+			$data = $this->mysqlArray('SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'userdata_user` ud_u
+												LEFT JOIN '.$GLOBALS['db']['db_prefix'].'userdata ud ON ud_u.ud_id = ud.id
+												LEFT JOIN (
+													SELECT * FROM '.$GLOBALS['db']['db_prefix'].'userdata_usergroup WHERE 
+													ug_id = \''.mysql_real_escape_string($user->getGroupId()).'\'
+													) ud_ug ON ud_ug.ud_id = ud.id
+										WHERE ud_u.u_id = \''.mysql_real_escape_string($user->getId()).'\' AND
+											   ud_ug.ug_id = \''.mysql_real_escape_string($user->getGroupId()).'\'');
+			
+			$data_ar = array();
+			if($data != array()) {
+				foreach($data as $d){
+					$data_ar[$d['name']] = $d['value'];
+				}
+			}
+// 			print_r($data_ar);
+			return $data_ar;
+// 			$aData = array();
+			
+// 			print_r($user);
+		
+// 			if($data != array() && $data != '') {
+// 				foreach($data as $dat){
+// 					if(!isset($aData[$dat['name']])) {
+// 						$aData[$dat['gName']] = new UserDataGroup($dat['g_id'], $dat['gName'], $dat['beschreibung']);
+// 						/*$aData[$dat['gName']] = array();
+// 						 $aData[$dat['gName']]['data'] = array();
+// 						$aData[$dat['gName']]['id'] = $dat['g_id'];
+// 						$aData[$dat['gName']]['desc'] = $dat['beschreibung'];*/
+// 					}
+// 					$aData[$dat['gName']]->addData(new UserData($dat['d_id'], $dat['dName'], $dat['desc'], $dat['help'], $dat['value'], $dat['type']));
+// 				}
+// 			}
+		
+// 			return $aData;
+		}
 		public function getUserData($page=-1, $perPage=-1){
 			$return = array();
         	
@@ -212,7 +287,7 @@
 		 * @param unknown_type $group
 		 */
 		public function getUserDataForGroup($group){
-			if(get_class($group) != 'UserGroup'){
+			if(!is_object($group) || get_class($group) != 'UserGroup'){
 				$group = $this->getUserGroup($group);
 			}
 			

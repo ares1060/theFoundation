@@ -10,7 +10,7 @@
 	background: #333;
 	
 /* 	border: 1px solid black;	 */
-	height: 150px;
+	height: 250px;
 	
 	box-shadow: 0px 0px 50px 50px rgba(0,0,0,.1) inset, 0px 0px 2px 2px rgba(0,0,0,.3) inset;
 
@@ -31,6 +31,7 @@
 	right: 0px;
 	height: 22px;
 
+	z-index: 95;
 	display: block;
 	height: 22px;
 
@@ -118,6 +119,14 @@
 	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.3);
 }
 /* images */
+.gallery_box_folder_content { 
+	position: absolute;
+	top: 22px;
+	bottom: 22px;
+	left: 0px;
+	right: 0px;
+	z-index: 90;
+}
 .gallery_box_folder_content .images {
 	overflow: auto;
 	height: 775px;
@@ -171,5 +180,85 @@
 }
 .gallery_box_folder_content .images .image_container .image_cell .image_div img.img {
 	box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, .5);
+}
+/* ----- UPLOAD ---- */
+#gallery_box_upload {
+	position: absolute;
+	top:28px;
+	bottom: 3px;
+	left: 3px;
+	right: 3px;
+	z-index: 100;
+	background: #f9f9f9;
+	border-radius: 5px;
+	box-shadow: 0px 0px 2px 2px rgba(0,0,0,.5);
+	padding: 5px;
+	display: none;
+}
+#upload_close_button {
+	position: absolute;
+	right: -11px;
+	top: -13px;
+}
+/* upload type */
+#gallery_box_upload #upload_form_dyn #switch_upload {
+	display: block;
+	overflow: hidden;
+	height: 40px;
+	border-bottom: 1px solid #ddd;
+}
+#gallery_box_upload #upload_form_dyn #switch_upload ul{ list-type: none; }
+#gallery_box_upload #upload_form_dyn #switch_upload ul li { 
+	float: left;
+	display: block;
+	position: relative;
+	z-index: 100;
+}
+#gallery_box_upload #upload_form_dyn #switch_upload ul li a {
+	padding: 15px 10px 15px 10px;
+	display: block;
+	color: #444;
+	background: none;
+}
+#gallery_box_upload #upload_form_dyn #switch_upload ul li a.selected, 
+#gallery_box_upload #upload_form_dyn #switch_upload ul li a:hover {
+	background: url(../../../../basement/de/img/interface/tf_dropdown_arrow.png) top left no-repeat;
+	background-position: bottom center;
+	color: #444;
+}
+#gallery_box_upload #upload_form_dyn .tab {
+/* 	margin-top: -2px; */
+	background-color: white;
+    width: auto;
+    border: 1px solid #CCCCCC !important;
+/*     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) !important; */
+    padding: 0 0 6px;
+    white-space: nowrap;
+    font-family: 'Helvetica Neue', Helvetica;
+    font-weight: normal;
+    font-size: 14px;
+/* 	border-radius: 3px; */
+	padding: 5px;
+	margin: -2px -5px;
+	display: none;
+	overflow: hidden;
+}
+#upload_form_ftp_files {
+	height: 64px !important;
+}
+#upload_form_flash_wrapper {
+	top: 1px;
+	position: relative;
+	display: block;
+	margin: 0px !Important;
+	height: 64px !Important;
+	overflow-x: auto;
+}
+#upload_form_ftp_files {
+	border-radius: 0px 0px 4px 4px;
+}
+#upload_buttons {
+	margin-top: 10px;
+	float: right;
 }
 

@@ -42,6 +42,8 @@
 		var active_chapter = '';
 		var active_action = '';
 		var active_id = -1;
+		var active_ipage = 1;
+		var active_ipage_old = -1;
 
 		/* --- deep link --- */
 		$.address.change(function(event) { updateDeeplink(); });  
@@ -51,13 +53,14 @@
 			params = tfaddress.getPathNames();
 			
 			if(params['chapter'] == undefined) { $.address.path('/chapter/orders/page/1/'); params = tfaddress.getPathNames();}
-			if(params['page'] == undefined) { setAdressPathKey('page', 1); params = tfaddress.getPathNames(); }
+			if(params['page'] == undefined) { tfaddress.editPath({set:{'page':'1'}}); params = tfaddress.getPathNames(); }
 
 			active_page = params['page'];
 			active_chapter = params['chapter'];
 			active_action= params['action'];
 			active_id = params['id'];
-
+			active_ipage = params['ipage'];
+			
 			$('#admin_menu_main_nav > ul > li').removeClass('selected');
 			
 			if(active_chapter == 'orders') {

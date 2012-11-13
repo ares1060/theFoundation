@@ -3,10 +3,11 @@
 	class GalleryDataHelper extends TFCoreFunctions{
 		protected $name = 'Gallery';
 		
-		const STATUS_HIDDEN = 0;
-		const STATUS_ONLINE = 1;
-		const STATUS_OFFLINE = 2;
-		const STATUS_SYSTEM = 3;
+		// consts now are at the Gallery class -> for backward compatibility status constants will be duplicated
+		const STATUS_HIDDEN = Gallery::STATUS_HIDDEN;
+		const STATUS_ONLINE = Gallery::STATUS_ONLINE;
+		const STATUS_OFFLINE = Gallery::STATUS_OFFLINE;
+		const STATUS_SYSTEM = Gallery::STATUS_SYSTEM;
 		
 		/**
 		 * constructor requires settings
@@ -148,7 +149,8 @@
 			if(!is_object($parent) || get_class($parent) != 'GalleryFolder') $parent = $this->getFolderById($parent);
 			
 			// check rights
-			if(($album && $this->checkRight('administerAlbum')) || (!$album && $this->checkRight('administerFolder', $parent->getId()))){
+			if(($album && $this->checkRight('administerAlbum')) || 
+							(!$album && ($this->checkRight('administerFolder', $parent->getId()) || $parent->getStatus() == GalleryDataHelper::STATUS_SYSTEM))){
 				// check data
 				if($parent != null && $name != ''){
 					$root = ($parent->getParentFolderId() == 0) ? $parent->getId() : $parent->getRoot();
@@ -234,6 +236,16 @@
 		}
 		
 		/**
+		 * deletes Folder by given parent and name
+		 * @param unknown_type $parent_id
+		 * @param unknown_type $name
+		 */
+		public function deleteFolderByNameAndParent($name, $parent_id){
+			$folder = $this->getSubFolderByName($parent_id, $name);
+			return $this->deleteFolder($folder);
+		}
+		
+		/**
 		 * edits folder and sets new name or status
 		 * @param unknown_type $folder
 		 * @param unknown_type $name
@@ -262,7 +274,7 @@
 					return true;
 				}
 			} else {
-				$this->debugVar('asdf');
+// 				$this->debugVar('asdf');
 				return false;
 			}
 		}
@@ -427,7 +439,7 @@
 		 */
 		public function createImage($name, $path, $shot_date){
 			if(is_file($GLOBALS['config']['root'].$path)){
-				$this->debugVar($shot_date);
+// 				$this->debugVar($shot_date);
 				return ($this->mysqlInsert('INSERT INTO '.$GLOBALS['db']['db_prefix'].'gallery_image
 											(name, path, hash, u_id, c_date, s_date, size) VALUES
 											("'.$this->sp->ref('TextFunctions')->renderUmlaute(mysql_real_escape_string($name)).'",
@@ -466,7 +478,9 @@
 		 * @param unknown_type $folder
 		 */
 		public function uploadImages($images, $folder) {
-			if($folder+0 > -1 && $this->getFolderById($folder) != null){
+			if(!is_object($folder) || get_class($folder) != 'GalleryFolder') $folder = $this->getFolderById($folder);
+			
+			if($folder != null){
 				if($images != array()) {
 					$return = array();
 					$success = 0;

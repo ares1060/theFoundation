@@ -85,7 +85,7 @@
 			$r = array();
 			//print_r($_FILES);
 			//print_r($_POST);
-			if(isset($_POST['action']) && $_POST['action'] == 'upload'){
+			if(isset($_POST['uiwidget_action']) && ($_POST['uiwidget_action'] == 'upload')){
 				switch($_POST['selected_type']){
 					case 'html':
 						if(isset($_FILES['files']) && isset($_FILES['files']['name']) && $_FILES['files']['name'][0] != ''){
@@ -124,7 +124,7 @@
 						}
 						break;
 					case 'flash':
-						$this->debugVar('asdf');
+// 						$this->debugVar('asdf');
 						if(is_dir($this->config['tmpFolder'])){
 							$count=0;
 							if ($handle = opendir($this->config['tmpFolder'])) {

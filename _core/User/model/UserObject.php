@@ -19,7 +19,7 @@
         }
        
         public function loadData($sp) {
-                if($this->userData == null) $this->userData = $sp->ref('User')->getUserData($this->id);
+                if($this->userData == null) $this->userData = $sp->ref('User')->getUserDataByUserId($this->id);
                 return true;
         }
        
@@ -32,6 +32,7 @@
         public function getGroup() { return $this->group; }
         public function getStatus() { return $this->status; }
         public function getUserData() { return $this->userData; }
+        public function getGroupId() { return $this->getGroup()->getId(); }
         //public function getField($name) {if(isset($this->fields[$name])) return $this->fields[$name]; else return false;}
     }
 ?>

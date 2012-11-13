@@ -54,7 +54,7 @@
 								$('#imageLoad_{@pp:id}').fadeOut(20);
 								$('#imageDiv_{@pp:id}').width(this.width);
 								$('#imageDiv_{@pp:id}').delay(20).fadeIn();
-								$(this).click(function() { tf_gallery.selectImg({@pp:id}); });
+								$(this).parent().click(function() { tf_gallery.selectImg({@pp:id}); });
 								$(this).parent().mouseover(function() { $('#image_actions_{@pp:id}').show(); });
 								$(this).parent().mouseout(function() { $('#image_actions_{@pp:id}').hide(); });
 							});

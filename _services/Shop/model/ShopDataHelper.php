@@ -29,21 +29,36 @@
 		 * @param unknown_type $id
 		 */
 		public function getProducts($page=-1, $status=-1, $cat_id=-1) {
+			return $this->getProductsByUserId($this->sp->ref('User')->getViewingUser()->getId(), $page, $status, $cat_id);
+		}
+		
+		/**
+		 * returnes Products By given User id, page, status and cat
+		 * if user id != viewind User only status==online is supported
+		 * @param unknown_type $user_id
+		 * @param unknown_type $page
+		 * @param unknown_type $status
+		 * @param unknown_type $cat_id
+		 */
+		public function getProductsByUserId($user_id, $page=-1, $status=-1, $cat_id=-1){
 			// get count of all products
 			$count = $this->getProductCount($status);
-
-			// create user, status and category string 
-			$user = 'WHERE `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"';
+			
+			// create user, status and category string
+			$user = 'WHERE `u_id`="'.mysql_real_escape_string($user_id).'"';
+			
 			$status = ($status == -1) ? '' : ' AND `status`="'.mysql_real_escape_string($status).'"';
+			if($user_id != $this->sp->ref('User')->getViewingUser()->getId()) $status = ' AND `status`="'.ShopDataHelper::STATUS_ONLINE.'"';
+			
 			$cat = ($cat_id == -1) ? '' : ' AND `cat`="'.mysql_real_escape_string($cat_id).'"';
-
+			
 			// create limit string
 			$per_page = $this->_setting('admin.per_page.products');
-        	$limit = ($page == -1) ? '' : 'LIMIT '.(mysql_real_escape_string($page-1)*mysql_real_escape_string($per_page)).', '.mysql_real_escape_string($per_page).';';
-
-        	$pp = $this->mysqlArray('SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'shop_products` '.$user.$status.$cat.' '.$limit);
-
-        	if($pp != ''){
+			$limit = ($page == -1) ? '' : 'LIMIT '.(mysql_real_escape_string($page-1)*mysql_real_escape_string($per_page)).', '.mysql_real_escape_string($per_page).';';
+			
+			$pp = $this->mysqlArray('SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'shop_products` '.$user.$status.$cat.' '.$limit);
+			
+			if($pp != ''){
 				$return = array();
 				foreach($pp as $p){
 					$cat = $this->sp->ref('Category')->getCategory($p['cat']);
@@ -153,7 +168,8 @@
 				
 				if($n_id !== false){
 					// create New Folder at Shop Album
-					$this->sp->ref('Gallery')->newFolder('product_'.$n_id, $this->_setting('gallery_album_id'), '', Gallery::STATUS_ONLINE);
+					$this->sp->ref('Gallery')->createFolder($this->_setting('gallery_album_id'), 'product_'.$n_id, GalleryDataHelper::STATUS_ONLINE);
+// 					$this->sp->ref('Gallery')->newFolder('product_'.$n_id, , '', Gallery::STATUS_ONLINE);
 					
 					// authorize User to edit Product
 					$this->sp->ref('Rights')->authorizeUser('Shop', $this->sp->ref('User')->getViewingUser()->getId(), 'administer_product', $n_id);
@@ -173,7 +189,7 @@
 		 */
 		public function deleteProduct($id) {
 			if($this->checkRight('administer_product', $id)){
-				$this->sp->ref('Gallery')->deleteFolder($this->sp->ref('Gallery')->getFolderByNameAndAlbum('product_'.$id, $this->_setting('gallery_album_id'))->getId());
+				$this->sp->ref('Gallery')->deleteFolderByNameAndParent('product_'.$id, $this->_setting('gallery_album_id'));
 								
 				$this->sp->ref('Tags')->deleteServiceTags('Shop', $id);
 				
@@ -196,9 +212,10 @@
 		 * handles Image upload to product
 		 * @param unknown_type $product_id
 		 */
-		public function uploadImages($product_id){
-			if($this->checkRight('administer_product', $product_id)){
-				$iId = $this->sp->ref('Gallery')->executeUploads(true);
+		public function uploadImages($subfolder_name){
+			if($this->checkRight('administer_product', substr($subfolder_name, strlen($this->_setting('gallery_album_prefix', 'main'))))){
+				$_POST['album_id'] = $this->_setting('gallery_album_id');
+				$iId = $this->sp->ref('Gallery')->handleAdminPost();
 				
 				return ($iId != array());
 				

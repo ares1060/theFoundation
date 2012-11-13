@@ -8,14 +8,14 @@ class GalleryBoxView extends TFCoreFunctions{
 	function __construct($settings, $datahelper){
 		parent::__construct();
 		$this->setSettingsCore($settings);
-		$this->name = 'Shop';
+		$this->name = 'Gallery';
 		$this->dataHelper = $datahelper;
 	}
 	
-	function tplBox($folder, $subfolder_name, $page, $style=self::BOX_VIEW_MATRIX, $reloadFunctionName='', $useFunctionName=''){
+	function tplBox($folder, $subfolder_name, $page, $style=self::BOX_VIEW_MATRIX, $reloadFunctionName='', $useFunctionName='', $link=''){
 		$subfolder = $this->dataHelper->getSubFolderByName($folder, $subfolder_name);
-		
-		if($subfolder != null && $subfolder->getUserId() == $this->sp->ref('User')->getViewingUser()->getId()){
+
+		if($subfolder != null && $this->checkRight('administerFolder', $subfolder->getId())) {//$subfolder->getUserId() == $this->sp->ref('User')->getViewingUser()->getId()){
 			switch($style){
 				default:
 					$tpl = new ViewDescriptor($this->_setting('tpl.box/view_folder'));
@@ -23,8 +23,12 @@ class GalleryBoxView extends TFCoreFunctions{
 			}
 						
 			$tpl->addValue('name', $subfolder->getName());
-			$tpl->addValue('folder_id', $subfolder->getId());
-			
+			$tpl->addValue('subfolder_id', $subfolder->getId());
+			$tpl->addValue('subfolder_name', $subfolder_name);
+
+			// javascript functionnames
+			$tpl->addValue('useFunctionName', $useFunctionName);
+				
 			// page calculation and pagina creation
 			$per_page = $this->_setting('box.per_page.images');
 			$count = $this->dataHelper->getImageCountByFolder($subfolder, array(GalleryDataHelper::STATUS_HIDDEN, GalleryDataHelper::STATUS_ONLINE));
@@ -36,13 +40,21 @@ class GalleryBoxView extends TFCoreFunctions{
 			$tpl->addValue('pagina_active', ($page == -1) ? 1 : $page);
 			$tpl->addValue('count', $count);
 			
+			$tpl->addValue('max_file_size', $this->_setting('upload.max_file_size'));
+			$tpl->addValue('max_uploads', $this->_setting('upload.max_uploads'));
+			$tpl->addValue('types', $this->_setting('upload.valid_file_types'));
+			
+			$tpl->addValue('link', $link);
+				
 			$images = $this->dataHelper->getImagesByFolder($subfolder, $final_page, $this->_setting('box.per_page.images'), array(GalleryDataHelper::STATUS_HIDDEN, GalleryDataHelper::STATUS_ONLINE));
 			
 			if($images != null){
 				foreach($images as $i){
+					$time = time();
 					$t = new SubViewDescriptor('image');
 					$t->addValue('name', $this->sp->ref('TextFunctions')->cropText($i->getName(), 10));
 					$t->addValue('id', $i->getId());
+					$t->addValue('time', $time);
 					$t->addValue('path', $i->getPath());
 						
 					$tpl->addSubView($t);
