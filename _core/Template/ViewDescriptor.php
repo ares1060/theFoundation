@@ -80,10 +80,12 @@
 		/**
 		 *	Createas and adds a SubViewDescriptor for the given name
 		 *	@param string $name The name of the sub view
+		 * 	@param array $values An optional associative array for adding values to the SubView
 		 *	@return SubViewDescriptor The SubViewDescriptor of the sub view
 		 */
-		function showSubView($name){
+		function showSubView($name, $values = array()){
 			$sub = new SubViewDescriptor($name);
+			$sub->addValues($values);
 			$this->addSubView($sub);
 			return $sub;
 		}
