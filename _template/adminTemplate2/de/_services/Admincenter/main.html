@@ -54,13 +54,17 @@
 						<ul>
 							<li class="option"><a href="javascript:void(0);" onclick="setViewingUser(-1, '&nbsp;');">Eigene Daten anzeigen</a></li>
 							<li class="seperator">&nbsp;</li>
+						</ul>
+						<div style="max-height: 300px; overflow-y: auto;">
+						<ul>
 							<!-- <li  class="option"><a href="javascript:void(0);" onclick="setViewingUser(1, 'Max');">Max</a></li>
 							<li  class="option"><a href="javascript:void(0);" onclick="setViewingUser(2, 'Moritz');">Moritz</a></li>
 							<li  class="option"><a href="javascript:void(0);" onclick="setViewingUser(3, 'Quizmaster');">Quizmaster</a></li> -->
 							<pp:dynamic name="view_as_user">
-								<li  class="option"><a href="javascript:void(0);" onclick="setViewingUser({@pp:id}, '{@pp:u_nick}');">{@pp:u_nick}</a></li>
+								<li  class="option"><a href="javascript:void(0);" onclick="setViewingUser({@pp:id}, '{@pp:u_nick}');">{@pp:u_email} ({@pp:u_nick})</a></li>
 							</pp:dynamic>
 						</ul>
+						</div>
 					</div>
 				</div>
 				<script type="text/javascript">
@@ -75,8 +79,9 @@
 								},
 								handle: function (msg) {
 									if(msg == 'true') {
-										$('#topbar-view_as-icon').html(name);
-										$('#topbar-view_as-icon').removeClass('active');
+										tfaddress.reloadPath();
+<!--									$('#topbar-view_as-icon').html(name);-->
+<!--									$('#topbar-view_as-icon').addClass('active');-->
 									}
 									tf.hideAdminLoading();
 								}
@@ -91,9 +96,11 @@
 									id: id
 								},
 								handle: function (msg) {
+									
 									if(msg == 'true') {
-										$('#topbar-view_as-icon').html(name);
-										$('#topbar-view_as-icon').addClass('active');
+										tfaddress.reloadPath();
+<!--									$('#topbar-view_as-icon').html(name);-->
+<!--									$('#topbar-view_as-icon').addClass('active');-->
 									}
 									tf.hideAdminLoading();
 								}

@@ -2,6 +2,8 @@
 	require_once('model/UserObject.php');
 	require_once('model/UserGroup.php');
 	require_once('model/UserDataHelper.php');
+	require_once('model/UserData.php');
+	require_once('model/UserDataGroup.php');
 	
 	require_once('view/UserAdminView.php');
 	require_once('view/UserFrontView.php');
@@ -23,6 +25,18 @@
         const STATUS_HAS_TO_ACTIVATE = 2;
         const STATUS_BLOCKED = 3;
         const STATUS_DELETED = 4;
+        
+        const DATA_TYPE_INT = 0;
+        const DATA_TYPE_STRING = 1;
+        const DATA_TYPE_CHECKBOX = 2;
+        const DATA_TYPE_DROPDWN = 3;
+        const DATA_TYPE_IMAGE = 4;
+        const DATA_TYPE_EMAIL = 5;
+        const DATA_TYPE_TEXT = 6;
+        
+        const VISIBILITY_HIDDEN = 0;
+        const VISIBILITY_VISIBLE = 1;
+        const VISIBILITY_FORCED = 2;
         
          function __construct(){
         	$this->name = 'User';
@@ -66,6 +80,16 @@
 					$target = isset($args['target']) ? $args['target'] : '';
 					return $this->viewFront->tplLogin($target);
 					break;
+          		case 'user_menu':
+          			return $this->viewFront->tplUserMenu();
+          			break;
+          		case 'register_form':
+          			$group = (isset($args['group'])) ? $args['group'] : '';
+          			return $this->viewFront->tplRegister($group);
+          			break;
+          		case 'confirm_form':
+          			return '--confirm--';
+          			break;
           		default:
           			return 'idk';
           			break;
@@ -90,7 +114,7 @@
             		return $this->viewAdmin->tplUserEdit($id);
                		break;
             	case 'new_user':
-            		return 'new_user';
+            		return $this->viewAdmin->tplUserNew($id);
             		break;
             	case 'usergroup':
             		return 'usergroup';
@@ -102,7 +126,7 @@
             		return 'new_usergroup';
             		break;
             	case 'userdata':
-            		return 'userdata';
+            		return $this->viewAdmin->tplUserData($page);
             		break;
             	/* --- profile --- */
             	case 'profile':
@@ -206,10 +230,38 @@
          		case 'register':
          			$nick = isset($args['nick']) ? $args['nick'] : '';
          			$pwd = isset($args['pwd']) ? $args['pwd'] : '';
+         			$pwd2 = isset($args['pwd2']) ? $args['pwd2'] : '';
          			$email = isset($args['email']) ? $args['email'] : '';
          			$group = isset($args['group']) ? $args['group'] : '';
          			
-         			return $this->register($nick, $pwd, $email, $group);
+         			return $this->register($nick, $email, $group, $pwd, $pwd2);
+         			break;
+         		case 'newUser':
+         			$nick = isset($args['nick']) ? $args['nick'] : '';
+         			$pwd = isset($args['pwd']) ? $args['pwd'] : '';
+         			$pwd2 = isset($args['pwd2']) ? $args['pwd2'] : '';
+         			$email = isset($args['email']) ? $args['email'] : '';
+         			$group = isset($args['group']) ? $args['group'] : '';
+         			$status = isset($args['status']) ? $args['status'] : '';
+         			
+    				if($this->checkRight('administer_user') && $this->checkRight('administer_group', $_POST['eu_group'])){
+    					
+    					$nId = $this->register($nick, $mail, $group, $pwd, $pwd2, $status);
+    					if($nId !== false){
+    						return $nId;
+    					} else return false;
+    				} else {
+    					$this->_msg($this->_('You are not authorized', 'core'), Messages::ERROR);
+    					return false;
+    				}
+         			break;
+         		case 'activateRegistration':
+         			$code = isset($args['code']) ? $args['code'] : '';
+         			return $this->dataHelper->activateRegistration($code);
+         			break;
+         		case 'rejectRegistration':
+         			$code = isset($args['code']) ? $args['code'] : '';
+         			return $this->dataHelper->rejectRegistration($code);
          			break;
          	}
          }
@@ -248,10 +300,20 @@
 		    			break;
 		    		/*case 'upload':
 		    			$this->executeNewProfileImage();
-		    			break;
-		    		case 'newUser':
-		    			$this->executeNewUser();
 		    			break;*/
+		    		case 'newUser':
+		    			//TODO: save data if error 
+		    			if(isset($_POST['eu_nick']) && isset($_POST['eu_mail']) && isset($_POST['eu_status']) && isset($_POST['eu_group']) && isset($_POST['eu_pwd_new']) && isset($_POST['eu_pwd_new2'])){
+		    				if($this->checkRight('administer_user') && $this->checkRight('administer_group', $_POST['eu_group'])){
+		    					
+		    					$nId = $this->register($_POST['eu_nick'], $_POST['eu_mail'], $_POST['eu_group'], $_POST['eu_pwd_new'], $_POST['eu_pwd_new2'], $_POST['eu_status']);
+		    					if($nId !== false){
+		    						if(isset($_POST['back_link'])) header('Location: '.$_SERVER["HTTP_REFERER"].$_POST['back_link'].$nId.'/');
+		    						else return true;
+		    					}
+		    				} else $this->_msg($this->_('You are not authorized', 'core'), Messages::ERROR);
+		    			}
+		    			break;
 		    		default:
 		    			break;
 		    	}
@@ -265,7 +327,7 @@
          * @param unknown_type $pwd
          */
         private function rightPwd($nick, $pwd){
-        	$hash = $this->dataHelper->getUserHashByNick($nick);
+        	$hash = ($this->_setting('no_nick_needed')) ? $this->dataHelper->getUserHashByEMail($nick) : $this->dataHelper->getUserHashByNick($nick);
         	if($hash != ''){
         		$salt = substr($hash, strpos($hash, '#')+1);
 
@@ -282,7 +344,7 @@
          */
         public function login($nick, $pwd){
         	if($this->rightPwd($nick, $pwd)){        			
-        		$u = $this->dataHelper->getUserByNick($nick);
+        		$u = ($this->_setting('no_nick_needed')) ? $this->dataHelper->getUserByEMail($nick) : $this->dataHelper->getUserByNick($nick);
         		switch($u->getStatus()){
         			case self::STATUS_ACTIVE:
         				$this->setLoggedInUser($u);
@@ -300,6 +362,10 @@
 		        		if($this->getLoggedInUser()->getGroup()->getName() == 'root' && $pwd=='root'){
 		        			$_SESSION['User']['defaultPwd'] = 'true';
 		        		}
+		        		
+		        		$this->dataHelper->setLastLogin();
+		        		
+		        		$this->_msg($this->_('_login success', 'core'), Messages::INFO);
 		        		return true;
         				break;
         			case self::STATUS_BLOCKED:
@@ -338,8 +404,16 @@
         	return true;
          }
          
-    	public function register($nick, $pwd, $email, $group, $status=User::STATUS_HAS_TO_ACTIVATE){
-        	return $this->dataHelper->register($nick, $pwd, $email, $group, $status);
+    	public function register($nick, $email, $group, $pwd, $pwd2, $status=User::STATUS_HAS_TO_ACTIVATE, $data=array()){
+        	return $this->dataHelper->register($nick, $email, $group, $pwd, $pwd2, $status, $data);
+        }
+        
+        /**
+         * checks POST data and returnes true if all Data is valid
+         * @param unknown_type $group
+         */
+        public function checkRegisterData($group){
+        	return $this->dataHelper->checkRegisterData($group);
         }
          
         /**

@@ -1,0 +1,68 @@
+<h1>Edit Image</h1>
+<div id="edit_image"">
+	<form action="1" method="post" class="ui_form" id="gallery_edit_image_form">
+		<br />
+		{pp:UIWidgets(widget:Hidden, name:id, value:{@pp:id})}
+		{pp:UIWidgets(widget:Hidden, name:action, value:edit_image)}
+		<p class="header">Info</p>
+		<div class="h_sep" id="admin_top_hr" style="margin: -5px 0px 5px 0px;">
+			<span class="left">&nbsp;</span>
+			<span class="right">&nbsp;</span>
+			<span class="center">&nbsp;</span>
+		</div>
+		<p>
+			{pp:UIWidgets("widget":"InputField", "name":"name", "value":"{@pp:name}", "label":"Title", "style":"width: 300px;")}
+		</p>
+		<p>
+			{pp:UIWidgets("widget":"Text", "name":"shot_date", "value":"{@pp:shot_date}", "label":"Shot date", "style":"width: 300px;")}
+		</p>
+		<p>
+			{@pp:status}
+		</p>
+		<pp:dynamic name="meta_groups">
+			<p class="header">{@pp:name}</p>
+			<div class="h_sep" id="admin_top_hr" style="margin: -5px 0px 5px 0px;">
+				<span class="left">&nbsp;</span>
+				<span class="right">&nbsp;</span>
+				<span class="center">&nbsp;</span>
+			</div>
+			<pp:dynamic name="meta_item">
+			<p>
+				<pp:dynamic name="checkbox_fix">
+				{pp:UIWidgets(widget:Hidden, name:meta[{@pp:group}][{@pp:id}], value:off)}
+				</pp:dynamic>
+				{pp:UIWidgets("widget":"{@pp:type}", "name":"meta[{@pp:group}][{@pp:id}]", "checked":"{@pp:checked}", "value":"{@pp:value}", "label":"{@pp:label}", "id":"meta_{@pp:group}_{@pp:id}", "style":"width: 300px;")}
+			</p>
+			</pp:dynamic>
+		</pp:dynamic>
+		<!-- 
+		<p class="header">Shop</p>
+		<p>
+			{pp:UIWidgets(widget:Checkbox, name:shop_enabled, selected:{@pp:selected}, label:Show in shop)}
+		</p>
+		<p>
+			{pp:UIWidgets(widget:InputField, name:shop_price, value:{@pp:price}, label:Price)}
+		</p>
+		 -->
+		<br />
+		<p>
+			{pp:UIWidgets(widget:Button, type:submit, label:&nbsp;, value:&nbsp;&nbsp;&nbsp;Submit&nbsp;&nbsp;&nbsp;)}
+			{pp:UIWidgets(widget:Button, type:reset, value:&nbsp;&nbsp;&nbsp;Reset&nbsp;&nbsp;&nbsp;)}
+			<pp:dynamic name="ajax_button">
+				<span style="float: right; display: block;">{pp:UIWidgets(widget:Button, value:&nbsp;&nbsp;&nbsp;Cancel&nbsp;&nbsp;&nbsp;, id:ajax_cancel_button, type:button)}</span>
+				<script type="text/javascript">
+					$(document).ready(function () {
+						$('#ajax_cancel_button').click(close_edit_image_form);
+					});
+				</script>
+			</pp:dynamic>
+		</p>
+	</form>
+</div>
+<script type="text/javascript">
+	<!--
+		$(document).ready( function () {
+			$('#gallery_edit_image_form').get(0).setAttribute('action', '{@pp:link}#'+$.address.path());
+		});
+	//-->
+</script>

@@ -1,0 +1,84 @@
+<span id="loading_upload" style="float: right; padding: 7px; display: none;"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/loading.gif" style="margin-bottom: -3px;"/></span>
+<h1>Bilderupload</h1>
+<br />
+<div class="h_sep" id="admin_top_hr" style="margin: -5px 0px 5px 0px;">
+	<span class="left">&nbsp;</span>
+	<span class="right">&nbsp;</span>
+	<span class="center">&nbsp;</span>
+</div><br />
+<form enctype="multipart/form-data" action="{@pp:link}" method="post" name="Bilderupload" class="ui_form" id="gallery_upload_form">
+	{pp:UIWidgets(widget:Hidden, name:action, value:upload)}
+	<p>
+		{@pp:albums_select}
+		<span id="new_album_name">{pp:UIWidgets("widget":"InputField", "name":"new_album", "id":"new_album_name_input", "class":"small input")}</span>
+	</p>
+	<p>
+		<span id="folder_p" class="input">&nbsp;</span>
+		<span id="new_folder_name">{pp:UIWidgets("widget":"InputField", "name":"new_folder", "id":"new_folder_name_input", "class":"small input")}</span>
+	</p>
+	<span class="uiwidget_label" style="margin-bottom: -20px; display: inline-block; margin-top: 17px;">Bilder:</span>
+	{pp:UIWidgets(widget:Fileupload, name:files[], id:upload, max_file_size:{@pp:max_file_size}, max_uploads:{@pp:max_uploads}, type:{@pp:types})}
+	<br />
+	<p>
+		{pp:UIWidgets(widget:Button, type:submit, label:&nbsp;, value:&nbsp;&nbsp;&nbsp;Upload&nbsp;&nbsp;&nbsp;)}
+		{pp:UIWidgets(widget:Button, type:reset, value:&nbsp;&nbsp;&nbsp;Zur&uuml;cksetzen&nbsp;&nbsp;&nbsp;)}
+		<pp:dynamic name="ajax_button">
+			<span style="float: right; display: block;">{pp:UIWidgets(widget:Button, value:&nbsp;&nbsp;&nbsp;Abbrechen&nbsp;&nbsp;&nbsp;, id:ajax_cancel_button, type:button)}</span>
+			<script type="text/javascript">
+				$(document).ready(function () {
+					$('#ajax_cancel_button').click(close_upload_form);
+				});
+			</script>
+		</pp:dynamic>
+	</p>
+</form>
+<script type="text/javascript">
+	<!--
+		$('#albums').change(function () {
+			if($(this).val() == -1) {$('#new_album_name').show(); $('#folder_p').parent().hide(); }
+			else {
+				$('#new_album_name').hide();
+				$('#folder_p').parent().show();
+				$('#loading_upload').show();
+				getService('Gallery', 'admin', 'args[action]=get_folderselect&args[id]='+$(this).val(), 
+						function (msg) {
+							updateFoldersDropdown(msg);
+							hideAdminLoadingDiv();
+							$('#loading_upload').hide();
+						});
+			}
+		});
+		
+		$(document).ready(function () {
+			if($('#albums').val() == -1 && active_album != -1) $('#albums').val(active_album).trigger('change');
+			if($('#albums').val() == -1) {$('#new_album_name').show(); $('#folder_p').parent().hide();}
+			else {
+				$('#new_album_name').hide();
+				$('#folder_p').parent().show();
+				$('#loading_upload').show();
+				getService('Gallery', 'admin', 'args[action]=get_folderselect&args[id]='+$('#albums').val(), 
+						function (msg) {
+							updateFoldersDropdown(msg);
+							hideAdminLoadingDiv();
+							$('#loading_upload').hide();
+						});
+			}
+			$('#gallery_upload_form').get(0).setAttribute('action', '{@pp:link}#'+$.address.path());
+		});
+
+		function updateFoldersDropdown(msg) {
+			//enter html
+			$('#folder_p').html(msg);
+
+			//add change function
+			$('#folders').change(function () {
+				if($(this).val() == -2) {$('#new_folder_name').show();}
+				else $('#new_folder_name').hide();
+			});
+
+			//set to starting value
+			if(active_folder != -1 && active_album == $('#albums').val()) $('#folders').val(active_folder).trigger('change');
+			else $('#folders').val(-1).trigger('change');
+		}
+	//-->
+</script>

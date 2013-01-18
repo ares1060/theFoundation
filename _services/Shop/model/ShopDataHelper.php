@@ -31,17 +31,17 @@
 		public function getProducts($page=-1, $status=-1, $cat_id=-1) {
 			// get count of all products
 			$count = $this->getProductCount($status);
-			
-			// create status and category string 
-			$status = ($status == -1) ? '' : 'WHERE `status`="'.mysql_real_escape_string($status).'"';
-			$cat = ($cat_id == -1) ? '' : ' `cat`="'.mysql_real_escape_string($cat_id).'"';
-			$cat =  ($cat_id == -1) ? '' : (($status == '') ? 'WHERE '.$cat : ' AND '.$cat);
+
+			// create user, status and category string 
+			$user = 'WHERE `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"';
+			$status = ($status == -1) ? '' : ' AND `status`="'.mysql_real_escape_string($status).'"';
+			$cat = ($cat_id == -1) ? '' : ' AND `cat`="'.mysql_real_escape_string($cat_id).'"';
 
 			// create limit string
 			$per_page = $this->_setting('admin.per_page.products');
         	$limit = ($page == -1) ? '' : 'LIMIT '.(mysql_real_escape_string($page-1)*mysql_real_escape_string($per_page)).', '.mysql_real_escape_string($per_page).';';
 
-        	$pp = $this->mysqlArray('SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'shop_products` '.$status.$cat.' '.$limit);
+        	$pp = $this->mysqlArray('SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'shop_products` '.$user.$status.$cat.' '.$limit);
 
         	if($pp != ''){
 				$return = array();
@@ -58,9 +58,10 @@
 		 * @param unknown_type $status
 		 */
 		public function getProductCount($status=-1){
-			$status = ($status == -1) ? '' : 'WHERE `status`="'.mysql_real_escape_string($status).'"';
+			$user = 'WHERE `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"';
+			$status = ($status == -1) ? '' : ' AND `status`="'.mysql_real_escape_string($status).'"';
 			
-			$p = $this->mysqlRow('SELECT COUNT(*) myCount FROM `'.$GLOBALS['db']['db_prefix'].'shop_products` '.$status);
+			$p = $this->mysqlRow('SELECT COUNT(*) myCount FROM `'.$GLOBALS['db']['db_prefix'].'shop_products` '.$user.$status);
 			if($p != ''){
 				return $p['myCount'];
 			} else return 0;
@@ -137,12 +138,13 @@
 		public function newProduct($status, $name, $desc, $price, $weight, $stock, $download, $dimensions){
 			if($this->checkRight('add_product')){
 				// TODO: check dimensions pregmatch
-				
+
 				$n_id = $this->mysqlInsert('INSERT `'.$GLOBALS['db']['db_prefix'].'shop_products` SET
 											`status`="'.mysql_real_escape_string($status).'",
 											`name`="'.$this->sp->ref('TextFunctions')->renderUmlaute(mysql_real_escape_string($name)).'",
 											`desc`="'.$this->sp->ref('TextFunctions')->renderUmlaute(mysql_real_escape_string($desc)).'",
 											`price`="'.mysql_real_escape_string($price).'",
+											`u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'",
 											`weight`="'.mysql_real_escape_string($weight).'",
 											`stock`="'.mysql_real_escape_string($stock).'",
 											`download`="'.(mysql_real_escape_string(($download) ? '1' : '0')).'",
@@ -154,7 +156,7 @@
 					$this->sp->ref('Gallery')->newFolder('product_'.$n_id, $this->_setting('gallery_album_id'), '', Gallery::STATUS_ONLINE);
 					
 					// authorize User to edit Product
-					$this->sp->ref('Rights')->authorizeUser('Shop', $_SESSION['User']['id'], 'administer_product', $n_id);
+					$this->sp->ref('Rights')->authorizeUser('Shop', $this->sp->ref('User')->getViewingUser()->getId(), 'administer_product', $n_id);
 					
 					return $n_id;
 				} else return false;
@@ -171,7 +173,7 @@
 		 */
 		public function deleteProduct($id) {
 			if($this->checkRight('administer_product', $id)){
-				$this->sp->ref('Gallery')->deleteFolder($this->sp->ref('Gallery')->getFolderByNameAndAlbum('product_'.$id, $this->_settings('gallery_album_id'))->getId());
+				$this->sp->ref('Gallery')->deleteFolder($this->sp->ref('Gallery')->getFolderByNameAndAlbum('product_'.$id, $this->_setting('gallery_album_id'))->getId());
 								
 				$this->sp->ref('Tags')->deleteServiceTags('Shop', $id);
 				

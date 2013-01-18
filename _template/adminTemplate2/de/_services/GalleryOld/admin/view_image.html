@@ -1,0 +1,101 @@
+
+<div id="image_title">
+	<!-- <span id="image_infos" style="float: right;">
+		<span id="navigation">
+			<pp:dynamic name="-prev_nExists"><span class="nav" id="prev_image">&lt;</span></pp:dynamic>
+			<pp:dynamic name="-prev_exists"><a href="javascript:void(0);" onclick="$.address.path('/album/'+active_album+'/page/'+active_page+'/image/'+{@pp:prevImageId});"><span class="nav" id="-prev_image">&lt;</span></a></pp:dynamic>
+			<pp:dynamic name="-next_nExists"><span class="nav" id="next_image">&gt;</span></pp:dynamic>
+			<pp:dynamic name="-next_exists"><a href="javascript:void(0);" onclick="$.address.path('/album/'+active_album+'/page/'+active_page+'/image/'+{@pp:nextImageId});"><span class="nav" id="next_image">&gt;</span></a></pp:dynamic>
+		</span>
+		Uploaded at {@pp:date}
+	</span> -->
+	<div class="left"><button class="small button" href="javascript:void(0);" onclick="unsetAdressPath(new Array('image'));"  id="image_backlink"><span>Zur&uuml;ck</span></button></div>
+	<div class="right">
+		<span id="navigation">
+			<pp:dynamic name="prev_nExists"><span class="nav" id="prev_image">&lt;</span></pp:dynamic>
+			<pp:dynamic name="prev_exists"><button class="button small" href="javascript:void(0);" onclick="setAdressPathKey('image', '{@pp:prevImageId}');"><span id="prev_image">&lt;</span></button></pp:dynamic>
+			<pp:dynamic name="next_nExists"><span class="nav" id="next_image">&gt;</span></pp:dynamic>
+			<pp:dynamic name="next_exists"><button class="button small" href="javascript:void(0);" onclick="setAdressPathKey('image', '{@pp:nextImageId}');"><span id="next_image">&gt;</span></button></pp:dynamic>
+		</span>
+	</div>
+	<div class="center">{@pp:name}</div>
+</div>
+<div id="image_div">
+	<div id="show_gallery_view_image_infos"><a href="javascript:void(0);" onclick="$('#gallery_view_image_infos').toggle();"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/gallery/info.png" /></a></div>
+	<div id="gallery_view_image_infos">
+		<div class="info">
+			<p>
+				<span class="label">Name:</span>
+				<span>{@pp:name}</span>
+			</p>
+			<p>
+				<span class="label">Path:</span>
+				<span>{@pp:path}</span>
+			</p>
+			<p>
+				<span class="label">Id:</span>
+				<span>{@pp:id}</span>
+			</p>
+			<p>
+				<span class="label">Status:</span>
+				<span>{@pp:status} <img src="{@pp:root}{@pp:tpl_root_folder}/img/gallery/status/{@pp:status}.png" class="inline_image"/></span>
+			</p>
+			<p>
+				<span class="label">Uploaded at:</span>
+				<span>{@pp:date}</span>
+			</p>
+			<p>
+				<span class="label">Uploaded by:</span>
+				<span>{@pp:user}</span>
+			</p>
+			<p>
+				<span class="label">Original size:</span>
+				<span>{@pp:width}x{@pp:height}</span>
+			</p>
+			<p>
+				<span class="label">Description:</span>
+				<span>{@pp:desc}</span>
+			</p>
+		</div>
+	</div>
+	<div id="gallery_view_image_wrapper_table">
+		<div id="gallery_view_image_wrapper">
+			<div id="gallery_view_image_content">
+				<img src="{@pp:root}{@pp:tpl_root_folder}/img/loading.gif" id="image_loading"/>
+				<img src="{@pp:root}_core/getImage.php?path={@pp:path}&height=600&width=800" id="gallery_view_image_image"/>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	<!--
+		$(document).ready(function () {
+			$('#image_title').show();
+			$('#gallery_view_image_infos').width($('#gallery_view_image_image').width());
+			$('#gallery_view_image_image').load(function () {
+				$('#image_loading').hide();
+				if($(this).width() > 100) $('#gallery_view_image_infos').width($('#gallery_view_image_image').width());
+				else $('#gallery_view_image_infos').width('100%');
+			});
+		});
+
+		$(window).keydown(function(evt) {
+			//$('#debug').html(evt.which);
+			if(evt.which==37) { // left arrow
+				if($('#prev_image').parent()[0].tagName == 'A') $('#prev_image').click();
+			}
+			if(evt.which==39) { // left arrow
+				if($('#next_image').parent()[0].tagName == 'A') $('#next_image').click();
+			}
+			if(evt.which==27) { // escape
+				window.setTimeout('back()', 100); // timeout because of performance bug??
+				//alert('asdf');
+			}
+		});
+	
+		function back() {
+			$.address.path('/album/'+active_album+'/page/'+active_page);
+		}
+		
+	//-->
+</script>

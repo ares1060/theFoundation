@@ -1,5 +1,5 @@
 <div id="products_actions" class="admincenter_actions">
-	<button class="button small" onclick="setAdressPathKey('action', 'new'); return false;"><span>Neues Produkt</span></button>
+	<button class="button small" onclick="tfaddress.editPath({set:{action:'new'}, unset:['id']}); return false;"><span>Neues Produkt</span></button>
 </div>
 {pp:Pagina("count":"{@pp:pagina_count}", "active":"{@pp:pagina_active}", "url":"JavaScript:setAdressPathKey('page', '{page}');", "template":"pagina_modern")}<br />
 <div class="tf_table">
@@ -50,10 +50,20 @@
 <br /><br />
 <script type="text/javascript">
 	function deleteProduct(id) {
-		showAdminLoadingDiv();
-		getService('Shop', 'admin', 'args[action]=deleteProduct&args[id]='+id+'&noMsg=true', 
-				function (msg) {
-					updateDeeplink();
-				});
+		tf.showAdminLoading();
+		tf.getService({
+			service: 'Shop',
+			method: 'admin', 
+			args: {
+				action:'deleteProduct',
+				id:id,
+				noMsg:true
+			},
+			handle: function (msg) {
+				if(msg == "true") {
+					tfaddress.reloadPath();
+				} 
+			}
+		});
 	}
 </script>

@@ -5,40 +5,97 @@
 		private $path;
 		private $hash;
 		private $status;
-		private $date;
-		private $userId;
-		private $meta;
-		private $shotDate;
+		private $uId;
+		private $creationDate;
+		private $size;
 		
-		function __construct($id, $name, $path, $hash, $status, $date, $userId, $shot_date=null){
+		private $folders;
+
+		function GalleryImage($id, $name, $path, $hash, $status, $uId, $creationDate, $size){
 			$this->id = $id;
 			$this->name = $name;
 			$this->path = $path;
 			$this->hash = $hash;
+			$this->uId = $uId;
+			$this->creationDate = $creationDate;
+			$this->size = $size;
+		}
+		
+		function addToFolder($folderId){
+			$this->folders[] = $folderId;
+		}
+		
+		//Getter + Setter
+		function getFolders () {
+			return $this->folders;
+		}
+		
+		function setFolders ($folders) {
+			$this->folders = $folders;
+		}
+		
+		function getSize () {
+			return $this->size;
+		}
+		
+		function setSize ($size) {
+			$this->size = $size;
+		}
+		
+		function getCreationDate () {
+			return $this->creationDate;
+		}
+		
+		function setCreationDate ($creationDate) {
+			$this->creationDate = $creationDate;
+		}
+		
+		function getUId () {
+			return $this->uId;
+		}
+		
+		function setUId ($uId) {
+			$this->uId = $uId;
+		}
+		
+		function getStatus () {
+			return $this->status;
+		}
+		
+		function setStatus ($status) {
 			$this->status = $status;
-			$this->date = $date;
-			$this->userId = $userId;
-			$this->shotDate = $shot_date;
-			$this->meta = array();
-		}
-		/* -- setters -- */
-		public function addMeta($meta){
-			$this->meta[] = $meta;
 		}
 		
-		public function addMetas($metas){
-			foreach($metas as $meta) $this->addMeta($meta);
+		function getHash () {
+			return $this->hash;
 		}
 		
-		/* -- getters -- */
-		public function getId() {return $this->id;}
-		public function getName() {return $this->name;}
-		public function getPath() {return $this->path;}
-		public function getHash() {return $this->hash;}
-		public function getStatus() {return $this->status;}
-		public function getUploadDate() {return $this->date;}
-		public function getUserId() {return $this->userId;}
-		public function getMeta() {return $this->meta;}
-		public function getShotDate() {return $this->shotDate;}
+		function setHash ($hash) {
+			$this->hash = $hash;
+		}
+		
+		function getPath () {
+			return $this->path;
+		}
+		
+		function setPath ($path) {
+			$this->path = $path;
+		}
+		
+		function getName () {
+			return $this->name;
+		}
+		
+		function setName ($name) {
+			$this->name = $name;
+		}
+		
+		function getId () {
+			return $this->id;
+		}
+		
+		function setId ($id) {
+			$this->id = $id;
+		}
 	}
 ?>

@@ -17,7 +17,7 @@
 		 * 
 		 */
 		public function tplCart() {
-			$tpl = new ViewDescriptor($this->_setting('tpl.view/cart', 'tpl'));
+			$tpl = new ViewDescriptor($this->_setting('tpl.view/cart'));
 			if(!$this->cart->cartIsEmpty()){
 				$t = new SubViewDescriptor('something');
 				
@@ -56,7 +56,8 @@
 		 * 
 		 */
 		public function tplCartSmall() {
-			$tpl = new ViewDescriptor($this->_setting('tpl.view/cart_small', 'tpl'));
+			$tpl = new ViewDescriptor($this->_setting('tpl.view/cart_small'));
+			error_log($this->_setting('tpl.view/cart_small'));
 			if(!$this->cart->cartIsEmpty()){
 				$t = new SubViewDescriptor('something_is_here');
 				

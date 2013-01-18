@@ -1,0 +1,56 @@
+<pp:dynamic name="root">
+<div id="gallery_root_div">
+	Benutzer: {@pp:user}<br />
+	Types: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select id="typeselect">
+		<option name="type" value="0">Normale Alben</option>
+		<option name="type" value="1">Service Alben</option>
+	</select>
+</div>
+<script type="text/javascript">
+	$('#user_groups').change(function () {
+		setAdressPathKey('special', 'user');
+		setAdressPathKey('sid', $(this).val());
+	});
+	$('#typeselect').change(function () {
+		alert($(this).val());
+	});
+</script>
+</pp:dynamic>
+<pp:dynamic name="pagina">
+<div id="pagina_top">
+	<div class="h_sep_down" id="admin_top_hr" style="margin: 0px -30px 0px -5px;">
+		<span class="left">&nbsp;</span>
+		<span class="right">&nbsp;</span>
+		<span class="center">&nbsp;</span>
+	</div>
+	<div class="right" style="margin-right: -30px;">{pp:Pagina("count":"{@pp:pagina_count}", "active":"{@pp:pagina_active}", "url":"JavaScript:setAdressPathKey('aPage', '{page}');")}</div>
+	<div class="h_sep" id="admin_top_hr" style="margin: -4px -30px 5px -5px;">
+		<span class="left">&nbsp;</span>
+		<span class="right">&nbsp;</span>
+		<span class="center">&nbsp;</span>
+	</div>
+</div>
+</pp:dynamic>
+<h2>Albums</h2>
+<ul>
+	<li class="header">
+		<ul>
+			<pp:dynamic name="albums">
+				<li {@pp:selected} id="album_sidebar-{@pp:id}">
+					<a href="javascript:void(0);" onclick="unsetAdressPath(new Array('image', 'folder', 'page')); setAdressPathKey('album', '{@pp:id}');" <pp:dynamic name="hidden">class="hidden"</pp:dynamic>>{@pp:name}
+						<span class="album_actions">
+							<pp:dynamic name="password"> <span class="hidden"><img src="{@pp:root}{@pp:tpl_root_folder}/img/gallery/status_password.png" alt="password protected" title="password protected"/></span></pp:dynamic>
+						</span>
+					</a>
+					<pp:dynamic name="folder_exists">
+						<ul class="album_folders">
+						<pp:dynamic name="folders">
+							<li id="album_{@pp:a_id}_folder-{@pp:id}"><a href="javascript:void(0);" onclick="unsetAdressPath(new Array('image', 'page'));setAdressPathKey('folder', '{@pp:id}');" >{@pp:name}</a></li>
+						</pp:dynamic>
+						</ul>
+					</pp:dynamic>
+				</li>
+			</pp:dynamic>
+		</ul>
+	</li>
+</ul>

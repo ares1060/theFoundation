@@ -1,0 +1,32 @@
+@CHARSET "UTF-8";
+#admin_image_block {
+	position: absolute;
+	left: 250px;
+	right: 0px;
+	top: 66px; /* height of menu */
+	bottom: 3px;
+	
+	background: #222;
+	
+	border: 1px solid black;	
+	max-height: 800px;
+	
+	box-shadow: 0px 0px 50px 50px rgba(0,0,0,.1) inset, 0px 0px 2px 2px rgba(0,0,0,.6) inset;
+}
+#admin_sidemenu_block{
+	float: left;
+	height: auto;
+	max-height: 775px;
+
+	width: 250px;
+	overflow-y: auto;
+	overflow-x:auto;
+	margin-bottom: 25px;
+}
+#admin_sidemenu {
+	padding: 5px;	
+}
+#admin_sidemenu  ul { list-style: none; }
+#admin_sidemenu  ul li {
+	padding: 5px 10px;	
+}

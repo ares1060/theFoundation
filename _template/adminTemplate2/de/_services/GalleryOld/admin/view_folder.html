@@ -1,0 +1,187 @@
+<div id="pagina_top">
+	<div class="left">
+		<button style="float: left;" class="small button" href="javascript:void(0);" onclick="unsetAdressPath(new Array('folder', 'fpage'));"  id="image_backlink"><span>Zur&uuml;ck</span></button>
+		<div class="button_dropdown"  style="float: left; margin-left: 10px;">
+			<button name="sortierung" class="button small" onclick="tf_showDropdown('gallery_dropdown_sort');" id="gallery_dropdown_sort_btn">
+				<span><span class="text">.</span><div class="dropdown_arrow"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/interface/dropdown_arrows.png"/></div></span>
+			</button>
+			<ul class="button_dropdown_option" id="gallery_dropdown_sort">
+				<li id="gallery_dropdown_sort_date"><a href="javascript:void(0);" onclick="setSort('date', active_sortDA);"><span class="front">&nbsp;</span>Datum</a></li>
+				<li id="gallery_dropdown_sort_name"><a href="javascript:void(0);" onclick="setSort('name', active_sortDA);"><span class="front">&nbsp;</span>Name</a></li>
+				<li class="seperator">&nbsp;</li>
+				<li id="gallery_dropdown_sort_asc"><a href="javascript:void(0);" onclick="setSort(active_sort, 'asc');"><span class="front">&nbsp;</span>Aufsteigend</a></li>
+				<li id="gallery_dropdown_sort_desc"><a href="javascript:void(0);" onclick="setSort(active_sort, 'desc');"><span class="front">&nbsp;</span>Absteigend</a></li>
+			</ul>
+		</div>
+		<!--<div class="button_dropdown" style="float: left;">
+			<button name="Aufsteigend" class="button_right small" id="gallery_dropdown_sortDA_btn">
+				<span>.</span>
+			</button>
+		</div>-->
+	</div>
+	<div class="right">
+		{pp:Pagina("count":"{@pp:pagina_count}", "active":"{@pp:pagina_active}", "url":"JavaScript:setAdressPathKey('page', '{page}');", "template":"pagina_normal")}
+	</div>
+	<div class="center">{@pp:image_count} Bilder</div>
+</div>
+<div id="album_div">
+	<pp:dynamic name="no_images"><div id="no_images">Noch keine Bilder vorhanden</div></pp:dynamic>
+	<pp:dynamic name="images">
+		<!-- do not change ids or classes - used by scripts -->
+		<div class="image" id="image-{@pp:id}">
+			<div class="img_wrapper_main">
+				<div class="img_wrapper">
+					<pp:dynamic name="offline">
+						<div class="offline">Versteckt</div>
+					</pp:dynamic>
+					<img src="{@pp:root}_core/getImage.php?path={@pp:path}&height=140&width=140" class="img"/>	
+					<div class="img_meta_field">
+						<ul>
+						<pp:dynamic name="shop">
+							<!-- <li><img src="{@pp:root}{@pp:tpl_root_folder}/img/gallery/actions/shop.png" /></li> -->
+						</pp:dynamic>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="info">
+				<strong>{@pp:short_name}</strong><br />
+				Id: {@pp:id}
+			</div>
+		</div>
+	</pp:dynamic>
+</div>
+<script type="text/javascript">
+	<!--
+		var pagina_count = {@pp:pagina_count};
+		var shiftPressed = false;
+		var ctrlPressed = false;
+		var cmdPressed = false;
+		var lastSelected;
+		
+		$(document).ready(function() {
+			setSort(active_sort, active_sortDA);
+
+			if(pagina_count > 1) $('#pagina_top').slideDown();
+			
+			$('#album_div > .image > .img_wrapper_main > .img_wrapper > .img').each(function () {
+				$(this).contextMenu('context_menu_'+$(this).parent().parent().parent().attr('id'), {}, {showMenu: function () {loadContextContent(this);}, hideMenu: contextClosed});
+			});
+			$('#album_div > .image').hover(
+								function () {
+										$(this).children('.info').slideDown(80);
+								}, 
+								function () {
+										$(this).children('.info').slideUp(80);
+								}
+			);
+			
+			$('#album_div > .image > .img_wrapper_main > .img_wrapper > .img').click(function (e) {
+				if(!context_open) {
+					if($(this).parent().parent().parent().hasClass('selected')) {
+						// if shiftPressed select more Images
+						if(shiftPressed) {
+							e.preventDefault();
+							deselectAll();
+							selectFromTo(lastSelected, $(this).parent().parent().parent().attr('id'));
+							lastSelected = $(this).parent().parent().parent().attr('id');
+						} else if(cmdPressed || ctrlPressed){
+							e.preventDefault();
+							$(this).parent().parent().parent().removeClass('selected');
+						} else {
+							//$(this).parent().parent().parent().removeClass('selected'); // version one just remove class selected
+							//version 2 select this - unselect others
+							deselectAll();
+							$(this).parent().parent().parent().addClass('selected');
+							lastSelected = $(this).parent().parent().parent().attr('id');
+						}
+					} else {
+						if(!cmdPressed && !ctrlPressed) deselectAll();
+						if(shiftPressed) {
+							e.preventDefault();
+							selectFromTo(lastSelected, $(this).parent().parent().parent().attr('id'));
+						}  else if(cmdPressed || ctrlPressed){
+							e.preventDefault();
+							$(this).parent().parent().parent().addClass('selected');
+						} else {
+							$(this).parent().parent().parent().addClass('selected');
+						}
+						lastSelected = $(this).parent().parent().parent().attr('id');
+					}
+				}
+			});
+			$('#gallery_subcontent').click(function (e) {
+				if(!$(e.target).hasClass('img')){
+					deselectAll();
+					lastSelected = '';
+				}
+			});
+
+			$('#album_div > .image > .img_wrapper_main > .img_wrapper > .img').load(function () {
+				$(this).parent().children('.offline').width($(this).width());
+				if($(this).parent().children('.img_meta_field').children('ul').children('li').size() > 0) {
+					if($(this).height() > 50) $(this).parent().children('.img_meta_field').width($(this).width());
+					else $(this).parent().children('.img_meta_field').width('100%').css('margin-top', '0px');
+					$(this).parent().children('.img_meta_field').show();
+				}
+			});
+			
+			$('#album_div > .image').dblclick(function () {
+				$.address.path($.address.path()+'/image/'+($(this).attr('id')).substr($(this).attr('id').search('-')+1, $(this).attr('id').length));
+				//loadImage(($(this).attr('id')).substr($(this).attr('id').search('-')+1, $(this).attr('id').length));
+			});
+		});
+		
+		/* -- add key track --- */
+		//$(document).bind('keydown', 'shift', function () {shiftPressed = true;});
+		//$(document).bind('keyup', 'shift', function () {shiftPressed = false;});
+		//$(document).bind('keydown', 'cmd + a', function (e) {e.preventDefault();alert('asdf');});
+		$(window).keydown(function(evt) {
+			//alert(evt.which);
+			//alert(evt.currentTarget);
+			if (evt.which == 65 && (cmdPressed || ctrlPressed)) { //cmd/ctrl + a
+				evt.preventDefault();
+				selectAll();
+			}
+			if(evt.which==224) cmdPressed = true;
+			if(evt.which==91) cmdPressed = true; // for safari
+			if (evt.which == 17) ctrlPressed = true;
+			if (evt.which == 57392) ctrlPressed = true; // Opera on Mac
+			if (evt.which == 16) shiftPressed = true;
+		}).keyup(function(evt) {
+			if(evt.which==224) cmdPressed = false;
+			if(evt.which==91) cmdPressed = false; // for safari
+			if (evt.which == 17) ctrlPressed = false;
+			if (evt.which == 57392) ctrlPressed = false; // Opera on Mac
+			if (evt.which == 16) shiftPressed = false;
+		});
+		
+		function deselectAll() {
+			$('#album_div > .image.selected').each(function () {
+				$(this).removeClass('selected');
+			});
+		}
+		
+		function selectFromTo(from, to){
+			if(from != '' && to != '') {
+				var des = '';
+				var finished = false;
+	
+				$('#album_div > .image').each(function () {
+					if(des=='') {
+						if($(this).attr('id') == from) des = to;
+						if($(this).attr('id') == to) des = from;
+						if(des != '') $(this).addClass('selected');
+					} else {
+						if(!finished) $(this).addClass('selected');
+						if($(this).attr('id') == des) finished = true; 
+					}
+				});
+			}
+		}
+
+		function selectAll() {
+			$('#album_div > .image').each(function () {$(this).addClass('selected');});
+		}
+	//-->
+</script>

@@ -1,0 +1,225 @@
+{pp:UIWidgets(widget:Hidden, value:neverMind)}
+<style type="text/css" media="screen">
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/services/gallery_admin.css);
+	@import url({@pp:abs_root}{@pp:tpl_folder}/css/services/pagina.css);
+</style>
+<div id="gallery_overlay" onclick="closeAll()">&nbsp;</div>
+<div id="admin_menu_main">
+	<div id="admin_menu_main_nav">
+		<ul id="right_action">
+			<li id="edit_action"><a href="javascript:void(0);" onclick="openEdit();" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/gallery/edit.png" /><br />Bearbeiten</a>
+				<ul id="edit_action_ul" class="submenu">
+					<li>
+						<div id="edit_action_div" class="action_box">&nbsp;</div>
+					</li>
+				</ul>
+			</li>
+			<li id="delete_action"><a href="javascript:void(0);" onclick="openDelete();" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/gallery/delete.png" /><br />L&ouml;schen</a>
+				<ul id="delete_action_ul" class="submenu">
+					<li id="delete_action_selected_images"><a href="javascript:void(0)" onclick="deleteImages()">Selektierte Bilder l&ouml;schen</a></li>
+					<li id="delete_action_image"><a href="javascript:void(0)" onclick="deleteImage(active_image);">Bild l&ouml;schen</a></li>
+					<li id="delete_action_album"><a href="javascript:void(0)" onclick="deleteAlbum(active_album);">Ordner l&ouml;schen</a></li>
+					<li id="delete_action_album"><a href="javascript:void(0)" onclick="deleteAlbum(active_album);">Album l&ouml;schen</a></li>
+				</ul>
+			</li>
+			<li><a href="javascript:void(0);" class="menu_link" id="blog_admin_action_settings"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/blog/settings.png" /><br />Einstellungen</a></li>
+		</ul>
+		<ul>
+			<li id="upload_action"><a href="javascript:void(0);" onclick="openUpload();" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/gallery/upload.png" /><br />Upload</a>
+				<ul id="upload_ul" class="submenu">
+					<li>
+						<div id="upload_div" class="action_box">&nbsp;</div>
+					</li>
+				</ul>
+			</li>
+			<li class="seperator">&nbsp;</li>
+			<pp:dynamic name="createAlbum">
+			<li id="new_album_action"><a href="javascript:void(0);" onclick="openNewAlbum();" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/gallery/new_album.png" /><br />Neues Album</a>
+				<ul id="new_album_ul" class="submenu">
+					<li>
+						<div id="new_album_div" class="action_box">&nbsp;</div>
+					</li>
+				</ul>
+			</li>
+			</pp:dynamic>
+			<li id="new_folder_action"><a href="javascript:void(0);" onclick="openNewFolder();" class="menu_link"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/gallery/new_folder.png" /><br />Neuer Ordner</a>
+				<ul id="new_folder_ul" class="submenu">
+					<li>
+						<div id="new_folder_div" class="action_box">&nbsp;</div>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<div class="h_sep" id="admin_top_hr" style="margin: -5px -10px 0px -15px;">
+		<span class="left">&nbsp;</span>
+		<span class="right">&nbsp;</span>
+		<span class="center">&nbsp;</span>
+	</div>
+</div>
+<div class="messages" id="tf_msg">{pp:Messages(action:viewType, type:error/info)}</div>
+<div id="gallery_sidebar" class="gallery_sidebar"></div>
+<div id="gallery_subcontent">
+	{@pp:content}
+	<div id="no_album">Noch kein Album erstellt</div>
+</div>
+<script type="text/javascript">
+	<!--
+		var active_page = 1;
+		var active_album = -1;
+		var active_image = -1;
+		var active_folder = -1;
+		var active_album_page = -1;
+		var active_album_special = '';
+		var active_album_sid = -1;
+
+		var resetAlbum = false;
+		
+		var delete_success_msg = '{@pp:delete_success_message}';
+		var delete_error_msg = '{@pp:delete_error_message}';
+		var delete_success_msg_album = '{@pp:delete_success_message_album}';
+		var delete_error_msg_album = '{@pp:delete_error_message_album}';
+		var delete_success_msg_folder = '{@pp:delete_success_message_folder}';
+		var delete_error_msg_folder = '{@pp:delete_error_message_folder}';
+		var set_thumb_success_msg_folder = '{@pp:set_thumb_folder_success}';
+		var set_thumb_error_msg_folder = '{@pp:set_thumb_folder_error}';
+		var set_thumb_success_msg_album = '{@pp:set_thumb_album_success}';
+		var set_thumb_error_msg_album = '{@pp:set_thumb_album_error}';
+
+		var link = '{@pp:link}';
+		var id;
+	
+		/* --- deep link --- */
+		$.address.change(function(event) { updateDeeplinkNew(); });  
+		//$.address.init(function(event) {  updateDeepLink(); });  
+
+		function updateDeeplinkNew() {
+			params = getAdressPathNames();
+			
+			if(params['aPage'] == undefined) { setAdressPathKey('aPage', 1); params = getAdressPathNames(); }
+
+			loadSidebarAlbums(loadContent);
+		}
+
+		function loadContent(){
+			params = getAdressPathNames();
+
+			// check if sidebar has changed
+
+			id = $('#gallery_sidebar > ul > li.header > ul').children(':first').attr('id');
+			if(id == undefined) { 
+				$('#gallery_subcontent').html('<div id="no_album">Noch kein Album erstellt</div>'); 
+			} else {
+				if(params['mode'] == undefined) { $.address.path('/mode/album/album/'+id.substr(id.search('-')+1, id.length)+'/page/1/sort/{@pp:sort}/sortDA/{@pp:sortDA}/'); params = getAdressPathNames();}
+				if(params['album'] == undefined) { setAdressPathKey('album', id.substr(id.search('-')+1, id.length));params = getAdressPathNames(); }
+				if((params['page'] == undefined)) { setAdressPathKey('page', 1); params = getAdressPathNames(); }
+				
+			}
+
+			active_album = params['album'];
+			active_image = params['image'];
+			active_folder = params['folder'];
+			active_page = params['page'];
+			active_sort = params['sort'];
+			active_sortDA = params['sortDA'];
+			
+			
+			if(id != undefined) loadPage();
+			
+		}
+		/*
+		function updateSidebar() {
+			params = getAdressPathNames();
+
+			if(params['aPage'] == undefined) { setAdressPathKey('aPage', 1); params = getAdressPathNames(); }
+			
+			
+			loadSidebarAlbums();
+		}
+		
+		function updateDeepLink() {
+			params = getAdressPathNames();
+			
+			
+
+			//$('#tf_msg').hide();
+			
+		}
+*/
+		function loadPage() {
+			params = getAdressPathNames();
+			
+			$('#admin_blog_main_nav .selected').removeClass('selected');
+
+			if(params['image'] != undefined) { loadImage(params['image']); }
+			else if(params['folder'] != undefined) { loadFolder(params['folder']); }
+			else if(params['album'] != undefined) { loadAlbum(params['album']); }
+			
+			/*if(params['mode'] == 'album' && params['album'] != undefined) { loadAlbum(params['album']); }
+			if(params['mode'] == 'folder' && params['folder'] != undefined) { loadFolder(params['folder']); }
+			if(params['mode'] == 'image' && params['image'] != undefined) { loadImage(params['image']); }*/
+
+			if(params['extra'] == 'upload') { openUpload(); }
+			if(params['extra'] == 'newAlbum') { openNewAlbum(); }
+			if(params['extra'] == 'newFolder') { openNewFolder(); }
+			
+			setSort(params['sort'], params['sortDA']);
+		}	
+		
+	    /* ---- contextMenu sidebar ----- */
+	    $('#gallery_sidebar > ul > li.header > ul > li > a').each(function () {
+			$(this).contextMenu('A_context_menu_sidebar_'+$(this).parent().attr('id'), {}, {showMenu: function (element) {loadContextContentSidebar(this, element);}, hideMenu: contextClosedSidebar});
+		});
+
+	    $('#gallery_sidebar > ul > li.header > ul > li > ul > li > a').each(function () {
+			$(this).contextMenu('F_context_menu_sidebar_'+$(this).parent().attr('id'), {}, {showMenu: function (element) {loadContextContentSidebar(this, element);}, hideMenu: contextClosedSidebar});
+		});
+
+		function loadContextContentSidebar(menu, element) {
+			context_open = true;
+			var id = menu.attr('id').substr(menu.attr('id').search('-')+1, menu.attr('id').length);
+			var type = menu.attr('id').substr(0, 1);
+
+			if(type != 'A') {
+				var aid = element.parent().parent().parent().attr('id');
+				aid = aid.substr(aid.search('-')+1, aid.length);
+				//var aid = menu.parent().parent().attr('id').substr(menu.parent().parent().attr('id').search('-')+1, menu.parent().parent().attr('id').length);
+			}
+			
+			element.addClass('selected');
+			if(type == 'A') menu.html('<li class="context_delete"><a href="javascript:void(0);" onclick="deleteAlbum('+id+');">Album l&ouml;schen</a></li>');
+			else menu.html('<li class="context_delete"><a href="javascript:void(0);" onclick="deleteFolder('+id+', '+aid+');">'+'Ordner l&ouml;schen</a></li>');
+		}
+
+		function contextClosedSidebar() {
+			context_open = false;
+			$('#album_sidebar-'+active_album).parent().children('li').removeClass('selected');
+			$('#album_sidebar-'+active_album).addClass('selected');
+		}
+
+		// --- Sorting functions
+		function setSort(sort, da) {
+			setAdressPathKey('sort', sort);
+			setAdressPathKey('sortDA', da);
+
+			if(sort == 'name') {
+				$('#gallery_dropdown_sort_btn > span > span.text').html('Sort: Name');
+				$('#gallery_dropdown_sort_date > a > span').removeClass('selected');
+				$('#gallery_dropdown_sort_name > a > span').addClass('selected');
+			} else if(sort == 'date') {
+				$('#gallery_dropdown_sort_btn > span > span.text').html('Sort: Datum');
+				$('#gallery_dropdown_sort_name > a > span').removeClass('selected');
+				$('#gallery_dropdown_sort_date > a > span').addClass('selected');
+			}
+			
+			if(da == 'desc') {
+				$('#gallery_dropdown_sort_asc > a > span').removeClass('selected');
+				$('#gallery_dropdown_sort_desc > a > span').addClass('selected');
+			} else if(da == 'asc') {
+				$('#gallery_dropdown_sort_desc > a > span').removeClass('selected');
+				$('#gallery_dropdown_sort_asc > a > span').addClass('selected');
+			}
+			
+		}
+	//-->
+</script>
