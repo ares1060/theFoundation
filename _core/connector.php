@@ -32,6 +32,7 @@
     $args = (isset($_POST['args'])) ? array_merge($_POST['args'], $args) : $args;
     $args = (isset($_GET['args'])) ? array_merge($_GET['args'], $args) : $args;
 
+    if(isset($args['working_dir'])) $GLOBALS['working_dir'] = $args['working_dir'];
     if(isset($args['to_root'])) $GLOBALS['to_root'] =  $args['to_root'];
 	if(isset($args['template'])) $sp->ref('Template')->setTemplate($args['template']);
 	

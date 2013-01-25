@@ -47,6 +47,11 @@
 			}
 			return $return;
 		}
+		
+		public function getUserById($id){
+			return $this->getUser($id);
+		}
+		
 		/**
 		 * returnes count of all users
 		 */
@@ -191,6 +196,18 @@
 			
 		}
 		
+		public function getUserDataByName($name) {
+			$q = $this->mysqlRow('SELECT * FROM '.$GLOBALS['db']['db_prefix'].'userdata WHERE name = "'.mysql_real_escape_string($name).'"');
+			if($q != null){
+				$t = new UserData($q['id'], $q['name'], $this->getUserDataGroupById($q['group']), $q['type'], $q['type'], $q['vis_reg'], $q['vis_login'], $q['vis_edit']);
+				$q = $this->mysqlArray('SELECT * FROM '.$GLOBALS['db']['db_prefix'].'userdata_usergroup WHERE ud_id = "'.mysql_real_escape_string($q['id']).'"');
+				foreach($q as $row){
+					$t->addUserGroup($row['ug_id']);
+				}
+				return $t;
+			}
+		}
+		
 		/**
 		 * returnes UserData object by given id
 		 * is used by UserInfo->loadData(ServiceProvider $sp)
@@ -222,27 +239,32 @@
 					$data_ar[$d['name']] = $d['value'];
 				}
 			}
-// 			print_r($data_ar);
 			return $data_ar;
-// 			$aData = array();
-			
-// 			print_r($user);
-		
-// 			if($data != array() && $data != '') {
-// 				foreach($data as $dat){
-// 					if(!isset($aData[$dat['name']])) {
-// 						$aData[$dat['gName']] = new UserDataGroup($dat['g_id'], $dat['gName'], $dat['beschreibung']);
-// 						/*$aData[$dat['gName']] = array();
-// 						 $aData[$dat['gName']]['data'] = array();
-// 						$aData[$dat['gName']]['id'] = $dat['g_id'];
-// 						$aData[$dat['gName']]['desc'] = $dat['beschreibung'];*/
-// 					}
-// 					$aData[$dat['gName']]->addData(new UserData($dat['d_id'], $dat['dName'], $dat['desc'], $dat['help'], $dat['value'], $dat['type']));
-// 				}
-// 			}
-		
-// 			return $aData;
 		}
+		
+		public function setUserDataByUserIdAndDataName($id, $name, $value){
+			$user = $this->getUser($id);
+			$data = $this->getUserDataByName($name);
+// 			echo 'UPDATE `'.$GLOBALS['db']['db_prefix'].'userdata_user` ud_u 
+// 													LEFT JOIN `'.$GLOBALS['db']['db_prefix'].'userdata` ud ON ud_u.ud_id = ud.id
+// 												SET ud_u.value ="'.mysql_real_escape_string($value).'"
+// 												WHERE ud.name ="'.mysql_real_escape_string($name).'" AND ud_u.u_id="'.mysql_real_escape_string($user->getId()).'"';
+			$query = $this->mysqlRow('SELECT COUNT(*) c FROM `'.$GLOBALS['db']['db_prefix'].'userdata_user` WHERE ud_id ="'.mysql_real_escape_string($data->getId()).'" AND u_id="'.mysql_real_escape_string($user->getId()).'"');
+			
+			if($query) {
+				if($query['c'] > 0) {
+					$query = $this->mysqlUpdate('UPDATE `'.$GLOBALS['db']['db_prefix'].'userdata_user` SET value ="'.mysql_real_escape_string($value).'"
+												WHERE ud_id ="'.mysql_real_escape_string($data->getId()).'" AND u_id="'.mysql_real_escape_string($user->getId()).'"');
+				} else {
+					$query = $this->mysqlUpdate('INSERT INTO `'.$GLOBALS['db']['db_prefix'].'userdata_user` (`value`, `ud_id`, `u_id`) values
+												("'.mysql_real_escape_string($value).'", "'.mysql_real_escape_string($data->getId()).'", "'.mysql_real_escape_string($user->getId()).'")');
+												
+				}
+				
+				return $query;
+			} else return false;
+		}
+		
 		public function getUserData($page=-1, $perPage=-1){
 			$return = array();
         	
@@ -354,6 +376,9 @@
 		    			   					$ok = $ok && $x;
 		    			   				}
 		    			   			}
+		    			   			// create user album
+		    			   			$this->sp->ref('Gallery')->createFolder($this->_setting('user.main_gallery'), 'user_'.$id, Gallery::STATUS_SYSTEM, true); // silent=true
+		    			   			
 		    			   			if($ok) {
 			    			   			if($status == User::STATUS_HAS_TO_ACTIVATE){
 			    			   				$mail = new ViewDescriptor($this->_setting('tpl.activation_mail'));
@@ -365,7 +390,7 @@
 			    			   				$mail->addValue('pwd', $pwd);
 			    			   				$mail->addValue('code', $activate_code);
 			    			   				
-			    			   				if($this->sp->ref('Mail')->send($email, $this->_msg('_Registered EMail'), $mail->render())){
+			    			   				if($this->sp->ref('Mail')->send($email, $this->_('_Registered EMail'), $mail->render())){
 			    			   					$this->_msg($this->_('New user created successfully', 'core'), Messages::INFO);
 			    			   				} else {
 			    			   					$this->_msg($this->_('Activation mail vould not be sent', 'core'), Messages::ERROR);
@@ -424,6 +449,7 @@
 	    			$ok = true;
 	    			
 	    			foreach($userData as $d){
+// 	    				if($d->isForcedAtRegister()) print_r($d->getName());
 	    				$ok = $ok && (($d->isForcedAtRegister() && isset($_POST['ru_ud'][$d->getId()]) && $_POST['ru_ud'][$d->getId()] != '') || !$d->isForcedAtRegister());
 	    			}
 	    			
@@ -536,11 +562,11 @@
     					$err = true;
     				}
     			}
-    			
     			// create new password hash
     			if($pwd != '') {
     				if($this->sp->ref('TextFunctions')->getPasswordStrength($pwd) >= $this->_setting('pwd.min_strength')){
-    					$query[] = '`hash`="'.$this->sp->ref('User')->hashPassword($pwd, $this->sp->ref('TextFunctions')->generatePassword(51, 13, 7, 7)).'"';
+    					$salt = $this->sp->ref('TextFunctions')->generatePassword(51, 13, 7, 7);
+    					$query[] = '`hash`="'.$this->sp->ref('User')->hashPassword($pwd, $salt).'"';
     				} else {
     					$this->_msg($this->_('New Password is too weak'), Messages::ERROR);
     					$err = true;
@@ -549,6 +575,7 @@
        			
        			if($status != -1 && $this->checkRight('administer_user')){
        				$query[] = '`status`="'.mysql_real_escape_string($status).'"';
+       				if($status != User::STATUS_HAS_TO_ACTIVATE) $query[] = ' `activate`=""';
        			}
        			
        			if($group != -1 && $this->checkRight('administer_user')){

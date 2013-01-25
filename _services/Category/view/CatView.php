@@ -46,7 +46,6 @@
 				$t->addSubView($s);
 				unset($s);
 			}
-
 			return $t->render();
 		} 
 		
@@ -66,14 +65,11 @@
 				$t->addValue('children', $c);
 			}
 			switch($style){
-				case 'divs':
-					$s1 = new SubViewDescriptor('divs');
-					break;
 				case 'radio':
 					$s1 = new SubViewDescriptor('radio');
 					break;
 				default:
-					$s1 = null;
+					$s1 = new SubViewDescriptor('divs');
 					break;
 			}
 		

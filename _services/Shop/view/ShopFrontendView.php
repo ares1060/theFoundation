@@ -25,12 +25,17 @@
 			$tpl->addValue('price', $product->getPrice());
 			$tpl->addValue('shop_album', $this->_setting('gallery_album_id', 'tpl'));
 			$tpl->addValue('desc', $this->sp->ref('TextFunctions')->renderBBCode($product->getDesc()));
-			$image = $this->sp->ref('Gallery')->getImage($product->getImageId());
+// 			$image = $this->sp->ref('Gallery')->getImage($product->getImageId());
+			$tpl->addValue('images', $this->getProductAlbum($product->getId()));
 			$tpl->addValue('img_path', ($image == null) ? $this->sp->ref('Gallery')->getNoImagePath() : $image->getPath());
 			
 			$tpl->addValue('tags', $this->sp->ref('Tags')->tplGetTags($this->name, $product->getid(), '../tag/{webname}/'));
 			
 			return $tpl->render();
+		}
+		
+		public function getProductAlbum($id) {
+			
 		}
 		
 		/**

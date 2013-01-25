@@ -30,6 +30,7 @@
 		
 			$data = $this->dataHelper->getUserDataForGroup($group);
 			$groups = array();
+
 			if($data != null){
 				foreach($data as $d){
 					

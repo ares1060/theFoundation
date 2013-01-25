@@ -1,3 +1,4 @@
+
 <div id="upload_form_dyn">
 	<input type="hidden" name="selected_type" id="selected_type" value="-" />
 	<input type="hidden" name="MAX_FILE_SIZE" value="{@pp:max_file_size}" />
@@ -137,15 +138,11 @@
 	</div>
 </div>
 <script type="text/javascript">
-	var max_uploads = {@pp:max_uploads};
+<!--
+	var max_uploads =  parseInt('{@pp:max_uploads}');
 	var uiwidget_last_tab = '';
 	var ftp_types = '{@pp:type}';
 
-// 	$('#switch_upload').load(function() {
-// 		alert('asdf');
-// 		show('flash');
-// 		loadFTPUploads();
-// 	}
 	$('#switch_upload').ready(function() {
 		show('flash');
 		loadFTPUploads();
@@ -171,7 +168,7 @@
 			args: { 
 				action:'FTPFiles',
 				name:'files[]',
-				id:'upload_'+allcounter,
+				id:'upload_', // +allcounter
 				type:ftp_types
 			}, 
 			handle: function (msg) {
@@ -182,4 +179,6 @@
 				}
 		});
 	}
+//-->
 </script>
+

@@ -8,11 +8,13 @@
 		private $max_file_size;
 		private $max_uploads;
 		private $type;
+		private $div_id;
 	
 		function __construct(){
 			$this->label = '';
 			$this->max_uploads = 5;
 			$this->max_file_size = 100000;
+			$this->div_id = -1;
 		}
         
 		public function setId($id){
@@ -38,6 +40,10 @@
         public function setMaxUploads($size){
         	$this->max_uploads = $size;
         }
+        
+        public function setDivId($id) {
+        	$this->div_id = $id;
+        }
 		
 		public function render() {			
             $vd = new ViewDescriptor(AUIWidget::TPL_ROOT.'upload');
@@ -51,6 +57,7 @@
 			$vd->addValue('value', $this->value);
 			$vd->addValue('max_file_size', $this->max_file_size);
 			$vd->addValue('max_uploads', $this->max_uploads);
+			$vd->addValue('div_id', $this->div_id);
 			
 			return $vd->render();
 		}

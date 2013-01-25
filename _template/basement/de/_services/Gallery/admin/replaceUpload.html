@@ -1,0 +1,11 @@
+<div id="upload_window">
+	<form class="tf_form" enctype="multipart/form-data" method="post">
+		<input type="hidden" name="action" value="replaceUpload" />
+		<input type="hidden" name="old_image" value="{@pp:image_id}" />
+		{pp:UIWidgets(widget:Fileupload, name:files[], id:upload, type:{@pp:types}, max_file_size:{@pp:max_file_size}, max_uploads:{@pp:max_uploads}, div_id:{@pp:image_id})}
+		<div id="upload_buttons">
+			<button class="button green" type="submit"><span>Upload</span></button>
+			<button class="button" onclick="tfaddress.editPath({unset:['chapter']}); return false;"><span>Abbrechen</span></button>
+		</div>
+	</form>
+</div>

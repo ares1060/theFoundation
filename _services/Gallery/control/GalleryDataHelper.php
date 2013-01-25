@@ -24,10 +24,17 @@
 		 * there is no pagination
 		 * @param unknown_type $status
 		 */
-		public function getFolders($status=array(), $parent=0, $sort='default') {
+		public function getFolders($status=array(), $parent=0, $sort='default', $user=-1) {
 
+			if($user == -1){
+				$userid = $this->sp->ref('User')->getViewingUser()->getId();
+			} else {
+				$u = $this->sp->ref('User')->getUserById($user);
+				$userid = ($u != null) ? $u->getId() : $this->sp->ref('User')->getViewingUser()->getId();
+			}
+			
 			// create user, status and category string 
-			$user = 'WHERE `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"';
+			$user = 'WHERE `u_id`="'.mysql_real_escape_string($userid).'"';
 			$album = ' AND `parent`="'.mysql_real_escape_string($parent).'"';
 			$statusAR = array();
 			foreach($status as $s){
@@ -37,13 +44,13 @@
 			
 			// create sort string
 			switch($sort){
-				case 'date' || 'date ASC':
+				case 'date': case 'date ASC':
 					$sort = ' ORDER BY c_date ASC';
 					break;
 				case 'date DESC':
 					$sort = ' ORDER BY c_date DESC';
 					break;
-				case 'name' || 'name ASC';
+				case 'name': case 'name ASC';
 					$sort = ' ORDER BY name ASC';
 					break;
 				case 'name DESC':
@@ -73,7 +80,7 @@
 		 */
 		public function getFolderIdsByImage($image, $justIds=true) {
 			if(!is_object($image) || get_class($image) != 'GalleryImage') $image = $this->getFolderById($image);
-			
+
 			if($image != null) {
 				$p = $this->mysqlArray('SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'gallery_image_folder` WHERE i_id="'.mysql_real_escape_string($image->getId()).'"');
 				
@@ -105,6 +112,27 @@
 		}
 		
 		/**
+		 * wrapper function for getSubFolderByName
+		 * @see GalleryDataHelper->getSubFolderByName
+		 * @param unknown_type $album
+		 * @param unknown_type $name
+		 */
+		public function getFolderByAlbumAndName($album, $name){
+			return $this->getSubFolderByName($album, $name);
+		}
+		
+		/**
+		 * returnes Folder by parent id and name
+		 * @param unknown_type $parent
+		 * @param unknown_type $name
+		 */
+		public function getFolderByParentAndName($parent, $name) {
+			if(!is_object($parent) || get_class($parent) != 'GalleryFolder') $parent = $this->getFolderById($parent);
+			
+			
+		}
+		
+		/**
 		 * returnes sub Folder of album by given name
 		 * if more than one folders have the same name the first one will be returned
 		 * @param unknown_type $album
@@ -112,13 +140,11 @@
 		 */
 		public function getSubFolderByName($album, $subfolder_name){
 			if(!is_object($album) || get_class($album) != 'GalleryFolder') $album = $this->getFolderById($album);
-			
 			if($album != null){
 				$p = $this->mysqlRow('SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'gallery_folder` 
 												WHERE `parent`="'.mysql_real_escape_string($album->getId()).'" 
-												AND `name`="'.mysql_real_escape_string($subfolder_name).'"
-												AND `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"');
-				
+												AND `name`="'.mysql_real_escape_string($subfolder_name).'"');
+// 												AND `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"');
 				if($p != '') {
 					return new GalleryFolder($p['f_id'], $p['parent'], $p['u_id'], $p['name'], $p['c_date'], $p['root'], $p['status']);
 				} else return null;
@@ -139,8 +165,9 @@
 		 * @param unknown_type $parent
 		 * @param unknown_type $name
 		 * @param unknown_type $status
+		 * @param boolean register ||Êis a right-system hack to allow everyone to create a folder
 		 */
-		public function createFolder($parent, $name, $status=GalleryDataHelper::STATUS_ONLINE){
+		public function createFolder($parent, $name, $status=GalleryDataHelper::STATUS_ONLINE, $silent=false){
            	// if album to create -> create dummy folder
            	if($parent == 0) {
            		$parent = new GalleryFolder(0, 0, 0, '', 0, 0, self::STATUS_ONLINE);
@@ -149,24 +176,35 @@
 			if(!is_object($parent) || get_class($parent) != 'GalleryFolder') $parent = $this->getFolderById($parent);
 			
 			// check rights
-			if(($album && $this->checkRight('administerAlbum')) || 
-							(!$album && ($this->checkRight('administerFolder', $parent->getId()) || $parent->getStatus() == GalleryDataHelper::STATUS_SYSTEM))){
+			if(($album && $this->checkRight('administerAlbum')) || // if album you have to be autorized to create Folder
+				(!$album && (
+						($this->checkRight('administerFolder', $parent->getId()) // if no album you have to authorized to edit parent
+								&& $this->checkRight('administerFolder') // ....  and create a folder at all
+						)) || 
+						$parent->getStatus() == GalleryDataHelper::STATUS_SYSTEM)){  // or if folder is a System folder you can create it
+				
+				// register is a right-system hack to allow everyone to create a folder
+				
 				// check data
 				if($parent != null && $name != ''){
 					$root = ($parent->getParentFolderId() == 0) ? $parent->getId() : $parent->getRoot();
+					$viewing_user = $this->sp->ref('User')->getViewingUser();
 					$p = $this->mysqlInsert('INSERT INTO `'.$GLOBALS['db']['db_prefix'].'gallery_folder` 
 													(`root`, `parent`, `u_id`, `name`, `c_date`, `status`) VALUES
 													("'.mysql_real_escape_string($root).'",
 													 "'.mysql_real_escape_string($parent->getId()).'",	
-													 "'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'",	
+													 "'.mysql_real_escape_string((isset($viewing_user)) ? $viewing_user->getId() : '-1').'",	
 													 "'.mysql_real_escape_string($name).'",	
 													 "'.time().'", "'.$status.'")');
 					if($p !== false){
 						
-						$this->sp->ref('Rights')->authorizeUser('Gallery', 'administerFolder', $this->sp->ref('User')->getViewingUser()->getId(), $p);
+						if(isset($viewing_user)) $this->sp->ref('Rights')->authorizeUser('Gallery', 'administerFolder', $this->sp->ref('User')->getViewingUser()->getId(), $p);
 						
-						if($album) $this->_msg($this->_('_Album created successfully', 'gallery'), Messages::INFO);
-						else $this->_msg($this->_('_Folder created successfully', 'gallery'), Messages::INFO);
+						if(!$silent) {
+							if($album) $this->_msg($this->_('_Album created successfully', 'gallery'), Messages::INFO);
+							else $this->_msg($this->_('_Folder created successfully', 'gallery'), Messages::INFO);
+						}
+						
 						return true;
 					} else {
 						$this->_msg($this->_('_Error creating Folder', 'gallery'), Messages::ERROR);
@@ -191,7 +229,8 @@
 			
 			if($folder != null) {		
 				if((($folder->getParentFolderId() == 0 && $this->checkRight('administerAlbum')) ||
-					($folder->getParentFolderId() > 0 && $this->checkRight('administerFolder', $folder->getId())))){
+					($folder->getParentFolderId() > 0 && $this->checkRight('administerFolder', $folder->getId())) ||
+					$folder->getStatus() == Gallery::STATUS_SYSTEM)){
 					
 					$subfolder = $this->getFolders(self::getAllStatus(), $folder->getId());
 					
@@ -236,16 +275,6 @@
 		}
 		
 		/**
-		 * deletes Folder by given parent and name
-		 * @param unknown_type $parent_id
-		 * @param unknown_type $name
-		 */
-		public function deleteFolderByNameAndParent($name, $parent_id){
-			$folder = $this->getSubFolderByName($parent_id, $name);
-			return $this->deleteFolder($folder);
-		}
-		
-		/**
 		 * edits folder and sets new name or status
 		 * @param unknown_type $folder
 		 * @param unknown_type $name
@@ -254,7 +283,10 @@
 		public function editFolder($folder, $name='', $status=-1){
 			if(!is_object($folder) || get_class($folder) != 'GalleryFolder') $folder = $this->getFolderById($folder);
 			
-			if($folder != null){
+			if($folder != null &&  // there has to be a folder
+					$this->checkRight('administerFolder', $folder->getId()) &&  //you have to be authorized to edit folder
+					($folder->getStatus() != Gallery::STATUS_SYSTEM || $this->sp->ref('User')->getLoggedInUser()->getGroup() == 1)){ // if status = Systemfolder you have to be root (hardcoded)
+				
 				if($name != $folder->getName() || $status != $folder->getStatus()){
 					//calculate strings
 					$name = ($name != '') ? ' `name`="'.mysql_real_escape_string($name).'" ' : '';
@@ -318,7 +350,7 @@
 // 				$per_page = $this->_setting('admin.per_page.images');
 				$limit = ($page == -1) ? '' : ' LIMIT '.(mysql_real_escape_string($page-1)*mysql_real_escape_string($per_page)).', '.mysql_real_escape_string($per_page).';';
 				// create user, status and category string
-				$user = 'AND `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"';
+				$user = '';//'AND `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"';
 				
 				//create status string
 				$statusAR = array();
@@ -342,10 +374,100 @@
 			} else return null;
 		}
 		
+		public function getSurroundingImagesByImageAndFolder($image, $folder, $sort='default'){
+			if(!is_object($image) || get_class($image) != 'GalleryImage') $image = $this->getImageById($image);
+			if(!is_object($folder) || get_class($folder) != 'GalleryFolder') $folder = $this->getFolderById($folder);
+
+			if($image != null && $folder != null){
+				// create sort and < > strings
+				switch($sort){
+					case 'upload_date': case 'upload_date ASC':
+						$sort = ' ORDER BY i.c_date ASC';
+						$look_prev = 'i.c_date < "'.mysql_real_escape_string($image->getCreationDate()).'"';
+						$look_next = 'i.c_date > "'.mysql_real_escape_string($image->getCreationDate()).'"';
+						break;
+					case 'upload_date DESC':
+						$sort_prev = ' ORDER BY i.c_date DESC';
+						$sort_next = ' ORDER BY i.c_date ASC';
+						$look_prev = 'i.c_date > "'.mysql_real_escape_string($image->getCreationDate()).'"';
+						$look_next = 'i.c_date < "'.mysql_real_escape_string($image->getCreationDate()).'"';
+						break;
+					case 'shot_date': case 'shot_date ASC';
+						$sort_prev = ' ORDER BY i.s_date ASC';
+						$sort_next = ' ORDER BY i.s_date DESC';
+						$look_prev = 'i.s_date < "'.mysql_real_escape_string($image->getShotDate()).'"';
+						$look_next = 'i.s_date > "'.mysql_real_escape_string($image->getShotDate()).'"';
+						break;
+					case 'shot_date DESC';
+						$sort_prev = ' ORDER BY i.s_date DESC';
+						$sort_next = ' ORDER BY i.s_date ASC';
+						$look_prev = 'i.s_date > "'.mysql_real_escape_string($image->getShotDate()).'"';
+						$look_next = 'i.s_date < "'.mysql_real_escape_string($image->getShotDate()).'"';
+						break;
+					case 'size ASC':
+						$sort_prev = ' ORDER BY i.size ASC';
+						$sort_next = ' ORDER BY i.size DESC';
+						$look_prev = 'i.size < "'.mysql_real_escape_string($image->getSize()).'"';
+						$look_next = 'i.size > "'.mysql_real_escape_string($image->getSize()).'"';
+						break;
+					case 'size DESC':
+						$sort_prev = ' ORDER BY i.size DESC';
+						$sort_next = ' ORDER BY i.size ASC';
+						$look_prev = 'i.size > "'.mysql_real_escape_string($image->getSize()).'"';
+						$look_next = 'i.size < "'.mysql_real_escape_string($image->getSize()).'"';
+						break;
+					default:
+						$sort_prev = ' ORDER BY i.i_id DESC';
+						$sort_next = ' ORDER BY i.i_id ASC';
+						$look_prev = 'i.i_id < "'.mysql_real_escape_string($image->getId()).'"';
+						$look_next = 'i.i_id > "'.mysql_real_escape_string($image->getId()).'"';
+						break;
+				}
+				
+				$r = array();
+				
+				// get previous
+				$p = $this->mysqlRow('SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'gallery_image_folder` ifo
+													LEFT JOIN `'.$GLOBALS['db']['db_prefix'].'gallery_image` i ON ifo.i_id = i.i_id
+													WHERE ifo.f_id="'.mysql_real_escape_string($folder->getId()).'" AND
+															'.$look_prev.' '.$sort_prev.' LIMIT 1');
+
+				if($p != null && $p != array()) {
+					$r['prev'] = new GalleryImage($p['i_id'], $p['name'], $p['path'], $p['hash'], $p['u_id'], $p['c_date'], $p['size'], $p['s_date']);
+				} else $r['prev'] = null;
+				
+				// get next
+				$p = $this->mysqlRow('SELECT * FROM `'.$GLOBALS['db']['db_prefix'].'gallery_image_folder` ifo
+						LEFT JOIN `'.$GLOBALS['db']['db_prefix'].'gallery_image` i ON ifo.i_id = i.i_id
+						WHERE ifo.f_id="'.mysql_real_escape_string($folder->getId()).'" AND
+						'.$look_next.' '.$sort_next.' LIMIT 1');
+
+				if($p != null && $p != array()) {
+					$r['next'] = new GalleryImage($p['i_id'], $p['name'], $p['path'], $p['hash'], $p['u_id'], $p['c_date'], $p['size'], $p['s_date']);
+				} else $r['next'] = null;
+				
+				return $r;
+			} else return null;
+		}
+		
+		/**
+		 * checks if images is in Folder $folder
+		 * @param unknown_type $image
+		 * @param unknown_type $folder_id
+		 */
+		public function checkImageInFolder($image, $folder) {
+			if(!is_object($image) || get_class($image) != 'GalleryImage') $image = $this->getImageById($image);
+			if(!is_object($folder) || get_class($folder) != 'GalleryFolder') $folder = $this->getFolderById($folder);
+		
+			if($image != null && $folder != null){
+				return in_array($folder->getId(), $this->getFoldersIdsByImage());
+			} else return false;
+		}
+		
 		/**
 		 * returnes image count by folder
 		 * @param unknown_type $folderId
-		 * @param unknown_type $status
+		 * @param array() $status
 		 */
 		public function getImageCountByFolder($folder, $status) {
 			if(!is_object($folder) || get_class($folder) != 'GalleryFolder') $folder = $this->getFolderById($folder);
@@ -360,7 +482,7 @@
 				else $status = '';
 				
 				// create user, status and category string
-				$user = ' AND `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"';
+				$user = ''; //' AND `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"';
 	
 				$pp = $this->mysqlRow('SELECT COUNT(*) count FROM `'.$GLOBALS['db']['db_prefix'].'gallery_image_folder` gif LEFT JOIN
 															`'.$GLOBALS['db']['db_prefix'].'gallery_image` gi ON gi.i_id = gif.i_id WHERE 
@@ -394,32 +516,44 @@
 		 * deletes images in specified folder
 		 * @param unknown_type $folder
 		 */
-		private function deleteImagesInFolder($folder){
+		private function deleteImagesInFolder($folder, $imageIds=array()){
 			if(!is_object($folder) || get_class($folder) != 'GalleryFolder') $folder = $this->getFolderById($folder);
 			
 			if($folder != null){
 				$images = $this->getImagesByFolder($folder, -1, self::getAllStatus());
-				
+// 				error_log($images);
 				$hasRights = true;
-				
+				$q = $qI = true;
 				foreach($images as $img){
-					if($this->checkRight('administerImages', $img->getId()) && $hasRights) {
-						$count = $this->getFolderCountByImage($img);
-						
-						// if image is just in this folder you can delete file as well
-						if($count == 1) {
-							// delete file
-							if(is_file($GLOBALS['config']['root'].$img->getPath())) unlink($GLOBALS['config']['root'].$img->getPath());
-							// delete cache
-							$this->sp->ref('Image')->clearCache($img->getPath());
+					if(in_array($img->getId(), $imageIds) || $imageIds == array()){
+						if(($this->checkRight('administerImages', $img->getId()) || 
+							$this->checkRight('administerFolder', $folder->getId()) && $hasRights) ||
+							$folder->getStatus() == Gallery::STATUS_SYSTEM) {
+							$count = $this->getFolderCountByImage($img);
+							
+							// delete connection to folder
+							$q = $q && $this->mysqlDelete('DELETE FROM `'.$GLOBALS['db']['db_prefix'].'gallery_image_folder` 
+															WHERE f_id ="'.mysql_real_escape_string($folder->getId()).'" 
+															AND i_id="'.mysql_real_escape_string($img->getId()).'"');
+							
+							// if image is just in this folder you can delete file, cache and database entry as well
+							if($count == 1) {
+								// delete file
+								if(is_file($GLOBALS['config']['root'].$img->getPath())) unlink($GLOBALS['config']['root'].$img->getPath());
+								
+								// delete cache
+								$this->sp->ref('Image')->clearCache($img->getPath());
+								
+								// delete database entry
+								$qI = $qI && $this->mysqlDelete('DELETE FROM `'.$GLOBALS['db']['db_prefix'].'gallery_image`
+										WHERE i_id="'.mysql_real_escape_string($img->getId()).'"');
+							}
+						} else {
+							$hasRights = false;
+							break;
 						}
-					} else {
-						$hasRights = false;
-						break;
 					}
 				}
-				
-				$q = $this->mysqlDelete('DELETE FROM `'.$GLOBALS['db']['db_prefix'].'gallery_image_folder` WHERE f_id ="'.mysql_real_escape_string($folder->getId()).'"');
 				
 				if($q){
 // 					$this->_msg($this->_('_Folder deleted successfully', 'gallery'), Messages::INFO);
@@ -429,6 +563,11 @@
 					return false;
 				}
 			}
+		}
+		
+		public function deleteImageFromFolder($folder, $image) {
+			if(!is_object($folder) || get_class($folder) != 'GalleryImage') return $this->deleteImagesInFolder($folder, array($image));
+			else $this->deleteImagesInFolder($folder, array($image->getId()));
 		}
 
 		/**
@@ -440,6 +579,7 @@
 		public function createImage($name, $path, $shot_date){
 			if(is_file($GLOBALS['config']['root'].$path)){
 // 				$this->debugVar($shot_date);
+				//TODO: real shot date
 				return ($this->mysqlInsert('INSERT INTO '.$GLOBALS['db']['db_prefix'].'gallery_image
 											(name, path, hash, u_id, c_date, s_date, size) VALUES
 											("'.$this->sp->ref('TextFunctions')->renderUmlaute(mysql_real_escape_string($name)).'",
@@ -537,6 +677,75 @@
 					}
 					$this->_msg(str_replace('{@pp:count}', $success, $this->_('{@pp:count} files uploaded successfully')), Messages::INFO);
 					return $return;
+				} else {
+					$this->_msg($this->_('_No Files selected', 'gallery'), Messages::ERROR);
+					return null;
+				}
+			} else {
+				$this->_msg($this->_('_Could not upload', 'gallery'), Messages::ERROR);
+				return null;
+			}
+		}
+
+		/**
+		 * Replaces Image with uploaded Image
+		 * @param unknown_type $image
+		 * @param unknown_type $up_img_array | uploaded Image Array - if there are more than one images the first one will be used 
+		 */
+		public function replaceImage($image, $replace_image_array) {
+			error_log('replace Image: '.$image);
+			if(!is_object($image) || get_class($image) != 'GalleryImage') $image = $this->getImageById($image);
+				
+			if($image != null){
+				if(is_array($replace_image_array) && $replace_image_array != array()) {
+					if(isset($replace_image_array['size'])) { // images is a real image array
+						if($replace_image_array['size'] <= $this->_setting('upload.max_file_size')){ 										// check size again
+							if(preg_match("/\." . $this->_setting('upload.valid_file_types') . "$/i", $replace_image_array['name'])){	// check types
+								if(is_dir($GLOBALS['to_root'].$this->_setting('upload.upload_dir'))){									// check if upload dir exists
+			
+									$exts = explode('.', strtolower($replace_image_array['name']));
+			
+									$newfilepath = $this->_setting('upload.upload_dir').$this->_setting('upload.upload_prefix').str_replace(array('.', ' '), array('', ''), microtime()).'.'.$exts[count($exts)-1];
+			
+									if(copy($replace_image_array['tmp_name'], $GLOBALS['to_root'].$newfilepath)){ // moving to final destinition (copy instead of move_uploaded_file)
+										unlink($replace_image_array['tmp_name']);
+			
+										//exifdata
+										$exif = new phpExifReader($GLOBALS['to_root'].$newfilepath);
+
+										$exif = $exif->getImageInfo();
+											
+										$shot_date = (isset($exif['dateTimeDigitized'])) ?  $exif['dateTimeDigitized'] :'';
+										
+										// new part - different from uploadImage
+										error_log($newfilepath);
+										// replace new Image in Database
+										$query = $this->mysqlBool('UPDATE `'.$GLOBALS['db']['db_prefix'].'gallery_image` SET  
+																		name="'.$this->sp->ref('TextFunctions')->renderUmlaute(mysql_real_escape_string($replace_image_array['name'])).'",
+																		path="'.$newfilepath.'",
+																		hash="'.md5_file($GLOBALS['config']['root'].$newfilepath).'",
+																		s_date="'.$shot_date.'",
+																		c_date="'.microtime().'",
+																		size="'.filesize($GLOBALS['config']['root'].$newfilepath).'"
+																	WHERE i_id="'.$image->getId().'";');
+										
+										if($query){
+											// remove old files
+											unlink($GLOBALS['to_root'].$image->getPath());
+											
+											// clear cache
+											$this->sp->ref('Image')->clearCache($image->getPath());
+											return true;
+										}
+									} else {
+										$this->_msg($this->_('Uploaded file does not exist', 'database'), Messages::ERROR);
+									}
+								} else $this->_msg($this->_('ERROR_UPLOAD_DIR_NOT_EXISTS'), Messages::RUNTIME_ERROR);
+							} else $this->_msg(str_replace('{@pp:file}', $replace_image_array['name'], $this->_('ERROR_WRONG_FORMAT')), Messages::RUNTIME_ERROR);
+						} else $this->_msg(str_replace('{@pp:file}', $replace_image_array['name'], $this->_('ERROR_MAX_FILE_SIZE')), Messages::RUNTIME_ERROR);
+					}
+// 					$this->_msg(str_replace('{@pp:count}', $success, $this->_('{@pp:count} files uploaded successfully')), Messages::INFO);
+					return false;
 				} else {
 					$this->_msg($this->_('_No Files selected', 'gallery'), Messages::ERROR);
 					return null;

@@ -35,7 +35,8 @@
 		        		if(isset($args['style']) && method_exists($i, 'setStyle')) $i->setStyle($args['style']);
 		        		/* -- extra args -- */
 		        		if(isset($args['max_file_size']) && method_exists($i, 'setMaxFileSize')) $i->setMaxFileSize($args['max_file_size']); // for upload widget
-		        		if(isset($args['max_uploads']) && method_exists($i, 'setMaxUploads')) $i->setMaxUploads($args['max_uploads']); // for upload widget
+		        		if(isset($args['max_uploads']) && method_exists($i, 'setMaxUploads')) ((isset($args['max_uploads'])) ? $i->setMaxUploads($args['max_uploads']) : 1); // for upload widget
+		        		if(isset($args['div_id']) && method_exists($i, 'setDivId')) ((isset($args['div_id'])) ? $i->setDivId($args['div_id']) : 0); // for upload widget
 		        		if(isset($args['checked']) && method_exists($i, 'setChecked') && $args['checked']=='true') $i->setChecked();
 		        		
 		        		return $i->render();

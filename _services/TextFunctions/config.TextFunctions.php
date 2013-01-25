@@ -7,4 +7,6 @@
     $this->config['show_date_long_ago'] = true; // will show the date instead of 10 years ago
     
     $this->config['default_rimg_preg'] = '/(?P<h>\d+):(?P<min>\d+):(?P<s>\d+) \| (?P<d>\d+).(?P<m>\d+).(?P<y>\d+)/';
+    
+    $this->config['mailcheck_dns'] = false;
 ?>

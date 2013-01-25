@@ -49,7 +49,12 @@
 		public function getName() { return $this->name; }
 		public function getDesc() { return $this->desc; }
 		public function getDescription() { return $this->getDesc(); }
-		public function getPrice() { return $this->price; }
+		public function getPrice($comma=0) { 
+			if($this->price != null){
+				if($comma > 0) return number_format($this->price, $comma, ',', '.');
+				else return $this->price;
+			} else return $this->price; 
+		}
 		public function getWeight() { return $this->weight; }
 		public function getDate() { return $this->date; }
 		public function getCreatorId() { return $this->u_id; }

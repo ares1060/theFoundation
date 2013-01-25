@@ -4,6 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel="stylesheet" type="text/css" href="{@pp:abs_root}{@pp:tpl_folder}/css/main.css" />
 	<link rel="stylesheet" type="text/css" href="{@pp:abs_root}{@pp:tpl_root_folder}/css/foundation.css" />
+	<link rel="stylesheet" type="text/css" href="{@pp:abs_root}{@pp:tpl_root_folder}/css/services/uiwidgets_wysiwyg.css" />
 	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Judson:r|PT+Sans:r,b,i,bi|Open+Sans:300">
 	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid+Sans|Vollkorn|Lato|Droid+Serif">
 	{@pp:extra_css} 
@@ -14,6 +15,7 @@
 	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_folder}/js/nicEdit.js"></script>
 	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_root_folder}/js/foundation-1.1.js"></script>
 	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_root_folder}/js/uiwidget.js"></script>
+	<script type="text/javascript" src="{@pp:abs_root}{@pp:tpl_root_folder}/js/uiwidgets_wysiwyg.js"></script>
 	{@pp:extra_js}
 	<script type="text/javascript">
 	<!--
@@ -43,14 +45,14 @@
 			<div id="admin_loading_div"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/loading_blue1.gif" /> Lade Daten...</div>
 		<div id="topbar_right">
 			<!-- <img src="{@pp:abs_root}{@pp:tpl_folder}/img/user/status/{@pp:user_group}.png" class="icon"/>&nbsp;&nbsp; -->
-			<div class="item"><a href="{@pp:abs_root}_admincenter/tf/profile/" id="topbar-user-icon" class="item_link">{@pp:user_nick}</a></div> 
+			<div class="item"><a href="{@pp:abs_root}_admincenter/tf/profile/" id="topbar-user-icon" class="item_link">{@pp:user_email}</a></div> 
 			<pp:dynamic name="view_as">
 				<div id="topbar-view_as" class="item">
 					<pp:dynamic name="view_as_disabled"><a href="javascript:void(0);" id="topbar-view_as-icon" class="item_link">&nbsp;</a></pp:dynamic> 
-					<pp:dynamic name="view_as_enabled"><a href="javascript:void(0);" id="topbar-view_as-icon" class="item_link active">{@pp:nick}</a></pp:dynamic> 
+					<pp:dynamic name="view_as_enabled"><a href="javascript:void(0);" id="topbar-view_as-icon" class="item_link active">{@pp:email}</a></pp:dynamic> 
 					<div class="tf_dropdown view_as_dropdown item_link" id="view_as_dropdown">
 						<div class="tf_dropdown_arrow" style="right: 4px;">&nbsp;</div>
-						<div class="tf_dropdown_arrow active" style="right: 4px;">{@pp:nick}</div>
+						<div class="tf_dropdown_arrow active" style="right: 4px;">{@pp:email}</div>
 						<ul>
 							<li class="option"><a href="javascript:void(0);" onclick="setViewingUser(-1, '&nbsp;');">Eigene Daten anzeigen</a></li>
 							<li class="seperator">&nbsp;</li>
@@ -61,7 +63,7 @@
 							<li  class="option"><a href="javascript:void(0);" onclick="setViewingUser(2, 'Moritz');">Moritz</a></li>
 							<li  class="option"><a href="javascript:void(0);" onclick="setViewingUser(3, 'Quizmaster');">Quizmaster</a></li> -->
 							<pp:dynamic name="view_as_user">
-								<li  class="option"><a href="javascript:void(0);" onclick="setViewingUser({@pp:id}, '{@pp:u_nick}');">{@pp:u_email} ({@pp:u_nick})</a></li>
+								<li  class="option"><a href="javascript:void(0);" onclick="setViewingUser({@pp:id}, '{@pp:u_nick}');">{@pp:u_email} {@pp:u_nick}</a></li>
 							</pp:dynamic>
 						</ul>
 						</div>

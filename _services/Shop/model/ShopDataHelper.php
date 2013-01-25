@@ -48,7 +48,11 @@
 			$user = 'WHERE `u_id`="'.mysql_real_escape_string($user_id).'"';
 			
 			$status = ($status == -1) ? '' : ' AND `status`="'.mysql_real_escape_string($status).'"';
-			if($user_id != $this->sp->ref('User')->getViewingUser()->getId()) $status = ' AND `status`="'.ShopDataHelper::STATUS_ONLINE.'"';
+			
+			if(($this->sp->ref('User')->getViewingUser() == null) || 
+				(($this->sp->ref('User')->getViewingUser() != null) && $user_id != $this->sp->ref('User')->getViewingUser()->getId())) {
+							$status = ' AND `status`="'.ShopDataHelper::STATUS_ONLINE.'"';
+			}
 			
 			$cat = ($cat_id == -1) ? '' : ' AND `cat`="'.mysql_real_escape_string($cat_id).'"';
 			
@@ -73,7 +77,12 @@
 		 * @param unknown_type $status
 		 */
 		public function getProductCount($status=-1){
-			$user = 'WHERE `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"';
+			if($this->sp->ref('User')->getViewingUser() == null){
+				$user = 'WHERE true ';
+			} else {
+				$user = 'WHERE `u_id`="'.mysql_real_escape_string($this->sp->ref('User')->getViewingUser()->getId()).'"';
+			}
+			
 			$status = ($status == -1) ? '' : ' AND `status`="'.mysql_real_escape_string($status).'"';
 			
 			$p = $this->mysqlRow('SELECT COUNT(*) myCount FROM `'.$GLOBALS['db']['db_prefix'].'shop_products` '.$user.$status);

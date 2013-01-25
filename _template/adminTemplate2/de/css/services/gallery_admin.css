@@ -274,6 +274,40 @@ img.icon {
 #folder_content .images .image_container .image_cell .image_div img.img {
 	box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, .5);
 }
+/* ---- single image ---- */
+.gallery_top_menu {
+	list-style: none;
+}
+.gallery_top_menu li {
+	float: left;
+	display: block;
+	width: auto;
+}
+.gallery_top_menu li a {
+	padding: 3px 10px 5px 10px;
+	display: block;
+}
+.gallery_top_menu li a:hover {
+	background: rgba(0,0,0,.2);
+}
+.image {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	top: 20px;
+	bottom: 0px;
+	display: block;
+	overflow: hidden;
+}
+.image .img{
+	position: absolute;
+	top: 10px;
+	left: auto;
+	right: auto;
+	display: block;
+	width: 1024px;
+	text-align: center;
+}
 /* ===========================  UPLOAD ======================= */
 #upload_folder_arrow {
 	height: auto;

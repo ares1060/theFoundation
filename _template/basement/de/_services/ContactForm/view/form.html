@@ -1,0 +1,33 @@
+<div class="tf_form">
+	<form method="post">
+		<div class="tf_form_elements">
+			<input type="hidden" name="tf_form_id" value="{@pp:form_id}" />
+			<pp:dynamic name="element">
+				<pp:dynamic name="type_0">
+					<p {@pp:small}>
+						<!-- string -->
+						<label for="form_{@pp:form_id}_{@pp:id}" class="tf_label">
+							{@pp:label}<pp:dynamic name="forced">*</pp:dynamic>:
+						</label>
+						<input type="text" value="{@pp:value}" name="elements[{@pp:id}]" id="form_{@pp:form_id}_{@pp:id}" class="tf_input"/>
+					</p>
+				</pp:dynamic>
+				<pp:dynamic name="type_1">
+					<p {@pp:small}>
+						<!-- string -->
+						<label for="form_{@pp:form_id}_{@pp:id}" class="tf_label">
+							{@pp:label}<pp:dynamic name="forced">*</pp:dynamic>:
+						</label>
+						<textarea type="text" name="elements[{@pp:id}]" id="form_{@pp:form_id}_{@pp:id}" class="tf_input" rows="5">{@pp:value}</textarea>
+					</p>
+				</pp:dynamic>
+			</pp:dynamic>
+		</div>
+		<br />
+		<p>
+			<span class="tf_label">&nbsp;</span>
+			<button class="button" type="submit"><span>Abschicken</span></button>
+			<button class="button" type="reset"><span>Zur&uuml;cksetzten</span></button>
+		</p>
+	</form>
+</div>

@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="{@pp:abs_root}{@pp:tpl_root_folder}/css/foundation.css" />
+<link rel="stylesheet" type="text/css" href="{@pp:abs_root}{@pp:tpl_folder}/css/main.css" />
+<link rel="stylesheet" type="text/css" href="{@pp:abs_root}{@pp:tpl_folder}/css/setup.css" />
+<link rel="stylesheet" type="text/css" href="{@pp:abs_root}{@pp:tpl_folder}/css/colors/dark_blue.css" />
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Judson:r|PT+Sans:r,b,i,bi|Open+Sans:300">
+<title>TheFoundation | Setup</title>
+</head>
+<body>
+	<div id="setupdiv">
+		<img src="{@pp:abs_root}{@pp:tpl_folder}/img/tf_logo-middle1.png" id="logo"/>
+		<div id="setup">
+			<pp:dynamic name="pot">
+				<h1 class="menu">
+					Generate POT Files <img src="{@pp:abs_root}{@pp:tpl_folder}/img/interface/next-menu1-ns.png" class="menu-center"/>
+				</h1>
+				<div class="h_sep_down" style="margin: 13px 0px 10px 0px;">
+					<span class="left">&nbsp;</span>
+					<span class="right">&nbsp;</span>
+					<span class="center">&nbsp;</span>
+				</div>
+				<pp:dynamic name="services">
+					<p>
+						<span class="name">{@pp:name}:</span>
+						<span class="status">
+							<pp:dynamic name="m_exists"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/status/success.png" /> Existiert</pp:dynamic>
+							<pp:dynamic name="m_not_exists"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/status/error.png" /> Existiert nicht</pp:dynamic>
+						</span>
+					</p>
+				</pp:dynamic>
+				<br />
+				<button class="button small" href="?chapter=-1"><span>&laquo; Zur&uuml;ck zur Installation </span></button>
+			</pp:dynamic>
+			<pp:dynamic name="inst_exists">
+				<h1 class="menu">
+					Setup <img src="{@pp:abs_root}{@pp:tpl_folder}/img/interface/next-menu1-ns.png" class="menu-center"/>
+					<span class="light">Datenbank<img src="{@pp:abs_root}{@pp:tpl_folder}/img/interface/next-menu1-ns.png" class="menu-center"/></span>
+					<span class="light">Installation</span>
+				</h1>
+				<div class="h_sep_down" style="margin: 13px 0px 10px 0px;">
+					<span class="left">&nbsp;</span>
+					<span class="right">&nbsp;</span>
+					<span class="center">&nbsp;</span>
+				</div>
+				<div class="block info">
+					<div class="header info">Willkommen</div>
+					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/status/info-big.png" class="box_logo"/>
+					Willkommen zur Installation von TheFoundation.<br />
+					In den folgenden Schritten werden die wichtigsten Komponenten und einige anderen Services installiert.
+				</div>
+				<br />
+				<button class="button small" onclick="location.href ='?chapter=4';" style="float: right;"><span>POT Files</span></button>
+				<button class="button small" onclick="location.href ='../';"><span>&laquo; Zur&uuml;ck zum Admincenter </span></button>
+				<button class="button small" onclick="location.href ='?chapter=1';"><span>zur Installation &raquo;</span></button>
+			</pp:dynamic>
+			<pp:dynamic name="db">
+				<h1 class="menu">
+					<a href="?chapter=-1">Setup <img src="{@pp:abs_root}{@pp:tpl_folder}/img/interface/next-menu1-ns.png" class="menu-center"/></a>
+					<a href="?chapter=1">Datenbank<img src="{@pp:abs_root}{@pp:tpl_folder}/img/interface/next-menu1-ns.png" class="menu-center"/></a>
+					<span class="light">Installation</span>
+				</h1>
+				<div class="h_sep_down" style="margin: 13px 0px 10px 0px;">
+					<span class="left">&nbsp;</span>
+					<span class="right">&nbsp;</span>
+					<span class="center">&nbsp;</span>
+				</div>
+				<div class="box">
+					<form action="?chapter=2" method="post" class="tf_form">
+						<p>
+							<label for="db_host" class="tf_label">Host:</label>
+							<input type="text" name="db_host" id="db_host" value="{@pp:host}" class="input"/>
+						</p>
+						<p>
+							<label for="db_user" class="tf_label">User:</label>
+							<input type="text" name="db_user" id="db_user" value="{@pp:user}" class="input"/>
+						</p>
+						<p>
+							<label for="db_password" class="tf_label">Password:</label>
+							<input type="text" name="db_password" id="db_password" value="{@pp:pwd}" class="input"/>
+						</p>
+						<p>
+							<label for="db_table" class="tf_label">Table:</label>
+							<input type="text" name="db_table" id="db_table" value="{@pp:table}" class="input"/>
+						</p>
+						<p>
+							<label for="db_pre" class="tf_label">Prefix:</label>
+							<input type="text" name="db_pre" id="db_pre" value="{@pp:pre}" class="input"/>
+						</p>
+						<div class="h_sep" style="margin: 10px 0px 10px 0px;">
+							<span class="left">&nbsp;</span>
+							<span class="right">&nbsp;</span>
+							<span class="center">&nbsp;</span>
+						</div>
+						<p>
+							<button class="button small" onclick="location.href ='?chapter=-1';return false;"><span>&laquo; Zur&uuml;ck </span></button>
+							<button type="submit" class="button small"><span>Weiter &raquo;</span></button>
+						</p>
+					</form>
+				</div>
+			</pp:dynamic>
+			<pp:dynamic name="prefix_exists">
+				<h1 class="menu">
+					<a href="?chapter=-1">Setup <img src="{@pp:abs_root}{@pp:tpl_folder}/img/interface/next-menu1-ns.png" class="menu-center"/></a>
+					<a href="?chapter=1">Datenbank<img src="{@pp:abs_root}{@pp:tpl_folder}/img/interface/next-menu1-ns.png" class="menu-center"/></a>
+					<span class="light">Installation</span>
+				</h1>
+				<div class="h_sep_down" style="margin: 13px 0px 10px 0px;">
+					<span class="left">&nbsp;</span>
+					<span class="right">&nbsp;</span>
+					<span class="center">&nbsp;</span>
+				</div>
+				<div class="block warning">
+					<div class="header warning">Achtung</div>
+					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/status/warning-big.png" class="box_logo"/>
+					Es existiert bereits eine Installation von theFoundation in ihrer Datenbank.<br />
+					Sie k&ouml;nnen die Installation jedoch erneuern.<br />
+				</div>
+				<br />
+				<div class="h_sep" style="margin: 10px 0px 10px 0px;">
+					<span class="left">&nbsp;</span>
+					<span class="right">&nbsp;</span>
+					<span class="center">&nbsp;</span>
+				</div>
+				<button class="button small" onclick="location.href ='?chapter=1';"><span>&laquo; Zur&uuml;ck zu den Datenbankeinstellungen </span></button>
+				<button class="button small" onclick="location.href ='?chapter=3';"><span>Installation erneuern &raquo;</span></button>
+			</pp:dynamic>
+			<pp:dynamic name="setup">
+				<h1 class="menu">
+					<a href="?chapter=-1">Setup <img src="{@pp:abs_root}{@pp:tpl_folder}/img/interface/next-menu1-ns.png" class="menu-center"/></a>
+					<a href="?chapter=1">Datenbank<img src="{@pp:abs_root}{@pp:tpl_folder}/img/interface/next-menu1-ns.png" class="menu-center"/></a>
+					<a href="?chapter=2">Installation</a>
+				</h1>
+				<div class="h_sep_down" style="margin: 13px 0px 10px 0px;">
+					<span class="left">&nbsp;</span>
+					<span class="right">&nbsp;</span>
+					<span class="center">&nbsp;</span>
+				</div>
+				<p>
+					<span class="name">Caches l&ouml;schen:</span>
+					<span class="status">
+						<pp:dynamic name="del_cache_success"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/status/success.png" /> Erfolgreich</pp:dynamic>
+						<pp:dynamic name="del_cache_error"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/status/error.png" /> Fehler (ausgeschaltet)</pp:dynamic>
+					</span>
+				</p>
+				<p>
+					<span class="name">Uploads l&ouml;schen:</span>
+					<span class="status">
+						<pp:dynamic name="del_upload_success"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/status/success.png" /> Erfolgreich</pp:dynamic>
+						<pp:dynamic name="del_upload_error"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/status/error.png" /> Fehler (ausgeschaltet)</pp:dynamic>
+					</span>
+				</p><br />
+				<h3>Hauptbestandteile</h3>
+				<div class="h_sep_down" style="margin: 10px 0px 10px 0px;">
+					<span class="left">&nbsp;</span>
+					<span class="right">&nbsp;</span>
+					<span class="center">&nbsp;</span>
+				</div>
+				<pp:dynamic name="main">
+					<p>
+						<span class="name">{@pp:name}:</span>
+						<span class="status">
+							<pp:dynamic name="m_success"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/status/success.png" /> Erfolgreich</pp:dynamic>
+							<pp:dynamic name="m_error"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/status/error.png" /> Fehler</pp:dynamic>
+						</span>
+					</p>
+				</pp:dynamic>
+				<br />
+				<h3>Services</h3>
+				<div class="h_sep_down" style="margin: 10px 0px 10px 0px;">
+					<span class="left">&nbsp;</span>
+					<span class="right">&nbsp;</span>
+					<span class="center">&nbsp;</span>
+				</div>
+				<pp:dynamic name="services">
+					<p>
+						<span class="name">{@pp:name}:</span>
+						<span class="status">
+							<pp:dynamic name="s_success"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/status/success.png" /> Erfolgreich</pp:dynamic>
+							<pp:dynamic name="s_error"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/status/error.png" /> Fehler</pp:dynamic>
+						</span>
+					</p>
+				</pp:dynamic>
+				<div class="h_sep" style="margin: 10px 0px 10px 0px;">
+					<span class="left">&nbsp;</span>
+					<span class="right">&nbsp;</span>
+					<span class="center">&nbsp;</span>
+				</div>
+				<div class="block info">
+					<div class="header info">Installation erfolgreich</div>
+					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/status/info-big.png" class="box_logo"/> Die Installation ist erfolgreich verlaufen.<br />
+					Der Standardbenutzer lautet folgenderma&szlig;en:<br /><br />
+					<span style="width: 150px; display: inline-block;">&nbsp;</span>Nick:&nbsp;&nbsp; root<br />
+					<span style="width: 150px; display: inline-block;">&nbsp;</span>Password: root<br /><br />
+					 Bitte &auml;ndern Sie <span style="color: #ff0000;">sofort</span> nach dem Einlogggen das Passwort des Standardbenutzers.
+				</div>
+				<br />
+				<button class="button small" onclick="location.href='../';"><span>Weiter zum Admincenter &raquo;</span></button>
+			</pp:dynamic>
+		</div>
+	</div>
+</body>
+</html>

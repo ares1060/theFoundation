@@ -317,7 +317,7 @@
         	}
         	// general right now counts if param is not specified 
         	if($param != '' && !$strict) {
-        		// 		(				param isset										and				param = true							)		or
+           		// 		(				param isset										and				param = true							)		or
         	 	return (isset($this->rightCache[$userID][$service][$rightName][$param]) && $this->rightCache[$userID][$service][$rightName][$param]) ||
         	 			//	(								param not set				and							general right isset 				and 			general right = true 					)
         	 			(!isset($this->rightCache[$userID][$service][$rightName][$param]) && isset($this->rightCache[$userID][$service][$rightName]['']) && $this->rightCache[$userID][$service][$rightName]['']);

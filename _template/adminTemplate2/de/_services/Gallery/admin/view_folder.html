@@ -4,7 +4,7 @@
 			<span class="gallery_images_menu_entry">
 				<span class="tf_contextmenu">
 					<a class="tf_contextmenu_link " href="javascript:void(0);" id="gallery_folder_sort" style="padding: 4px 10px; display: inline-block;">
-						Sortierung: Name <img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/layout/sortUp.png" style="margin-bottom:-4px;"/>
+						Sortierung: Name <img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/Gallery/layout/sortUp.png" style="margin-bottom:-4px;"/>
 					</a>
 					<span class="tf_contextmenu_content down" style="position: absolute; left: 0px; bottom: -150px;">
 						<span class="tf_contextmenu_arrow" style="left: 15px;">&nbsp;</span>
@@ -38,11 +38,11 @@
 		<pp:dynamic name="image">
 			<div class="image_container">
 				<div class="image_cell">
-					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/gallery_load.gif" id="imageLoad_{@pp:id}"/>
+					<img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/Gallery/gallery_load.gif" id="imageLoad_{@pp:id}"/>
 					<div class="image_div" id="imageDiv_{@pp:id}">
 						<div class="image_actions" id="image_actions_{@pp:id}">
-							<a href="javascript:tf_gallery.deleteImage({@pp:id});" style="position: absolute; top: 3px; left: 3px;"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/delete_image.png" /></a>
-							<a href="javascript:tfaddress.editPath({set:{'chapter':'image', 'image':'{@pp:id}'}});;"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/gallery/icons/fullscreen.png" /></a>
+							<a href="javascript:tf_gallery.deleteImageFromFolder({@pp:id});" style="position: absolute; top: 3px; left: 3px;"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/Gallery/icons/delete_image.png" /></a>
+							<a href="javascript:tfaddress.editPath({set:{'chapter':'image', 'image':'{@pp:id}'}});;"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/services/Gallery/icons/fullscreen.png" /></a>
 						</div>
 						<img src="{@pp:root}_core/getImage.php?path={@pp:path}&height=140&width=140" class="img"  id="imageImg_{@pp:id}"/>
 						<div class="image_text">

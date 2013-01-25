@@ -285,7 +285,6 @@ var tfaddress = {
 		for(key in array){
 			if(array[key] != undefined) this.tf_string = this.tf_string + '/'+key+'/'+array[key];
 		}
-		console.log(this.tf_string);
 		var sameArray = tfutil.equals(array, this.getPathNames());
 		//(sameArray);
 		$.address.path(this.tf_string+'/');
@@ -403,6 +402,7 @@ var tfdialog = {
 	init: function() {
 		$('body').prepend(
 			'<div id="dialog_background">'+
+			'   <div id="dialog_centering">'+
 			'	<div id="dialog_box">'+
 			'		<a id="dialog_box_close" href="javascript:void(0);"><img src="'+tf.tpl_root+'/img/services/gallery/layout/close_button.png" /></a>'+
 			'		<div id="dialog_box_content">'+
@@ -413,7 +413,8 @@ var tfdialog = {
 			'			<button class="button" style="width: 100px;" id="dialog_box_ok"><span>OK</span></button>'+
 			'			<button class="button" style="width: 100px;" id="dialog_box_cancel"><span>Abbrechen</span></button>'+
 			'		</div>'+
-			'	</div>'+		
+			'	</div>'+
+			'   </div>'+
 			'</div>');
 		$('#dialog_background').click(function() { tfdialog.close(); });
 		$('#dialog_box_close').click(function() { tfdialog.close(); });
@@ -424,7 +425,7 @@ var tfdialog = {
 		var handler = param.handler;
 //		var icon = param.icon;
 		
-		if(title != undefined && content != undefined && typeof(handler) == 'function' ){
+		if(title != undefined && text != undefined && typeof(handler) == 'function' ){
 //			if(icon != undefined) {
 //				$('#dialog_box_icon').attr('src', icon);
 //				$('#dialog_box_icon').show();
@@ -457,7 +458,9 @@ var tfdialog = {
  * runs important functions on startup
  */
 $(document).ready(function() {
-	$.address.crawlable(true);
+	if($.address != undefined) {
+		$.address.crawlable(true);
+	}
 
 	// if init not run vars have to be defined the old way
 	if(tf.to_root == undefined) {
@@ -469,7 +472,9 @@ $(document).ready(function() {
 		});
 	}
 	
-	tfaddress.checkHandler();
+	if($.address != undefined) {
+		tfaddress.checkHandler();
+	}
 	
 	if($('#tf_msg').html() != '') tf.showMessages();
 });

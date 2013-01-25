@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: core\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-09 16:30+0100\n"
-"PO-Revision-Date: 2012-03-21 21:58+0100\n"
+"PO-Revision-Date: 2012-12-10 23:18+0100\n"
 "Last-Translator: - <->\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -35,21 +35,21 @@ msgstr "Dynamicbereich \"{template}:{dynamic}\" konnte nicht gefunden werden"
 
 #: _core/User/User.php:366
 msgid "_login blocked"
-msgstr "Falsches Passwort oder falscher Benutzername"
+msgstr "Falsches Passwort oder falscher Benutzername - b"
 
 #: _core/User/User.php:370
 msgid "_login deleted"
-msgstr "Falsches Passwort oder falscher Benutzername"
+msgstr "Falsches Passwort oder falscher Benutzername - d"
 
 #: _core/User/User.php:374
 msgid "_login has to activate"
-msgstr "Falsches Passwort oder falscher Benutzername"
+msgstr "Falsches Passwort oder falscher Benutzername - a"
 
 #: _core/User/User.php:378
 #: _core/User/User.php:384
 #: _core/User/User.php:388
 msgid "_wrong pwd"
-msgstr "Falsches Passwort oder falscher Benutzername"
+msgstr "Falsches Passwort oder falscher Benutzername -"
 
 #: _core/User/User.php:420
 msgid "New user created successfully"

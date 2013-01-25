@@ -241,6 +241,37 @@ var tf_gallery = {
 			});
 		}
 	},
+	deleteImageFromFolder: function(id){
+		if(active_folder == undefined) active_folder = folder;
+		if(active_folder != undefined){
+			tfdialog.show({
+				title: 'Bild l&ouml;schen',
+				text: 'Wollen sie das ausgew&auml;hlte Bild wirklich aus dem Album l&ouml;schenl&ouml;schen?',
+				handler: function(result) {
+					if(result.type == 'ok'){
+						tf.showAdminLoading();
+						tf.getService({
+							service: 'Gallery', 
+							method: 'admin', 
+							args: { 
+								action: 'delete_image',
+								folder: active_folder,
+								id: id,
+								noMsg: true
+							}, 
+							handle: function (msg) {
+								location.reload(); 
+							}
+						});
+						return false;
+					} else {
+						// do nothing
+						return false;
+					}
+				}
+			});
+		}
+	},
 	/* ================ UPLOAD ====== */
 	upload_folder: undefined,
 	upload_album: undefined,

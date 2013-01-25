@@ -1,84 +1,103 @@
-
 <span class="uiwidget_inputwrap uiwidget_inputwrap_wysiwyg">
 	<pp:dynamic name="label">
 		<label for="{@pp:id}" class="uiwidget_label uiwidget_label_wysiwyg">{@pp:label}:</label>
 	</pp:dynamic>
-	<textarea name="{@pp:name}" id="{@pp:id}" class="uiwidget uiwidget_wysiwyg tf_input" rows="{@pp:rows}">{@pp:value}</textarea>
+	<div class="richeditor">
+		
+		<div class="editbar">
+			<button title="bold" onclick="wswgEditor.doClick('bold', '{@pp:id}');" type="button"><b>B</b></button>
+			<button title="italic" onclick="wswgEditor.doClick('italic', '{@pp:id}');" type="button"><i>I</i></button>
+			<button title="underline" onclick="wswgEditor.doClick('underline', '{@pp:id}');" type="button"><u>U</u></button>
+			<button title="hyperlink" onclick="wswgEditor.doLink('{@pp:id}');" type="button" style="background-image:url('{@pp:abs_root}{@pp:tpl_root_folder}/img/uiwidgets/wysiwyg/url.gif');"></button>
+<!-- 			<button title="image" onclick="wswgEditor.doImage();" type="button" style="background-image:url('{@pp:abs_root}{@pp:tpl_root_folder}/img/uiwidgets/wysiwyg/img.gif');"></button> -->
+			<button title="list" onclick="wswgEditor.doClick('InsertUnorderedList', '{@pp:id}');" type="button" style="background-image:url('{@pp:abs_root}{@pp:tpl_root_folder}/img/uiwidgets/wysiwyg/icon_list.gif');"></button>
+<!-- 			<button title="color" onclick="wswgEditor.showColorGrid2('none', '{@pp:id}')" type="button" style="background-image:url('{@pp:abs_root}{@pp:tpl_root_folder}/img/uiwidgets/wysiwyg/colors.gif');"></button><span id="colorpicker201" class="colorpicker201"></span> -->
+<!-- 			<button title="quote" onclick="wswgEditor.doQuote();" type="button" style="background-image:url('{@pp:abs_root}{@pp:tpl_root_folder}/img/uiwidgets/wysiwyg/icon_quote.png');"></button> -->
+<!-- 			<button title="youtube" onclick="wswgEditor.InsertYoutube();" type="button" style="background-image:url('{@pp:abs_root}{@pp:tpl_root_folder}/img/uiwidgets/wysiwyg/icon_youtube.gif');"></button> -->
+			<button title="switch to source" type="button" onclick="wswgEditor.SwitchEditor('{@pp:id}')" style="background-image:url('{@pp:abs_root}{@pp:tpl_root_folder}/img/uiwidgets/wysiwyg/icon_html.gif');"></button>
+		</div>
+		
+		<div class="container">
+		<textarea name="{@pp:name}" id="{@pp:id}" class="uiwidget uiwidget_wysiwyg tf_input" width="100%" rows="{@pp:rows}">{@pp:value}</textarea>
+		</div>
+	</div>
 </span>
 <script type="text/javascript">
+	wswgEditor.initEditor("{@pp:id}", true);
+</script>
+<script type="text/javascript">
 
-$('#{@pp:id}').ready(function() {
-	<pp:dynamic name="addImages">
-		/* START CONFIG */
-		/*var mynicImageOptions = {
-			buttons : {
-				'myimage' : {name : __('Insert Gallery Image'), type : 'insertMyImage', tags : ['IMG']}
-			}
-		};*/
-		/* END CONFIG */
-		insertMyImage = undefined;
-		insertMyImage = nicEditorAdvancedButton.extend({	
-			init: function () {
-				$('#wysiwyg_content').ready(function () {
-					if($('#wysiwyg_gallery').length == 0) $('#wysiwyg_content').before('<div id="wysiwyg_gallery">gallery</div>');
-					$('#wysiwyg_gallery').hide();
-				});
-				this.wysiwyg_img_page = 1;
-				this.visible = false;
-			},
-			mouseClick : function() {
-				if(!this.isDisabled) {
-					//this.im = this.ne.selectedInstance.selElm().parentTag('IMG');
-					if(this.visible) {
-						$('#wysiwyg_gallery').slideUp();
-						$('#wysiwyg_content > .nicEdit-main').css('padding-right', '8px');
-						this.visible = false;
-						this.wysiwyg_img_page_old = undefined;
-					} else {
-						$('#wysiwyg_content > .nicEdit-main').css('padding-right', '315px');
-						this.loadWYSIWYGImages();
-					}
-				} 
-			},
+/* $('#{@pp:id}').ready(function() {
+// 	<pp: dynamic name="addImages">
+// 		/* START CONFIG */
+// 		/*var mynicImageOptions = {
+// 			buttons : {
+// 				'myimage' : {name : __('Insert Gallery Image'), type : 'insertMyImage', tags : ['IMG']}
+// 			}
+// 		};*/
+// 		/* END CONFIG */
+// 		insertMyImage = undefined;
+// 		insertMyImage = nicEditorAdvancedButton.extend({	
+// 			init: function () {
+// 				$('#wysiwyg_content').ready(function () {
+// 					if($('#wysiwyg_gallery').length == 0) $('#wysiwyg_content').before('<div id="wysiwyg_gallery">gallery</div>');
+// 					$('#wysiwyg_gallery').hide();
+// 				});
+// 				this.wysiwyg_img_page = 1;
+// 				this.visible = false;
+// 			},
+// 			mouseClick : function() {
+// 				if(!this.isDisabled) {
+// 					//this.im = this.ne.selectedInstance.selElm().parentTag('IMG');
+// 					if(this.visible) {
+// 						$('#wysiwyg_gallery').slideUp();
+// 						$('#wysiwyg_content > .nicEdit-main').css('padding-right', '8px');
+// 						this.visible = false;
+// 						this.wysiwyg_img_page_old = undefined;
+// 					} else {
+// 						$('#wysiwyg_content > .nicEdit-main').css('padding-right', '315px');
+// 						this.loadWYSIWYGImages();
+// 					}
+// 				} 
+// 			},
 
-			loadWYSIWYGImages: function () {
-				if(this.wysiwyg_img_page != this.wysiwyg_img_page_old || this.wysiwyg_img_page_old == undefined) {
-					$('#wysiwyg_gallery').slideDown();
-					showAdminLoadingDiv();
-					getService('{@pp:service}', 'admin', 'args[action]=wysiwyg_image&args[id]={@pp:id}&args[page]='+this.wysiwyg_img_page+'&args[useFunction]=wysiwygInsertImage&args[reloadFunction]=insertMyImage.loadWYSIWYGImages', 
-							function (msg) {
-								hideAdminLoadingDiv();
-								$('#wysiwyg_gallery').html(msg);
-							});
-					this.wysiwyg_img_page_old = this.wysiwyg_img_page;
-					this.visible = true;
-				}
-			}
+// 			loadWYSIWYGImages: function () {
+// 				if(this.wysiwyg_img_page != this.wysiwyg_img_page_old || this.wysiwyg_img_page_old == undefined) {
+// 					$('#wysiwyg_gallery').slideDown();
+// 					showAdminLoadingDiv();
+// 					getService('{@pp:service}', 'admin', 'args[action]=wysiwyg_image&args[id]={@pp:id}&args[page]='+this.wysiwyg_img_page+'&args[useFunction]=wysiwygInsertImage&args[reloadFunction]=insertMyImage.loadWYSIWYGImages', 
+// 							function (msg) {
+// 								hideAdminLoadingDiv();
+// 								$('#wysiwyg_gallery').html(msg);
+// 							});
+// 					this.wysiwyg_img_page_old = this.wysiwyg_img_page;
+// 					this.visible = true;
+// 				}
+// 			}
 	
-		});
-		//nicEditors.registerPlugin(nicPlugin, mynicImageOptions);
-	</pp:dynamic>
+// 		});
+// 		//nicEditors.registerPlugin(nicPlugin, mynicImageOptions);
+// 	</pp: dynamic>
 
-	new nicEditor({
-		iconsPath : '{@pp:abs_root}{@pp:tpl_folder}/img/nicEditorIcons.gif', 
-		buttonList:[{@pp:features}],
-		bbCode:true
-	}).panelInstance('{@pp:id}');
+// 	new nicEditor({
+// 		iconsPath : '{@pp:abs_root}{@pp:tpl_folder}/img/nicEditorIcons.gif', 
+// 		buttonList:[{@pp:features}],
+// 		bbCode:true
+// 	}).panelInstance('{@pp:id}');
 
-});
+// });
 
-//force update for bbcode
-nicEditors.findEditor('{@pp:id}').setContent(nicEditors.findEditor('{@pp:id}').getContent());
-
-
-/*function nicEditorHandleImages() {
-	showImageLoadingDiv();
-	getService('Shop', 'admin', 'args[action]=loadProductImages&args[id]=&args[page]='+pi_page+'&args[reloadFunction]=reloadProductImages', 
-			function (msg) {
-				$('#wysiwyg_gallery').html(msg);
-				hideImageLoadingDiv();
-			});
-}*/
+// //force update for bbcode
+// nicEditors.findEditor('{@pp:id}').setContent(nicEditors.findEditor('{@pp:id}').getContent());
 
 
-</script>	
+// /*function nicEditorHandleImages() {
+// 	showImageLoadingDiv();
+// 	getService('Shop', 'admin', 'args[action]=loadProductImages&args[id]=&args[page]='+pi_page+'&args[reloadFunction]=reloadProductImages', 
+// 			function (msg) {
+// 				$('#wysiwyg_gallery').html(msg);
+// 				hideImageLoadingDiv();
+// 			});
+// }*/
+
+</script>

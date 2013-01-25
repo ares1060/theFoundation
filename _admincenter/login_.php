@@ -16,7 +16,7 @@
 
     /* create new ServiceProvider */
     /* $sp = new ServiceProvider(); -- will be created in theFoundation.php*/
-   	$sp->ref('Template')->setTemplate('adminTemplate');
+   	$sp->ref('Template')->setTemplate('adminTemplate2');
 
    	/* redirect loggedin Users */
     if(isset($_POST['u_nick']) && isset($_POST['u_pwd'])) {

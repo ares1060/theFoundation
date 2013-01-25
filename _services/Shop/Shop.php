@@ -198,7 +198,8 @@
         				case 'loadProductImages':
         					if(isset($args['link'])) {
         						$link = $args['link'];
-        						return $this->sp->ref('Gallery')->getBoxFolderTpl($this->_setting('gallery_album_id', 'main'), $this->_setting('gallery_album_prefix', 'main').$id, $page, Gallery::BOX_VIEW_MATRIX, $reloadFunction, $useFunction, $link);
+        						$per_page = isset($args['per_page']) ? $args['per_page'] : -1;
+        						return $this->sp->ref('Gallery')->getBoxFolderTpl($this->_setting('gallery_album_id', 'main'), $this->_setting('gallery_album_prefix', 'main').$id, $page, Gallery::BOX_VIEW_MATRIX, $reloadFunction, $useFunction, $link, $per_page);
         					}
 //         					return $this->sp->ref('Gallery')->getBoxFolderTpl($this->_setting('gallery_album_id', 'main'), 'product_'.$id, $page, $click, -1, -1, Gallery::BOX_VIEW_MATRIX, $reloadFunction, $useFunction);
         					break;
@@ -252,6 +253,7 @@
          * handles Post Variables in Admincenter
          */
         public function handleAdminPost(){
+        	
         	/* -- Category posts -- */
         	$this->sp->ref('Category')->handleAdminPost($this->name);
         	// edit product
@@ -286,7 +288,7 @@
              			return false;
              		}
             }
-            
+//             print_r($_POST);
             // new product
         	if(isset($_POST['pr_link']) &&
         		isset($_POST['pr_status']) && 
@@ -300,6 +302,8 @@
                 isset($_POST['pr_dimensions_depth']) &&
                 !isset($_POST['pr_id']) 
                 ){
+        		
+//         		print_r($_POST);
                 	$n_id = $this->dataHelper->newProduct($_POST['pr_status'], 
              				$_POST['pr_name'], 
              				$_POST['pr_desc'], 

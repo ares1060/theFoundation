@@ -33,6 +33,7 @@
         const DATA_TYPE_IMAGE = 4;
         const DATA_TYPE_EMAIL = 5;
         const DATA_TYPE_TEXT = 6;
+        const DATA_TYPE_DATE = 7;
         
         const VISIBILITY_HIDDEN = 0;
         const VISIBILITY_VISIBLE = 1;
@@ -261,7 +262,7 @@
          			break;
          		case 'rejectRegistration':
          			$code = isset($args['code']) ? $args['code'] : '';
-         			return $this->dataHelper->rejectRegistration($code);
+         			return $this->dataHelper->rejectActivation($code);
          			break;
          	}
          }
@@ -279,6 +280,7 @@
          * handles Post Variables in Admincenter
          */
         public function handleAdminPost(){
+//         	print_r($_POST);
 		    if(isset($_POST['action'])){
 		    	switch($_POST['action']){
 		    		case 'editUser':
@@ -289,12 +291,22 @@
 		    					//potential security risk -> check if authorized to set new group
 		    					$group = $this->checkRight('administer_group', $_POST['eu_group']) ? $_POST['eu_group'] : -1;
 		    					
-		    					if($this->dataHelper->editUser($_POST['eu_id'], '', '',$_POST['eu_mail'], $_POST['eu_status'], $group, array())){
-		    						$this->_msg($this->_('_User Update success', 'core'), Messages::INFO);
-
-		    						header('Location: '.$_SERVER["HTTP_REFERER"].$_POST['back_link']);
-			             			exit(0);
-		    					} else $this->_msg($this->_('_User Update error', 'core'), Messages::ERROR);
+		    					// edit password
+		    					if((($_POST['eu_pwd_new'] != '' || $_POST['eu_pwd_new2'] != '') && $_POST['eu_pwd_new'] == $_POST['eu_pwd_new2']) ||
+		    							($_POST['eu_pwd_new'] == '' && $_POST['eu_pwd_new2'] == '')) {
+		    						
+		    						$pwd =  $_POST['eu_pwd_new'] == $_POST['eu_pwd_new2'] ? $_POST['eu_pwd_new'] : '';
+		    						
+		    						if($this->dataHelper->editUser($_POST['eu_id'], '', $pwd, $_POST['eu_mail'], $_POST['eu_status'], $group, array())){
+		    							$this->_msg($this->_('_User Update success', 'core'), Messages::INFO);
+		    						
+		    							header('Location: '.$_SERVER["HTTP_REFERER"].$_POST['back_link']);
+		    							exit(0);
+		    						} else $this->_msg($this->_('_User Update error', 'core'), Messages::ERROR);
+		    					} else {
+		    						$this->_msg($this->_('_Passwords have to match', 'core'), Messages::ERROR);
+		    					}
+		    					
 		    				} else $this->_msg($this->_('You are not authorized', 'core'), Messages::ERROR);
 		    			}
 		    			break;
@@ -329,8 +341,14 @@
         private function rightPwd($nick, $pwd){
         	$hash = ($this->_setting('no_nick_needed')) ? $this->dataHelper->getUserHashByEMail($nick) : $this->dataHelper->getUserHashByNick($nick);
         	if($hash != ''){
+        		
         		$salt = substr($hash, strpos($hash, '#')+1);
-
+         		
+//         		$this->_msg($salt);
+//          		$this->_msg($this->hashPassword($pwd, $salt));
+//          		$this->_msg($this->hashPassword($pwd, $salt));
+//          		$this->_msg($this->hashPassword($pwd, $salt));
+         		 
         		if($hash == $this->hashPassword($pwd, $salt)){  
         			return true;
         		} else return false;
@@ -515,6 +533,10 @@
         	return $this->dataHelper->getUsers(-1);
         }
         
+        public function getUserById($id){
+        	return $this->dataHelper->getUserById($id);
+        }
+        
         /**
          * returnes User by UserdataId and calue
          * @param unknown_type $data_id
@@ -531,6 +553,19 @@
          */
         public function getUserDataByUserId($id){
         	return $this->dataHelper->getUserDataByUserId($id);
+        }
+        
+        public function setUserDataByUserIdAndDataName($dataName, $value, $id=-1){
+        	if($id == -1) $id = $this->getLoggedInUser()->getId();
+        	if($id == $this->getLoggedInUser()->getId() || $this->checkRight('edit_user_data', $id)) { // 1 == root
+        		if($this->dataHelper->setUserDataByUserIdAndDataName($id, $dataName, $value)) {
+        			$this->_msg($this->_('_EDIT SUCCESSFULL'), Messages::INFO);
+        			return true;
+        		} else {
+        			$this->_msg($this->_('_EDIT ERROR'), Messages::ERROR);
+        			return true;
+        		}
+        	}
         }
     }
  ?>

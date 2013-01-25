@@ -48,13 +48,17 @@
         }
 		
 		public function render() {
+			$GLOBALS['extra_css'][] = 'services/uiwidgets_wysiwyg.css';
+			$GLOBALS['extra_js'][] = 'uiwidgets_wysiwyg.js';
+// 			$GLOBALS['extra_js'][] = 'nicEdit.js';
+				
 			$vd = new ViewDescriptor(AUIWidget::TPL_ROOT.'wysiwyg');
 			$vd->addValue('id', $this->id);
 			$vd->addValue('name', $this->name);
 			$vd->addValue('value', $this->value);
 			$vd->addValue('rows', $this->rows);
 			
-			if($this->img){
+			/*if($this->img){
 				$this->features[] = 'myimage';
 				$s = new SubViewDescriptor('addImages');
 				
@@ -63,7 +67,7 @@
 				
 				$vd->addSubView($s);
 				unset($s);
-			}
+			}*/
 			
 			$features = array();
 			foreach($this->features as $f) $features[] = '\''.$f.'\'';

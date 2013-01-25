@@ -145,7 +145,11 @@
 				$tpl->addValue('id', $image->getId());
 				$tpl->addValue('path', $image->getPath());
 				
-				
+				$surrounding = $this->dataHelper->getSurroundingImagesByImageAndFolder($image, $folder);
+
+				if($surrounding['prev'] != null) $tpl->addValue('prev', $surrounding['prev']->getId());
+				if($surrounding['next'] != null) $tpl->addValue('next', $surrounding['next']->getId());
+
 				return $tpl->render();
 				
 			} else {
@@ -163,6 +167,16 @@
 			$tpl->addValue('max_uploads', $this->_setting('upload.max_uploads'));
 			$tpl->addValue('types', $this->_setting('upload.valid_file_types'));
 				
+			return $tpl->render();
+		}
+		
+		public function tplReplaceImageUpload($image) {
+			if(!is_object($image) || get_class($image) != 'GalleryImage') $image = $this->dataHelper->getImageById($image);
+			
+			$tpl = new ViewDescriptor($this->_setting('tpl.admin/replaceUpload'));
+			
+			$tpl->addValue('image_id', ($image != null) ? $image->getId() : -1);
+			
 			return $tpl->render();
 		}
 	}

@@ -506,6 +506,28 @@
     	}
     	
     	/**
+    	 * gets User Info Object by User Data id and data value
+    	 * @param unknown_type $data_id
+    	 * @param unknown_type $value
+    	 */
+    	public function getUserInfoByData($data_id, $value){
+    		if($data_id > 0 && $value != ''){
+    			$array = $this->mysqlArray('SELECT * FROM 
+    								'.$GLOBALS['db']['db_prefix'].'userdata_user du
+    								LEFT JOIN '.$GLOBALS['db']['db_prefix'].'user u ON du.u_id = u.u_id 
+    					 WHERE du.value=\''.mysql_real_escape_string($value).'\' AND du.ud_id = \''.mysql_real_escape_string($data_id).'\';');
+    			
+    			
+    			if($array != array()) {
+					$this->user[$array[0]['id']] = new UserInfo($array[0]['nick'], $array[0]['id'], $array[0]['email'], $array[0]['group'], $array[0]['status']);
+    				
+					return $this->getUserInfo($array[0]['id']);
+    			}
+    			else return null;
+    		} else return null;
+    	}
+    	
+    	/**
     	 * returnes UserInfo by Nick
     	 * @param $nick
     	 */

@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="{@pp:abs_root}{@pp:tpl_folder}/css/main.css" />
+<link rel="stylesheet" type="text/css" href="{@pp:abs_root}{@pp:tpl_folder}/css/login.css" />
+<link rel="stylesheet" type="text/css" href="{@pp:abs_root}{@pp:tpl_root_folder}/css/foundation.css" />
+<link rel="stylesheet" type="text/css" href="{@pp:abs_root}{@pp:tpl_folder}/css/colors/dark_blue.css" />
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Judson:r|PT+Sans:r,b,i,bi|Open+Sans:300">
+<title>Insert title here</title>
+</head>
+<body>
+	<div id="logindiv">
+		<div id="login_content">
+			<div id="login_logo"><img src="{@pp:abs_root}{@pp:tpl_folder}/img/logo_login_light.png" /></div>
+			<div id="loginform">
+<!-- 				<span class="header">Login at the foundation:</span> -->
+				<div id="tf_msg" class="messages" style="display: block; margin: 0px -10px;">{pp:Messages("action":"viewType", "type":"error/info")}</div>
+				<div id="login_content">				
+					 <form action="{@pp:abs_root}_admincenter/login/" method="post">
+						<p><label for="u_nick" class="label">E-Mail:</label><input type="input" name="u_nick" id="u_nick" class="input"/></p><br />
+						<p><label for="u_pwd" class="label">Passwort:</label><input type="password" name="u_pwd" id="u_pwd" class="input"/></p>
+						<p><span class="label">&nbsp;</span>
+							<button type="submit" class="biggest tf_button button green" style="float: right;"><span>&nbsp;&nbsp;Login&nbsp;&nbsp;</span></button>
+							<button type="button" class="biggest tf_button button"><span>&nbsp;&nbsp;Register&nbsp;&nbsp;</span></button>
+						</p>
+					</form> 
+				</div>
+			</div>
+		</div>
+		<div id="backlink"><a href="{@pp:abs_root}">&laquo; Zur&uuml;ck zur Seite</a></div>
+		
+<!-- 		<div id="loginform"> -->
+<!-- 			<span class="header">Login at the foundation:</span> -->
+<!-- 			<div id="tf_msg" class="messages" style="display: block; margin: 5px -10px 5px -10px;border: 0px;">{pp:Messages("action":"viewType", "type":"error/info")}</div> -->
+<!-- 			<div id="login_content">				 -->
+<!-- 				 <form action="{@pp:abs_root}_admincenter/login/" method="post"> -->
+<!-- 					<p><label for="u_nick" class="label">EMail:</label><input type="input" name="u_nick" id="u_nick" class="input"/></p> -->
+<!-- 					<p><label for="u_pwd" class="label">Password:</label><input type="password" name="u_pwd" id="u_pwd" class="input"/></p> -->
+<!-- 					<p><span class="label">&nbsp;</span><input type="submit" class="small tf_button" value="&nbsp;&nbsp;Login&nbsp;&nbsp;"/> <input type="button" class="small tf_button" value="&nbsp;&nbsp;Register&nbsp;&nbsp;" /></p> -->
+<!-- 				</form>  -->
+<!-- 			</div> -->
+	</div>
+</body>
+</html>

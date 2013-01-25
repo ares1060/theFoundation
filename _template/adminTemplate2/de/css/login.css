@@ -1,0 +1,153 @@
+@CHARSET "UTF-8";
+body {
+	box-shadow: 0px 0px 100px 100px rgba(0,0,0,.2) inset;
+	position: fixed;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	overflow-x: auto;
+}
+#logindiv {
+	width: 400px;
+	height: auto;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-top: -140px;
+	margin-left: -200px;
+	background: #eee;
+	border-radius: 5px;
+	box-shadow: 0 2px 3px 3px rgba(0, 0, 0, 0.06), 0 0 1px 1px rgba(0, 0, 0, 0.1), 0px 0px 50px 50px rgba(0,0,0,.15);
+}
+#login_content {
+	position: relative;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	padding: 10px;
+}
+#login_logo {
+	height: 100px;
+	margin: -120px 0px 20px 0px;
+	text-align: center;
+}
+#login_logo img {
+/* 	width: 350px; */
+}
+#loginform {
+	display:block;
+	position: relative;
+}
+#login_content {
+	font-family: 'Open Sans';
+	color: #444;
+}
+
+#login_content .label {
+	display: block;
+	font-size: 14pt;
+}
+#login_content .input {
+	display: block;
+	position: relative;
+	width: 340px;
+	height: 40px;
+	font-size: 14pt;
+	border-radius: 0px;
+	border: 1px solid #aaa;
+	padding: 0px 10px;
+	box-shadow: 1px 1px 2px 0px rgba(0,0,0,.3) inset;
+}
+.button.biggest {
+	width: 170px;
+	font-size: 14pt;
+}
+#backlink {
+	position: absolute;
+	bottom: -40px;
+	left: 0px;
+	right: 0px;
+	text-align: center;
+	font-size: 12pt;
+	font-weight: 300;
+	font-family: 'Open Sans';
+}
+#backlink a {
+	color: #888;
+	text-shadow: -1px -1px rgba(0, 0, 0, 0.4), 1px 1px rgba(255, 255, 255, 0.05);
+}
+
+#tf_msg {
+	font-size: 12pt;
+	border: 0px !important;
+}
+#tf_msg div {
+	box-shadow: 0px 0px 0px 1px rgba(0,0,0,.4) inset;
+}
+#tf_msg div.m_1, #tf_msg div.m_2, #tf_msg div.m_3, #tf_msg div.m_0 {
+    border-bottom: 1px solid #DDDDDD;
+    box-shadow: 0 10px 10px rgba(255, 255, 255, 0.2) inset;
+    padding: 5px 10px;
+}
+#tf_msg div.m_0, #tf_msg div.m_5, #tf_msg div.m_3 {
+    background: none repeat scroll 0 0 #FCB4B8;
+    border-bottom: 1px solid #8F3B3F;
+    color: #8F3B3F;
+    text-shadow: 0 1px #FFDDDD;
+}
+#tf_msg div.m_1 {
+    background: none repeat scroll 0 0 #B3F0AC;
+    border-bottom: 1px solid #3D8236;
+    color: #3D8236;
+}
+#tf_msg div.m_2 {
+    background: none repeat scroll 0 0 #FEEDB6;
+    border-bottom: 1px solid #927E3C;
+    color: #927E3C;
+}
+
+/* #logindiv { */
+/* 	width: 400px; */
+/* 	margin: 0 auto; */
+/* 	margin-top: 100px; */
+/* } */
+/* #loginform { */
+/* 	padding: 10px; */
+/* 	border-radius: 5px; */
+/* 	border: 1px solid; */
+/* 	border-color: #B0B0B0 #C9C9C9 #C9C9C9;	 */
+/* 	box-shadow: 0px 0px 40px 40px rgba(0,0,0,.06) inset, 0 1px 1px rgba(255,255,255,1); */
+/* 	margin-bottom: 20px; */
+/* } */
+/* #logo { */
+/* 	width: 360px; */
+/* 	margin-bottom: 30px;	 */
+/* } */
+/* #loginform .header { */
+/* 	font-family: 'Open Sans'; */
+/* 	color: #444; */
+/* 	font-size: 20px; */
+/* 	margin-bottom: 10px; */
+/* 	display: block;	 */
+/* 	text-align: center; */
+/* 	padding-bottom: 10px; */
+/* } */
+/* #loginform p { */
+/* 	display: block; */
+/* 	padding: 5px;	 */
+/* } */
+/* #loginform p .label { */
+/* 	width: 70px; */
+/* 	display: inline-block;	 */
+/* 	text-align: right; */
+/* 	padding-right: 10px; */
+/* } */
+/* #loginform p .input { */
+/* 	width: 250px; */
+/* } */
+/* #backlink { */
+/* 	display: block; */
+/* 	text-align: center; */
+/* 	} */

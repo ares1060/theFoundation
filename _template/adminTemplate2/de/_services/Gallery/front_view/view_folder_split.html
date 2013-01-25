@@ -1,0 +1,72 @@
+<div class="gf_box_split" id="images">
+	<div class="gf_image_split_main" style="width: 300px; height: 200px;">
+		<a href="" id="main_image_link"><img src="#" id="main_image"/></a>
+	</div>
+	<div class="gf_box_split_thumbs">
+		<pp:dynamic name="image">
+			<div class="gf_image_container">
+				<div class="gf_image_cell">
+					<div class="gf_image_div">
+						<a href="{@pp:abs_root}_core/getImage.php?path={@pp:path}&height=1024&width=1024" class="product_image_link"><img src="{@pp:abs_root}_core/getImage.php?path={@pp:path}&height=58&width=58" class="img" id="image_{@pp:id}"/></a>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript">
+				$('#image_{@pp:id}').load(function() {$(this).hover(function() { maxImage({@pp:id}); } ); });
+				if(images_array == undefined) var images_array = {};
+				var tmp = new Image();
+				var tmp1 = new Image();
+				tmp.src = '{@pp:abs_root}_core/getImage.php?path={@pp:path}&height=1024&width=1024';
+				tmp1.src = '{@pp:abs_root}_core/getImage.php?path={@pp:path}&height=200&width=300';
+				images_array['{@pp:id}'] = {
+						big: tmp,
+						small: tmp1
+				};
+			</script>
+		</pp:dynamic>
+	</div>
+	<script type="text/javascript">
+		var bigImages = [];	
+		$('#images').ready(function() {
+			var tmp = new Image();
+			var tmp1 = new Image();
+			tmp.src = '{@pp:abs_root}_core/getImage.php?path={@pp:firstImgPath}&height=1024&width=1024';
+			tmp1.src = '{@pp:abs_root}_core/getImage.php?path={@pp:firstImgPath}&height=200&width=300';
+			images_array['{@pp:firstImgId}'] = {
+					big: tmp,
+					small: tmp1
+			};
+ 			maxImage({@pp:firstImgId});
+ 			
+ 			$.each(images_array, function(key, value){
+ 				bigImages.push(value.big);
+ 			});
+		});
+		function maxImage(id){
+			console.log(images_array[id]);
+			$('#main_image').attr('src', images_array[id].small.src);
+			$('#main_image_link').attr('href', 'javascript:void(0);');
+// 			$('#main_image_link').lightBox({
+// 				imageLoading: '{@pp:abs_root}{@pp:tpl_folder}/img/lightbox/lightbox-ico-loading.gif',
+// 				imageBtnPrev: '{@pp:abs_root}{@pp:tpl_folder}/img/lightbox/lightbox-btn-prev.gif', 
+// 				imageBtnNext: '{@pp:abs_root}{@pp:tpl_folder}/img/lightbox/lightbox-btn-next.gif',
+// 				imageBtnClose: '{@pp:abs_root}{@pp:tpl_folder}/img/lightbox/lightbox-btn-cl	ose.gif',
+// 				imageBlank: '{@pp:abs_root}{@pp:tpl_folder}/img/lightbox/lightbox-blank.gif',
+// 				txtImage: 'Bild',
+// 				txtOf: 'von'
+// 			});
+			$('#main_image_link').unbind('click');
+			$('#main_image_link').click(function() {$('#image_'+id).parent().click(); return false; });
+		}
+		$('.product_image_link').lightBox({
+			imageLoading: '{@pp:abs_root}{@pp:tpl_folder}/img/lightbox/lightbox-ico-loading.gif',
+			imageBtnPrev: '{@pp:abs_root}{@pp:tpl_folder}/img/lightbox/lightbox-btn-prev.gif', 
+			imageBtnNext: '{@pp:abs_root}{@pp:tpl_folder}/img/lightbox/lightbox-btn-next.gif',
+			imageBtnClose: '{@pp:abs_root}{@pp:tpl_folder}/img/lightbox/lightbox-btn-close.gif',
+			imageBlank: '{@pp:abs_root}{@pp:tpl_folder}/img/lightbox/lightbox-blank.gif',
+			txtImage: 'Bild',
+			txtOf: 'von'
+		});
+	</script>
+	<div style="text-align: center;"><a href="javascript:void(0);" onclick="$('#image_{@pp:firstImgId}').parent().click(); return false;">Alle Bilder anzeigen</a></div>
+</div>

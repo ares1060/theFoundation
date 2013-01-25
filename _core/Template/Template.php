@@ -42,13 +42,14 @@
                                         'version_short'=>ServiceProvider::VERSION,
                                         'root'=>(isset($GLOBALS['connector_to_root'])) ? $GLOBALS['connector_to_root']: $GLOBALS['to_root'], // connector gets new root if needen because of template rendering from other folder
             							'abs_root'=>$GLOBALS['abs_root'],
-            							'working_dir'=>$GLOBALS['working_dir'],
+//             							'working_dir'=>$GLOBALS['working_dir'],
                                         'tpl_root_folder'=>'_template/'.$this->_setting('tpl.base_template').'/'.$GLOBALS['Localization']['language'],
                                         'tpl_folder'=>'_template/'.$this->template.'/'.$GLOBALS['Localization']['language'],
             							'service_folder' => '_services',
                                         'user_id'=> isset($_SESSION['User']['loggedInUser']) ? $_SESSION['User']['loggedInUser']->getId() : '',
                                         'user_group'=> isset($_SESSION['User']['loggedInUser']) ? $_SESSION['User']['loggedInUser']->getGroup()->getName() : '',
-            							'user_nick'=> isset($_SESSION['User']['loggedInUser']) ? $_SESSION['User']['loggedInUser']->getNick() : '');
+            							'user_nick'=> isset($_SESSION['User']['loggedInUser']) ? $_SESSION['User']['loggedInUser']->getNick() : '',
+            							'user_email'=> isset($_SESSION['User']['loggedInUser']) ? $_SESSION['User']['loggedInUser']->getEMail() : '');
             
             foreach($_GET as $key=>$get){
                 if(!is_array($get)) $this->baseReplaces['GET:'.$key] = $get;
@@ -107,7 +108,11 @@
 		    //get the template
 		    $this->baseReplaces['extra_css'] = $this->renderCss($GLOBALS['extra_css']);
             $this->baseReplaces['extra_js'] = $this->renderJs($GLOBALS['extra_js']);
-			$values = array_merge($values, $this->baseReplaces);
+			
+            $this->baseReplaces['working_dir'] = $GLOBALS['working_dir']; // add as late as possible because connector will set it very late
+// 			echo $GLOBALS['working_dir'];
+            $values = array_merge($values, $this->baseReplaces);
+			
 			
 			//do the parsing
 			if(!isset($this->fb)) $this->fh = $this->sp->ref('Filehandler');;
@@ -167,7 +172,7 @@
         
         public function getCssPath($css_file){
         	$file = '_template/'.$this->template.'/'.$GLOBALS['Localization']['language'].'/css/'.$css_file;
-        	if(!$this->checkIfExtFileExists($GLOBALS['abs_root'].$file)) $file = '_template/'.$this->_setting('base_template').'/'.$GLOBALS['Localization']['language'].'/css/'.$css_file;
+        	if(!$this->checkIfExtFileExists($GLOBALS['abs_root'].$file)) $file = '_template/'.$this->_setting('tpl.base_template').'/'.$GLOBALS['Localization']['language'].'/css/'.$css_file;
         	return $file;
         }
         
@@ -175,7 +180,7 @@
             $return = '';
             foreach($array as $row) {
             	$file = $GLOBALS['abs_root'].'_template/'.$this->template.'/'.$GLOBALS['Localization']['language'].'/js/'.$row;
-            	if(!$this->checkIfExtFileExists($file)) $file = $GLOBALS['abs_root'].'_template/'.$this->_setting('base_template').'/'.$GLOBALS['Localization']['language'].'/js/'.$row;
+            	if(!$this->checkIfExtFileExists($file)) $file = $GLOBALS['abs_root'].'_template/'.$this->_setting('tpl.base_template').'/'.$GLOBALS['Localization']['language'].'/js/'.$row;
                 $return .= '<script type="text/javascript" src="'.$file.'"></script>'."\n";
             }
             return $return;
@@ -195,6 +200,7 @@
 			
 			if($this->fh == null) $this->fh = $this->sp->ref('Filehandler');
 			
+            $this->baseReplaces['working_dir'] = $GLOBALS['working_dir']; // add as late as possible because connector will set it very late
 			$values = array_merge($values, $this->baseReplaces);
 		
 			if($this->_setting('render.cache_level') == 1){

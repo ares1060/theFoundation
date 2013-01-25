@@ -12,7 +12,7 @@ class GalleryBoxView extends TFCoreFunctions{
 		$this->dataHelper = $datahelper;
 	}
 	
-	function tplBox($folder, $subfolder_name, $page, $style=self::BOX_VIEW_MATRIX, $reloadFunctionName='', $useFunctionName='', $link=''){
+	function tplBox($folder, $subfolder_name, $page, $style=self::BOX_VIEW_MATRIX, $reloadFunctionName='', $useFunctionName='', $link='', $per_page=-1){
 		$subfolder = $this->dataHelper->getSubFolderByName($folder, $subfolder_name);
 
 		if($subfolder != null && $this->checkRight('administerFolder', $subfolder->getId())) {//$subfolder->getUserId() == $this->sp->ref('User')->getViewingUser()->getId()){
@@ -30,7 +30,8 @@ class GalleryBoxView extends TFCoreFunctions{
 			$tpl->addValue('useFunctionName', $useFunctionName);
 				
 			// page calculation and pagina creation
-			$per_page = $this->_setting('box.per_page.images');
+			$per_page = $per_page==-1 ? $this->_setting('box.per_page.images') : $per_page;
+
 			$count = $this->dataHelper->getImageCountByFolder($subfolder, array(GalleryDataHelper::STATUS_HIDDEN, GalleryDataHelper::STATUS_ONLINE));
 			
 			$all_pages = ceil($count / $per_page);
@@ -46,7 +47,7 @@ class GalleryBoxView extends TFCoreFunctions{
 			
 			$tpl->addValue('link', $link);
 				
-			$images = $this->dataHelper->getImagesByFolder($subfolder, $final_page, $this->_setting('box.per_page.images'), array(GalleryDataHelper::STATUS_HIDDEN, GalleryDataHelper::STATUS_ONLINE));
+			$images = $this->dataHelper->getImagesByFolder($subfolder, $final_page, $per_page, array(GalleryDataHelper::STATUS_HIDDEN, GalleryDataHelper::STATUS_ONLINE));
 			
 			if($images != null){
 				foreach($images as $i){
@@ -55,6 +56,7 @@ class GalleryBoxView extends TFCoreFunctions{
 					$t->addValue('name', $this->sp->ref('TextFunctions')->cropText($i->getName(), 10));
 					$t->addValue('id', $i->getId());
 					$t->addValue('time', $time);
+					$t->addValue('folderId', $subfolder->getId());
 					$t->addValue('path', $i->getPath());
 						
 					$tpl->addSubView($t);

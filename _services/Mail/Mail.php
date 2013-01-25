@@ -4,7 +4,7 @@ class Mail extends Service implements IService  {
 
 	function __construct(){
 		$this->name = 'Mail';
-        $this->ini_file = $GLOBALS['to_root'].'_service/Mail/Mail.ini';
+        $this->ini_file = $GLOBALS['to_root'].'_services/Mail/Mail.ini';
         parent::__construct();
 	}
 
@@ -37,9 +37,9 @@ class Mail extends Service implements IService  {
 		if($from == '') $from = $this->_setting('default.sender_adress').'@'.$_SERVER['SERVER_NAME'];
 		
 		//set headers
-		$headers  = 'MIME-Version: 1.0' . "\r\n";
-		$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-		$headers .= 'From: ' .$from. "\r\n";
+ 		$headers = "MIME-Version: 1.0" . PHP_EOL;
+    	$headers .= "Content-Type: text/html; charset=ISO-8859-1" . PHP_EOL;
+		$headers .= 'From: ' .$from .  PHP_EOL;
 	
 		//send
 		return mail($to, $subject, utf8_encode($text), $headers);

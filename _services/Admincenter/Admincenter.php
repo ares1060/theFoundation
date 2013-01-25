@@ -135,6 +135,7 @@
         			if($vu->getId() != $u->getId()){
         				$tmp = new SubViewDescriptor('view_as_enabled');
         				$tmp->addValue('nick', ($vu->getNick() == '') ? '--' : $vu->getNick());
+        				$tmp->addValue('email', ($vu->getEMail() == '') ? '--' : $vu->getEMail());
         				$user->addSubView($tmp);
         			} else {
         				$user->showSubView('view_as_disabled');
@@ -145,7 +146,7 @@
         				if($u1->getId() != $u->getId()){
 	        				$tmp = new SubViewDescriptor('view_as_user');
 	        				$tmp->addValue('id', $u1->getId());
-	        				$tmp->addValue('u_nick', ($u1->getNick() == '') ? '--' : $u1->getNick());
+	        				$tmp->addValue('u_nick', ($u1->getNick() == '') ? '' : '('.$u1->getNick().')');
 	        				$tmp->addValue('u_email', $u1->getEMail());
 	        				$user->addSubView($tmp);
 	        				unset($tmp);

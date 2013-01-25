@@ -5,6 +5,7 @@
 	require_once 'control/exifReader.inc';
 	require_once 'view/GalleryAdminView.php';
 	require_once 'view/GalleryBoxView.php';
+	require_once 'view/GalleryFrontView.php';
 	/**
      * Description
      * @author scrapy_ii@gmx.at
@@ -61,6 +62,7 @@
            $this->dataHelper = new GalleryDataHelper($this->settings);
            $this->adminView = new GalleryAdminView($this->settings, $this->dataHelper);
            $this->boxView = new GalleryBoxView($this->settings, $this->dataHelper);
+           $this->frontView = new GalleryFrontView($this->settings, $this->dataHelper);
         }
         /**
          * 
@@ -70,7 +72,47 @@
          * @see _core/IService::view()
          */
         public function view($args) {
-            return '';
+        	$GLOBALS['extra_css'][] = 'services/gallery.css';
+        	
+        	$page = isset($args['page']) ? $args['page'] : 1;
+        	$id = isset($args['id']) ? $args['id'] : -1;
+        	$user = isset($args['user']) ? $args['user'] : -1;
+        	$action = isset($args['action']) ? $args['action'] : '';
+        	$type = isset($args['type']) ? $args['type'] : -1;
+
+        	switch($action){
+        		case 'image':
+        			$album = isset($args['album']) ? $args['album'] : -1;
+        			if(isset($id) && $album > -1){
+        				return $this->frontView->tplViewImage($id, $album);
+        			} else return '';
+        			break;
+        		case 'albums':
+        			$per_page = isset($args['per_page']) ? $args['per_page'] : -1;
+        			$sort = isset($args['sort']) ? $args['sort'] : 'default';
+        			return $this->frontView->tplViewAlbums($user, $type, $page, $per_page, $sort);
+        			break;
+        		case 'album':
+        			$per_page = isset($args['per_page']) ? $args['per_page'] : -1;
+        			if($id > -1 && $page >= 1){
+        				switch($type){
+        					case 'matrix': 
+        						$type = Gallery::FRONT_VIEW_MATRIX;
+        						break;
+        					case 'single':
+        						$type = Gallery::FRONT_VIEW_SINGLE;
+        						break;
+        					case 'split':
+        						$type = Gallery::FRONT_VIEW_SPLIT;
+        						break;
+        				}
+        				return $this->frontView->tplViewFolder($id, $page, $type, $per_page);
+        			} else return '';
+        			break;
+        		default:
+        			return '';
+        			break;
+        	}
         }
         /**
          * 
@@ -102,6 +144,14 @@
         			break;
            		default:
            			switch($action) {
+           				case 'delete_image':
+           					if(isset($args['folder']) && $args['folder'] != ''){
+           						return $this->dataHelper->deleteImageFromFolder($args['folder'], $id);
+           					}
+           					break;
+           				case 'replace_image_upload':
+           					return $this->adminView->tplReplaceImageUpload($id);
+           					break;
            				case 'upload':
            					return $this->adminView->tplUpload($id);
            					break;
@@ -212,16 +262,35 @@
         	return $this->dataHelper->getImageById($id);
         }
         
-        public function getBoxFolderTpl($album, $subalbum_name, $page, $style=self::BOX_VIEW_MATRIX, $reloadFunctionName='', $useFunctionName='', $link=''){
-        	return $this->boxView->tplBox($album, $subalbum_name, $page, $style, $reloadFunctionName, $useFunctionName, $link);
+        public function getBoxFolderTpl($album, $subalbum_name, $page, $style=self::BOX_VIEW_MATRIX, $reloadFunctionName='', $useFunctionName='', $link='', $per_page=-1){
+        	return $this->boxView->tplBox($album, $subalbum_name, $page, $style, $reloadFunctionName, $useFunctionName, $link, $per_page);
         }
         
-        public function createFolder($parent_id, $name, $status=GalleryDataHelper::STATUS_ONLINE) {
-        	return $this->dataHelper->createFolder($parent_id, $name, $status);
+        public function getFolderById($id) {
+        	return $this->dataHelper->getFolderById($id);
+        }
+        
+        public function getFolderByAlbumAndName($album, $name) {
+        	return $this->dataHelper->getSubFolderByName($album, $name);
+        }
+        
+        public function createFolder($parent_id, $name, $status=GalleryDataHelper::STATUS_ONLINE, $silent=false) {
+        	return $this->dataHelper->createFolder($parent_id, $name, $status, $silent);
         }
         
         public function deleteFolderByNameAndParent($name, $parent_id){
-        	return $this->dataHelper->deleteFolderByNameAndParent($name, $parent_id);
+        	return $this->dataHelper->deleteFolder($this->dataHelper->getFolderByParentAndName($parent_id, $name));
+        }
+        
+        /**
+         * replaces old image by new upload
+         * image_array must include (name, type, tmp_name, error, size)
+         * @param unknown_type $image
+         * @param unknown_type $image_array
+         */
+        public function replaceImage($image, $image_array) {
+        	error_log('replace Image: '.$image);
+        	return $this->dataHelper->replaceImage($image, $image_array);
         }
     }
 ?>

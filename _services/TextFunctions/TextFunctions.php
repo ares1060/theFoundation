@@ -410,7 +410,7 @@
 				}  else if (!preg_match('/^[A-Za-z0-9\\-\\.]+$/', $domain))  {
 	
 			      	// character not valid in domain part
-				$isValid = false;
+					$isValid = false;
 				} else if (preg_match('/\\.\\./', $domain)) {
 			         
 			      	// domain part has two consecutive dots
@@ -421,16 +421,49 @@
 			     	// local part is quoted
 			      	if (!preg_match('/^"(\\\\"|[^"])+"$/', str_replace("\\\\","",$local))) {
 						$isValid = false;
-					}
+			      	}
 				}
-			      
-				if ($isValid && !(checkdnsrr($domain,"MX") || checkdnsrr($domain,"A"))) {
-			         
+			    if(($isValid && $this->config['mailcheck_dns'] && !(checkdnsrr($domain,"MX") || checkdnsrr($domain,"A")))) {
 					// domain not found in DNS
 					$isValid = false;
 				}
 			}
 			return $isValid;
+		}
+		
+		/**
+		 * Check that a string looks roughly like an email address should
+		 * Static so it can be used without instantiation
+		 * Tries to use PHP built-in validator in the filter extension (from PHP 5.2), falls back to a reasonably competent regex validator
+		 * Conforms approximately to RFC2822
+		 * @link http://www.hexillion.com/samples/#Regex Original pattern found here
+		 * @param string $address The email address to check
+		 * @return boolean
+		 * @static
+		 * @access public
+		 */
+		public static function ValidateMailaddress($address) {
+			if (function_exists('filter_var')) { //Introduced in PHP 5.2
+				if(filter_var($address, FILTER_VALIDATE_EMAIL) === FALSE) {
+					return false;
+				} else {
+					// check domain as well
+					list($user, $domaine) = split("@", $address,2);
+						
+					if(!checkdnsrr($domaine, "MX")&& !checkdnsrr($domaine, "A")){
+						return false;
+					} else return true;
+				}
+			} else {
+				if(preg_match('/^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9_](?:[a-zA-Z0-9_\-](?!\.)){0,61}[a-zA-Z0-9_-]?\.)+[a-zA-Z0-9_](?:[a-zA-Z0-9_\-](?!$)){0,61}[a-zA-Z0-9_]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/', $address)){
+					// check domain as well
+					list($user, $domaine) = split("@", $address,2);
+					
+					if(!checkdnsrr($domaine, "MX")&& !checkdnsrr($domaine, "A")){
+						return false;
+					} else return true;
+				}
+			}
 		}
 		
 	    /**

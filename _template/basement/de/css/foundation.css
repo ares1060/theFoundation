@@ -420,12 +420,17 @@ button.button.green:active {
 	width: 100%;
 	bottom: 0px;
 	display: none;
-	z-index: 2000;
+	z-index: 3000;
 	background: rgba(0,0,0,.6);
+}
+#dialog_background #dialog_centering {
+	position: absolute;
+	top: 50%;
+	left: 0px;
+	right: 0px;
 }
 #dialog_background #dialog_box {
 	position: relative;
-	top: 50%;
 	margin: -80px auto 0 auto;
 	width: 400px;
 	height: auto;
