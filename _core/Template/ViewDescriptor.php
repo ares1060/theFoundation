@@ -64,7 +64,7 @@
 		 *	@param $assocArray An associative array. If a the the same key already exists it will be replaced by the assocArray's value. 
 		 */
 		function addValues($assocArray){
-			array_merge($this->values, $assocArray);
+			$this->values = array_merge($this->values, $assocArray);
 		}
 		
 		/**
