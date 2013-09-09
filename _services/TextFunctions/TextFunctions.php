@@ -586,7 +586,7 @@
 			$uChars = strtoupper($chars);
 			$numbers = '0123456789';
 			//$specialChars = '!%$&-_#+*@()?=:;,./'; // do not add \ to specialChars (used as spacer from salt)
-			$specialChars = '|!@#$%&*\/=?\-_+^():;,.';
+			$specialChars = '|!@$%&*\/=?\-_+^():;,.';
 			
 			$out = '';
 			
